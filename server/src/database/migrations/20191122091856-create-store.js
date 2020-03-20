@@ -18,18 +18,18 @@ module.exports = {
         type: Sequelize.STRING,
       },
       zipcode: {
-        type: Sequelize.STRING(9),
+        type: Sequelize.STRING,
         allowNull: false,
       },
       neighborhood: {
         type: Sequelize.STRING,
       },
       number: {
-        type: Sequelize.STRING(5),
+        type: Sequelize.STRING,
         allowNull: false,
       },
       cnpj: {
-        type: Sequelize.STRING(18),
+        type: Sequelize.STRING,
         allowNull: false,
       },
       active: {

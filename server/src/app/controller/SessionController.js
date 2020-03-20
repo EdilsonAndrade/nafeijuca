@@ -8,10 +8,10 @@ class SessionController {
 
     const user = await User.findOne({ where: { email } });
     if (!user) {
-      return res.status(401).json('User does not exist');
+      return res.status(400).json({ error: 'User does not exist' });
     }
     if (!(await user.checkPassword(password))) {
-      return res.status(401).json('Password does not match');
+      return res.status(400).json({ error: 'Password does not match' });
     }
 
     const { id, name, isAdmin } = user;

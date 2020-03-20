@@ -3,14 +3,15 @@ import PropTypes from 'prop-types';
 import { Route, Redirect } from 'react-router-dom';
 import AuthLayout from '~/pages/_layouts/auth/index';
 import DefaultLayout from '~/pages/_layouts/default';
-// import { store } from '~/store';
+import store from '~/store';
 
 export default function RouteWrapper({
   component: Component,
   isPrivate,
   ...rest
 }) {
-  const signed = true; // store.getState().auth;
+  const { signed } = store.getState().user;
+  const { isAdmin } = store.getState().user;
   if (!signed && isPrivate) {
     return <Redirect to="/" />;
   }
@@ -25,7 +26,7 @@ export default function RouteWrapper({
     <Route
       {...rest}
       render={props => (
-        <Layout>
+        <Layout isAdmin={isAdmin}>
           <Component {...props} />
         </Layout>
       )}
