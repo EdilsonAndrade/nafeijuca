@@ -53,7 +53,8 @@ module.exports = {
           model: 'product_groups',
           key: 'id',
         },
-        onDelete: 'SET NULL',
+        allowNull: false,
+        onDelete: 'CASCADE',
         onUpdate: 'CASCADE',
       },
       store_id: {

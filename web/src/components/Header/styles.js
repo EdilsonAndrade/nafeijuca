@@ -40,10 +40,19 @@ export const Menus = styled.div`
   }
 `;
 
-export const SubMenu = styled(NavLink).attrs({
-  activeStyle: '#444',
-})`
+export const SubMenu = styled(NavLink)`
   font-size: 22px;
   font-weight: bold;
   color: #f5871e;
+  margin-right: 10px;
+  position: relative;
+  &::after {
+    content: '';
+    position: absolute;
+    height: 24px;
+    width: 1px;
+    background: #eee;
+    top: 13px;
+    margin-left: 3px;
+  }
 `;

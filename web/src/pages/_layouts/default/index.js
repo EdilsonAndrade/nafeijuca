@@ -1,11 +1,12 @@
 import React from 'react';
+
 import Header from '~/components/Header';
 import { Wrapper, Content } from './styles';
 
-export default function DefaultLayout({ children, isAdmin }) {
+export default function DefaultLayout({ children }) {
   return (
     <Wrapper>
-      <Header isAdmin={isAdmin} />
+      <Header />
       <Content>{children}</Content>
     </Wrapper>
   );

@@ -2,10 +2,10 @@ import React from 'react';
 
 import { Container } from './styles';
 
-export default function Manage() {
+export default function Product() {
   return (
     <Container>
-      <strong>aqui vai o gerenciamento da loja</strong>
+      <strong>aqui vai o gerenciamento da produtos</strong>
     </Container>
   );
 }
