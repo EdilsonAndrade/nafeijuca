@@ -3,6 +3,7 @@ import Queue from '../../lib/Queue';
 import ConfirmationMail from '../jobs/ConfirmationMail';
 import User from '../models/User';
 import Store from '../models/Store';
+import File from '../models/File';
 import '../../bootstrap';
 
 class UserController {
@@ -13,6 +14,7 @@ class UserController {
           model: Store,
           as: 'store',
           attributes: [
+            'id',
             'cnpj',
             'name',
             'address',
@@ -22,8 +24,12 @@ class UserController {
             'addressLineTwo',
           ],
         },
+        {
+          model: File,
+          as: 'useravatar',
+        },
       ],
-      attributes: ['name', 'email', 'gender', 'birthDate'],
+      attributes: ['id', 'name', 'email', 'gender', 'birthDate', 'isAdmin'],
     });
 
     return res.json(users);
@@ -38,6 +44,7 @@ class UserController {
       password,
       isAdmin,
       storeId,
+      avatarId,
     } = req.body;
     const schema = Yup.object().shape({
       name: Yup.string()
@@ -85,6 +92,7 @@ class UserController {
       confirmed: confirmedForAdmin,
       isAdmin,
       storeId,
+      avatarId,
     });
     Queue.add(ConfirmationMail.key, {
       user,

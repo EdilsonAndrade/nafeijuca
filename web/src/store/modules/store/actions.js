@@ -1,13 +1,13 @@
 export const saveSuccess = data => {
   return {
-    type: '@user/SAVE_SUCCESS',
+    type: '@store/SAVE_SUCCESS',
     payload: data,
   };
 };
 
 export const loadSuccess = data => {
   return {
-    type: '@user/LOAD_SUCCESS',
+    type: '@store/LOAD_SUCCESS',
     payload: data,
   };
 };

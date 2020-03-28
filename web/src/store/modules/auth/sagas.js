@@ -1,7 +1,7 @@
 import { call, put, all, takeLatest } from 'redux-saga/effects';
 import { toast } from 'react-toastify';
 import api from '~/services/api';
-import { signinSuccess } from './actions';
+import { signinSuccess, signout } from './actions';
 import history from '~/services/history';
 import { loadStart, loadStop } from '../load/actions';
 
@@ -39,4 +39,18 @@ function* requestSignin({ payload }) {
     }
   }
 }
-export default all([takeLatest('@auth/REQUEST_SIGNIN', requestSignin)]);
+export function* signoutRequest() {
+  yield put(signout());
+  history.push('/');
+}
+export function setToken({ payload }) {
+  if (!payload) return;
+
+  const { token } = payload.user;
+  api.defaults.headers.Authorization = `Bearer ${token}`;
+}
+export default all([
+  takeLatest('@auth/REQUEST_SIGNIN', requestSignin),
+  takeLatest('persist/REHYDRATE', setToken),
+  takeLatest('@user/SIGNOUT_REQUEST', signoutRequest),
+]);

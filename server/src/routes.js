@@ -1,4 +1,6 @@
 import { Router } from 'express';
+import multer from 'multer';
+import multerConfig from './config/multer';
 import UserController from './app/controller/UserController';
 import ConfirmationController from './app/controller/ConfirmationController';
 import authMiddleware from './app/middlewares/auth';
@@ -12,8 +14,10 @@ import ProductController from './app/controller/ProductController';
 import ClientController from './app/controller/ClientController';
 import OrderController from './app/controller/OrderController';
 import SubItemsController from './app/controller/SubItemsController';
+import FileUploadController from './app/controller/FileUploadController';
 
 const routes = new Router();
+const upload = multer(multerConfig);
 
 routes.post('/users', UserController.store);
 routes.put('/confirmation', ConfirmationController.update);
@@ -75,4 +79,6 @@ routes.get('/clients/:id/orders', OrderController.index);
 // product subitems
 routes.post('/products/:productId/subitems', SubItemsController.store);
 routes.get('/products/:productId/subitems', SubItemsController.index);
+
+routes.post('/files', upload.single('file'), FileUploadController.store);
 export default routes;

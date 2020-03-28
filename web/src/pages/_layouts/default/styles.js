@@ -3,7 +3,7 @@ import styled from 'styled-components';
 export const Wrapper = styled.div`
   width: 100%;
   height: 100%;
-  background: rgba(246, 186, 16);
+  background: linear-gradient(180deg, #c89d00, #ffca05);
 `;
 
 export const Content = styled.div`
@@ -13,6 +13,25 @@ export const Content = styled.div`
   justify-content: center;
   align-items: center;
   border-radius: 14px;
+
+  form {
+
+      label {
+        font-size: 18px;
+        font-weight: bold;
+      }
+    }
+    input {
+      padding: 10px;
+      border: 1px solid #eee;
+      margin: 5px 0;
+      ::placeholder {
+        color: #afabac;
+        font-size: 17px;
+      }
+      border-radius: 4px;
+    }
+  }
 `;
 
 export const Logo = styled.img`

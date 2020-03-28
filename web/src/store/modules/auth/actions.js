@@ -11,3 +11,13 @@ export const signinSuccess = data => {
     payload: data,
   };
 };
+export const signoutRequesst = () => {
+  return {
+    type: '@user/SIGNOUT_REQUEST',
+  };
+};
+export const signout = () => {
+  return {
+    type: '@user/SIGNOUT_SUCCESS',
+  };
+};

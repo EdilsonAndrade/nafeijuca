@@ -3,7 +3,7 @@ import { useField } from '@unform/core';
 import PropTypes from 'prop-types';
 import { AsyncSelectField } from './styles';
 
-const Select = ({ name, ...rest }) => {
+const Select = ({ name, label, ...rest }) => {
   const selectRef = useRef(null);
   const { fieldName, defaultValue, registerField, error } = useField(name);
   useEffect(() => {
@@ -11,6 +11,9 @@ const Select = ({ name, ...rest }) => {
       name: fieldName,
       ref: selectRef.current,
       path: 'select.state.value',
+      clearValue: ref => {
+        console.log(ref);
+      },
       getValue: ref => {
         if (rest.isMulti) {
           if (!ref.select.state.value) {
@@ -27,6 +30,7 @@ const Select = ({ name, ...rest }) => {
   }, [fieldName, registerField, rest.isMulti]);
   return (
     <>
+      {label && <label>{label}</label>}
       <AsyncSelectField
         cacheOptions
         defaultValue={defaultValue}
@@ -34,7 +38,9 @@ const Select = ({ name, ...rest }) => {
         classNamePrefix="react-select"
         {...rest}
       />
-      {error && <span className="error">{error}</span>}
+      {error && (
+        <span style={{ color: '#f00', fontWeight: 'bold' }}>{error}</span>
+      )}
     </>
   );
 };
