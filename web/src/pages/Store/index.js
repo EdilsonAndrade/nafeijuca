@@ -24,7 +24,6 @@ export default function Store() {
   const handleSubmit = async data => {
     try {
       const dataToSend = { ...data, active: true };
-      console.tron.warn(dataToSend);
       const response = await api.post('/stores', dataToSend);
       toast.success('Loja criada com sucesso');
       dispatch(StoreActions.saveSuccess(response.data));

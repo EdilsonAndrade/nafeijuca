@@ -70,20 +70,25 @@ export default function Users() {
         const response = await api.post('/users', data);
         toast.success('User criado com sucesso');
         dispatch(saveSuccess(response.data));
+        formRef.current.reset();
       }
     } catch (err) {
       const validationErros = {};
       const { response } = err;
       if (response) {
-        const error = response.data;
-        toast.error(error);
+        const { error } = response.data;
+        if (error.includes('already')) {
+          toast.error('Usuário com este e-mail já existe');
+        } else {
+          toast.error(error);
+        }
       } else if (err instanceof Yup.ValidationError) {
         err.inner.forEach(error => {
           validationErros[error.path] = error.message;
         });
         formRef.current.setErrors(validationErros);
       } else {
-        // toast.error('Ocorreu um erro no servidor, tenta mais tarde');
+        toast.error('Ocorreu um erro no servidor, tenta mais tarde');
         toast.error(err);
       }
     }
@@ -120,13 +125,11 @@ export default function Users() {
   const handleRowSelect = (currentRowsSelected, allRowsSelected) => {
     const { index } = currentRowsSelected[0];
     const selectedUser = users[index];
-
     if (allRowsSelected.length > 0) {
       formRef.current.setData({
         ...selectedUser,
-        avatarId: selectedUser.useravatar ? selectedUser.useravatar.id : '',
+        avatarId: selectedUser.useravatar ? selectedUser.useravatar.url : null,
       });
-      console.log(JSON.stringify(selectedUser));
       setStoreData({
         value: selectedUser.store.id,
         label: selectedUser.store.name,
@@ -154,7 +157,7 @@ export default function Users() {
     <Container>
       <Form ref={formRef} onSubmit={handleSubmit}>
         <ContainerColumn>
-          <Avatar name="avatar" />
+          <Avatar name="avatarId" />
           <span>
             <Select
               id="storeId"

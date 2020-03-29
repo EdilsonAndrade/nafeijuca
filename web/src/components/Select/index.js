@@ -12,7 +12,7 @@ const Select = ({ name, label, ...rest }) => {
       ref: selectRef.current,
       path: 'select.state.value',
       clearValue: ref => {
-        console.log(ref);
+        //        console.log(ref);
       },
       getValue: ref => {
         if (rest.isMulti) {

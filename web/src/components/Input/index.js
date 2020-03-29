@@ -5,7 +5,6 @@ export default function Input({ name, ...rest }) {
   const inputRef = useRef(null);
   const { fieldName, defaultValue = '', registerField, error } = useField(name);
   useEffect(() => {
-    console.tron.warn(`ref= ${inputRef.current}`);
     registerField({
       name: fieldName,
       ref: inputRef.current,

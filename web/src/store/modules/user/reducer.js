@@ -12,11 +12,11 @@ const INITIAL_STATE = {
   updatedAt: null,
   isAdmin: false,
   storeId: null,
-  avatarId: null,
   clientId: null,
   signed: false,
   token: null,
   users: [],
+  useravatar: '',
 };
 
 export default function user(state = INITIAL_STATE, action) {
@@ -27,7 +27,7 @@ export default function user(state = INITIAL_STATE, action) {
         break;
       }
       case '@user/SAVE_SUCCESS': {
-        draft.users.push(action.payload.user);
+        draft.users.push(action.payload);
         break;
       }
       case '@user/SIGNOUT_SUCCESS': {
@@ -49,7 +49,7 @@ export default function user(state = INITIAL_STATE, action) {
           updatedAt,
           isAdmin,
           storeId,
-          avatarId,
+          useravatar,
           clientId,
         } = action.payload.user;
         const { token } = action.payload;
@@ -64,7 +64,7 @@ export default function user(state = INITIAL_STATE, action) {
         draft.updatedAt = updatedAt;
         draft.isAdmin = isAdmin;
         draft.storeId = storeId;
-        draft.avatarId = avatarId;
+        draft.uservatar = useravatar;
         draft.clientId = clientId;
         draft.signed = true;
         draft.token = token;

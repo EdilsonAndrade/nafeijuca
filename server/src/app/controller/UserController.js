@@ -98,16 +98,28 @@ class UserController {
       user,
     });
 
-    const returned = {
-      name,
-      email,
-      birthDate,
-      gender,
-      confirmed: confirmedForAdmin,
-      isAdmin,
-      storeId,
-      expiration: user.expiration,
-    };
+    const returned = await User.findByPk(user.id, {
+      include: [
+        {
+          model: Store,
+          as: 'store',
+          attributes: [
+            'id',
+            'cnpj',
+            'name',
+            'address',
+            'number',
+            'zipcode',
+            'neighborhood',
+            'addressLineTwo',
+          ],
+        },
+        {
+          model: File,
+          as: 'useravatar',
+        },
+      ],
+    });
 
     return res.json(returned);
   }

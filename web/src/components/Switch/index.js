@@ -15,11 +15,11 @@ export default function SwitchButton({ name, label, ...rest }) {
       setValue(ref, value) {
         setChecked(value);
       },
-      clearValue: ref => {
+      clearValue: () => {
         setChecked(false);
       },
     });
-  }, [fieldName, registerField]);
+  }, [fieldName, registerField, switchButtonRef]);
 
   return (
     <>
