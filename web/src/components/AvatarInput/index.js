@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useField } from '@unform/core';
 import { MdInsertPhoto } from 'react-icons/md';
 import Container from './styles';
@@ -6,13 +6,12 @@ import api from '~/services/api';
 
 export default function Avatar({ name, ...rest }) {
   const { fieldName, defaultValue, registerField } = useField(name);
-  const [file, setFile] = useState(defaultValue && defaultValue.id);
   const [preview, setPreview] = useState(defaultValue && defaultValue.url);
   const [avatarId, setAvatarId] = useState(null);
 
   const avatarRef = useRef();
   const handlePreview = async e => {
-    const file = e.target.files?.[0];
+    const file = e.target.files ? e.target.files[0] : null;
     if (!file) {
       setPreview(null);
     }
@@ -25,8 +24,7 @@ export default function Avatar({ name, ...rest }) {
     const response = await api.post('/files', data);
 
     const { id } = response.data;
-    setAvatarId(id)
-
+    setAvatarId(id);
   };
 
   useEffect(() => {
@@ -35,15 +33,15 @@ export default function Avatar({ name, ...rest }) {
       ref: avatarRef.current,
       path: 'files[0]',
       setValue: (ref, value) => {
+        console.log(ref);
+        console.log(value);
         setPreview(value);
-
       },
-      getValue: (ref,value) =>{
-        value = ref.getAttribute('data-id')
-        if(!value) return ''
+      getValue: (ref, value) => {
+        value = ref.getAttribute('data-id');
+        if (!value) return null;
 
         return value;
-
       },
       clearValue: ref => {
         ref.value = '';
@@ -52,17 +50,26 @@ export default function Avatar({ name, ...rest }) {
     });
   }, [fieldName, registerField]);
 
-
   return (
     <Container>
-      <label htmlFor={name}>
+      <label htmlFor="avatar">
         {preview ? (
           <img src={preview} alt="" alt="Preview" />
         ) : (
           <MdInsertPhoto size={52} color="#ccc" />
         )}
       </label>
-      <input type="file" data-id={avatarId} id={name} preview={preview} accept="image/*" ref={avatarRef} onChange={handlePreview} {...rest} />
+      <input
+        type="file"
+        data-id={avatarId}
+        defaultValue={defaultValue}
+        id="avatar"
+        preview={preview}
+        accept="image/*"
+        ref={avatarRef}
+        onChange={handlePreview}
+        {...rest}
+      />
     </Container>
   );
 }

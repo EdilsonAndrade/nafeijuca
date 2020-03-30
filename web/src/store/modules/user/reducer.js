@@ -27,7 +27,13 @@ export default function user(state = INITIAL_STATE, action) {
         break;
       }
       case '@user/SAVE_SUCCESS': {
-        draft.users.push(action.payload);
+        const indice = draft.users.findIndex(x => x.id === action.payload.id);
+        if (indice) {
+          draft.users[indice] = action.payload;
+        } else {
+          draft.users.push(action.payload);
+        }
+
         break;
       }
       case '@user/SIGNOUT_SUCCESS': {

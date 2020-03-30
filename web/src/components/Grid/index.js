@@ -2,12 +2,13 @@ import React from 'react';
 
 import MUIDataTable from 'mui-datatables';
 
-export default function Grid({ handleRowSelect, ...rest }) {
+export default function Grid({ handleRowSelect, handleRowDelete, ...rest }) {
   const options = {
     filterType: 'checkbox',
     selectableRows: 'single',
     selectableRowsOnClick: true,
     onRowsSelect: handleRowSelect,
+    onRowsDelete: handleRowDelete,
     rowsPerPage: 5,
     print: false,
     selectTableRows: 'single',

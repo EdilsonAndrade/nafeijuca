@@ -10,21 +10,21 @@ const Select = ({ name, label, ...rest }) => {
     registerField({
       name: fieldName,
       ref: selectRef.current,
-      path: 'select.state.value',
+      path: 'props.value',
       clearValue: ref => {
-        //        console.log(ref);
+        // console.log(ref);
       },
-      getValue: ref => {
+      getValue: (ref, value) => {
         if (rest.isMulti) {
           if (!ref.select.state.value) {
             return [];
           }
           return ref.select.state.value.map(option => option.value);
         }
-        if (!ref.select.state.value) {
+        if (!ref.props.value) {
           return '';
         }
-        return ref.select.state.value.value;
+        return ref.props.value.value;
       },
     });
   }, [fieldName, registerField, rest.isMulti]);

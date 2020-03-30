@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { useField } from '@unform/core';
+import { InputField } from './styles';
 
 export default function Input({ name, ...rest }) {
   const inputRef = useRef(null);
@@ -10,13 +11,13 @@ export default function Input({ name, ...rest }) {
       ref: inputRef.current,
       path: 'value',
       clearValue: ref => {
-        ref.value = '';
+        ref.value = null;
       },
     });
   }, [fieldName, registerField]);
   return (
     <>
-      <input ref={inputRef} defaultValue={defaultValue} {...rest} />
+      <InputField ref={inputRef} defaultValue={defaultValue} {...rest} />
       {error && (
         <span style={{ color: '#f00', fontWeight: 'bold' }}>{error}</span>
       )}

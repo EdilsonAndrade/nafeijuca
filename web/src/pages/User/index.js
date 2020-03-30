@@ -12,7 +12,11 @@ import api from '~/services/api';
 import Avatar from '~/components/AvatarInput';
 import Select from '~/components/Select';
 import { Container, ContainerColumn, ButtonDiv } from './styles';
-import { saveSuccess, loadSuccess } from '~/store/modules/user/actions';
+import {
+  saveRequest,
+  loadSuccess,
+  deleteRequest,
+} from '~/store/modules/user/actions';
 import * as StoreActions from '~/store/modules/store/actions';
 
 const columns = [
@@ -37,10 +41,13 @@ const columns = [
 export default function Users() {
   const formRef = useRef(null);
   const stores = useSelector(state => state.store.stores);
+  const isUserAdmin = useSelector(state => state.user.isAdmin);
+  const [update, setUpdate] = useState(false);
 
   const [storeData, setStoreData] = useState();
   const users = useSelector(state => state.user.users);
   const dispatch = useDispatch();
+
   async function handleSubmit(data) {
     try {
       const schema = Yup.object().shape({
@@ -51,25 +58,24 @@ export default function Users() {
         email: Yup.string()
           .email('Informar um e-mail válido')
           .required('Informar um e-mail'),
-        password: Yup.string(6).required(
-          'Password deve ser informado com 6 caracteres'
+        id: Yup.string(),
+        password: Yup.string(6).when('id', (id, field) =>
+          !id ? field.required('Senha é obrigatória') : field
         ),
-        passwordConfirm: Yup.string(6).required(
-          'Confirmação de senha obrigatória'
+        passwordConfirm: Yup.string(6).when('password', (password, field) =>
+          password ? field.required('Confirmação de senha obrigatória') : field
         ),
       });
 
       await schema.validate(data, {
         abortEarly: false,
       });
-      if (data.password !== data.passwordConfirm) {
+      if (!data.id && data.password !== data.passwordConfirm) {
         formRef.current.setErrors({
-          passwordConfirm: 'Senha de confirmação em inconformidade',
+          passwordConfirm: 'Senha de confirmação diferente',
         });
       } else {
-        const response = await api.post('/users', data);
-        toast.success('User criado com sucesso');
-        dispatch(saveSuccess(response.data));
+        dispatch(saveRequest({ ...data, isUserAdmin }));
         formRef.current.reset();
       }
     } catch (err) {
@@ -122,19 +128,28 @@ export default function Users() {
     });
   };
 
+  const rowDelete = (rowsDeleted, data) => {
+    const { index } = rowsDeleted.data[0];
+    const selectedUser = users[index];
+    dispatch(deleteRequest(selectedUser.id));
+    formRef.current.reset();
+  };
   const handleRowSelect = (currentRowsSelected, allRowsSelected) => {
     const { index } = currentRowsSelected[0];
     const selectedUser = users[index];
     if (allRowsSelected.length > 0) {
       formRef.current.setData({
         ...selectedUser,
-        avatarId: selectedUser.useravatar ? selectedUser.useravatar.url : null,
+        avatarUrl: selectedUser.useravatar ? selectedUser.useravatar.url : null,
+        avatarId: selectedUser.useravatar ? selectedUser.useravatar.id : null,
       });
+      setUpdate(true);
       setStoreData({
         value: selectedUser.store.id,
         label: selectedUser.store.name,
       });
     } else {
+      setUpdate(false);
       formRef.current.reset();
     }
   };
@@ -157,7 +172,8 @@ export default function Users() {
     <Container>
       <Form ref={formRef} onSubmit={handleSubmit}>
         <ContainerColumn>
-          <Avatar name="avatarId" />
+          <Avatar name="avatarUrl" />
+          <Input name="avatarId" hidden />
           <span>
             <Select
               id="storeId"
@@ -171,6 +187,7 @@ export default function Users() {
             />
           </span>
           <div>
+            <Input name="id" type="number" hidden />
             <div>
               <label htmlFor="name">Nome</label>
               <Input name="name" placeholder="Nome do usuario" type="text" />
@@ -180,11 +197,15 @@ export default function Users() {
               <Input name="email" placeholder="E-mail" />
             </div>
             <div>
-              <label htmlFor="password">Senha</label>
+              <label htmlFor="password">
+                {update ? 'Senha antiga' : 'Senha'}
+              </label>
               <Input name="password" placeholder="Senha" type="password" />
             </div>
             <div>
-              <label htmlFor="passwordConfirm">Confirmação de Senha</label>
+              <label htmlFor="passwordConfirm">
+                {update ? 'Nova senha' : 'Confirmação de Senha'}
+              </label>
               <Input
                 name="passwordConfirm"
                 placeholder="Confirmação de senha"
@@ -199,6 +220,7 @@ export default function Users() {
             data={users}
             columns={columns}
             handleRowSelect={handleRowSelect}
+            handleRowDelete={rowDelete}
           />
           <ButtonDiv>
             <Button buttonType="submit" type="submit" saveButton>

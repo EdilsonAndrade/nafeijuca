@@ -92,7 +92,7 @@ class UserController {
       confirmed: confirmedForAdmin,
       isAdmin,
       storeId,
-      avatarId,
+      avatarId: avatarId === '' ? null : avatarId,
     });
     Queue.add(ConfirmationMail.key, {
       user,
@@ -119,6 +119,7 @@ class UserController {
           as: 'useravatar',
         },
       ],
+      attributes: ['id', 'name', 'email', 'gender', 'birthDate', 'isAdmin'],
     });
 
     return res.json(returned);
@@ -127,12 +128,10 @@ class UserController {
   async update(req, res) {
     const schema = Yup.object().shape({
       name: Yup.string().min(5),
-      oldPassword: Yup.string().min(6),
-      password: Yup.string()
-        .min(6)
-        .when('oldPassword', (oldPassword, field) =>
-          oldPassword ? field.required() : field
-        ),
+      oldPassword: Yup.string(),
+      password: Yup.string().when('oldPassword', (oldPassword, field) =>
+        oldPassword ? field.required() : field
+      ),
       oldEmail: Yup.string().email(),
       email: Yup.string()
         .email()
@@ -140,8 +139,10 @@ class UserController {
           oldEmail ? field.required() : field
         ),
     });
-    const { userId } = req;
+    let { userId } = req;
+
     const {
+      id,
       name,
       email,
       birthDate,
@@ -151,42 +152,64 @@ class UserController {
       oldEmail,
       isAdmin,
       storeId,
+      isUserAdmin,
+      avatarId,
     } = req.body;
 
+    if (isUserAdmin && req.body.id) {
+      userId = req.body.id;
+    }
     if (!(await schema.isValid(req.body))) {
       return res.status(400).json({ error: 'Validation input failed' });
     }
 
     const user = await User.findByPk(userId);
 
-    if (oldPassword && password) {
+    if (!isUserAdmin && oldPassword && password) {
       if (!(await user.checkPassword(oldPassword))) {
         return res.status(401).json({ error: 'Password Invalid' });
       }
     }
-    if (email && !oldEmail) {
+    if (!isUserAdmin && email && !oldEmail) {
       return res
         .status(401)
         .json({ error: 'To change e-mail, old e-mail must be informed' });
     }
 
     let confirmedForAdmin = false;
+
     if (isAdmin) {
       confirmedForAdmin = true;
     } else {
       confirmedForAdmin = oldEmail ? false : user.confirmed;
     }
-
-    await user.update({
-      name,
-      email,
-      birthDate,
-      gender,
-      password,
-      confirmed: confirmedForAdmin,
-      isAdmin,
-      storeId,
-    });
+    if (!password) {
+      await User.update(
+        {
+          name,
+          email,
+          birthDate,
+          gender,
+          confirmed: confirmedForAdmin,
+          isAdmin,
+          storeId,
+          avatarId: avatarId === '' ? null : avatarId,
+        },
+        { where: { id } }
+      );
+    } else {
+      await user.update({
+        name,
+        email,
+        birthDate,
+        gender,
+        password,
+        confirmed: confirmedForAdmin,
+        isAdmin,
+        storeId,
+        avatarId: avatarId === '' ? null : avatarId,
+      });
+    }
 
     if (!isAdmin) {
       if (oldEmail && email && user.email === email) {
@@ -195,15 +218,29 @@ class UserController {
         });
       }
     }
-    const returned = {
-      name,
-      email,
-      birthDate,
-      gender,
-      confirmed: confirmedForAdmin,
-      isAdmin,
-      storeId,
-    };
+    const returned = await User.findByPk(user.id, {
+      include: [
+        {
+          model: Store,
+          as: 'store',
+          attributes: [
+            'id',
+            'cnpj',
+            'name',
+            'address',
+            'number',
+            'zipcode',
+            'neighborhood',
+            'addressLineTwo',
+          ],
+        },
+        {
+          model: File,
+          as: 'useravatar',
+        },
+      ],
+      attributes: ['id', 'name', 'email', 'gender', 'birthDate', 'isAdmin'],
+    });
 
     return res.json(returned);
   }
