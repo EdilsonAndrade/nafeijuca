@@ -7,7 +7,7 @@ const ButtonContent = styled.button`
   align-items: center;
   padding: 15px;
   color: #fff;
-  background: #f28a18;
+  background: ${props => (props.background ? props.background : '#f28a18')};
   width: 142px;
   height: 36px;
   border: none;

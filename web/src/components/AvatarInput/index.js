@@ -33,8 +33,6 @@ export default function Avatar({ name, ...rest }) {
       ref: avatarRef.current,
       path: 'files[0]',
       setValue: (ref, value) => {
-        console.log(ref);
-        console.log(value);
         setPreview(value);
       },
       getValue: (ref, value) => {
@@ -54,7 +52,7 @@ export default function Avatar({ name, ...rest }) {
     <Container>
       <label htmlFor="avatar">
         {preview ? (
-          <img src={preview} alt="" alt="Preview" />
+          <img src={preview} alt="Preview" />
         ) : (
           <MdInsertPhoto size={52} color="#ccc" />
         )}

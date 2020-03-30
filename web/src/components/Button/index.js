@@ -1,6 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { MdKeyboardArrowLeft, MdCheck, MdAdd } from 'react-icons/md';
+import {
+  MdKeyboardArrowLeft,
+  MdCheck,
+  MdAdd,
+  MdRemoveCircle,
+} from 'react-icons/md';
 import ButtonContent from './styles';
 
 export default function Button({
@@ -9,6 +14,7 @@ export default function Button({
   buttonType,
   saveButton,
   icon,
+  background,
 }) {
   const getIconButton = () => {
     switch (icon) {
@@ -17,6 +23,9 @@ export default function Button({
       }
       case 'back': {
         return <MdKeyboardArrowLeft size={22} color="#eee" />;
+      }
+      case 'delete': {
+        return <MdRemoveCircle size={22} color="#eee" />;
       }
       case 'none': {
         return '';
@@ -31,6 +40,7 @@ export default function Button({
       type={buttonType}
       saveButton={saveButton}
       onClick={handleClick}
+      background={background}
     >
       {getIconButton()}
       {children}

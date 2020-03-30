@@ -6,6 +6,8 @@ import { saveSuccess, loadSuccess } from './actions';
 export function* deleteUser({ payload }) {
   yield call(api.delete, `/users/${payload}`);
   toast.success('Usuário excluido com sucesso');
+  const users = yield call(api.get, '/users');
+  yield put(loadSuccess(users.data));
 }
 
 export function* saveUpdateUser({ payload }) {

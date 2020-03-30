@@ -17,6 +17,7 @@ import {
   loadSuccess,
   deleteRequest,
 } from '~/store/modules/user/actions';
+import Modal from '~/components/Modal';
 import * as StoreActions from '~/store/modules/store/actions';
 
 const columns = [
@@ -43,7 +44,8 @@ export default function Users() {
   const stores = useSelector(state => state.store.stores);
   const isUserAdmin = useSelector(state => state.user.isAdmin);
   const [update, setUpdate] = useState(false);
-
+  const [open, setOpen] = useState(false);
+  const [userId, setUserId] = useState(null);
   const [storeData, setStoreData] = useState();
   const users = useSelector(state => state.user.users);
   const dispatch = useDispatch();
@@ -131,8 +133,14 @@ export default function Users() {
   const rowDelete = (rowsDeleted, data) => {
     const { index } = rowsDeleted.data[0];
     const selectedUser = users[index];
-    dispatch(deleteRequest(selectedUser.id));
+    setUserId(selectedUser.id);
+    setOpen(true);
+    return false;
+  };
+  const handleConfirmDelete = () => {
+    dispatch(deleteRequest(userId));
     formRef.current.reset();
+    setOpen(false);
   };
   const handleRowSelect = (currentRowsSelected, allRowsSelected) => {
     const { index } = currentRowsSelected[0];
@@ -229,6 +237,13 @@ export default function Users() {
           </ButtonDiv>
         </ContainerColumn>
       </Form>
+      <Modal
+        message="Deseja excluir este usuário?"
+        open={open}
+        handleClose={() => setOpen(false)}
+        dialog
+        handleConfirm={handleConfirmDelete}
+      />
     </Container>
   );
 }

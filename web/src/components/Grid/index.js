@@ -1,6 +1,6 @@
 import React from 'react';
 
-import MUIDataTable from 'mui-datatables';
+import { GridContainer } from './styles';
 
 export default function Grid({ handleRowSelect, handleRowDelete, ...rest }) {
   const options = {
@@ -39,7 +39,7 @@ export default function Grid({ handleRowSelect, handleRowDelete, ...rest }) {
 
   return (
     <span>
-      <MUIDataTable {...rest} options={options} />
+      <GridContainer {...rest} options={options} />
     </span>
   );
 }
