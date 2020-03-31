@@ -17,13 +17,21 @@ const INITIAL_STATE = {
   token: null,
   users: [],
   useravatar: '',
+  systemAdmin: false,
+  store: {},
 };
 
 export default function user(state = INITIAL_STATE, action) {
   return produce(state, draft => {
     switch (action.type) {
       case '@user/LOAD_SUCCESS': {
-        draft.users = action.payload;
+        if (action.payload) {
+          const formatedData = action.payload.map(x => ({
+            ...x,
+            admin: x.isAdmin ? 'Sim' : 'Não',
+          }));
+          draft.users = formatedData;
+        }
         break;
       }
       case '@user/SAVE_SUCCESS': {
@@ -40,6 +48,7 @@ export default function user(state = INITIAL_STATE, action) {
         draft.signed = false;
         draft.token = null;
         draft.isAdmin = false;
+        draft.systemAdmin = false;
         break;
       }
       case '@user/SIGNIN_SUCCESS': {
@@ -57,6 +66,8 @@ export default function user(state = INITIAL_STATE, action) {
           storeId,
           useravatar,
           clientId,
+          systemAdmin,
+          store,
         } = action.payload.user;
         const { token } = action.payload;
         draft.id = id;
@@ -74,6 +85,8 @@ export default function user(state = INITIAL_STATE, action) {
         draft.clientId = clientId;
         draft.signed = true;
         draft.token = token;
+        draft.systemAdmin = systemAdmin;
+        draft.store = store;
         break;
       }
       default:

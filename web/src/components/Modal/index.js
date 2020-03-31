@@ -16,7 +16,6 @@ export default function Modal({
   return (
     <ModalContainer
       open={open}
-      close={handleClose}
       closeAfterTransition
       BackdropComponent={Backdrop}
       BackdropProps={{ timeout: 500 }}
@@ -28,13 +27,18 @@ export default function Modal({
           <span>
             <Button
               icon="delete"
+              buttonType="button"
               background="#b00"
               type="button"
               handleClick={handleClose}
             >
               NÃO
             </Button>
-            <Button type="button" handleClick={handleConfirm}>
+            <Button
+              buttonType="button"
+              type="button"
+              handleClick={handleConfirm}
+            >
               SIM
             </Button>
           </span>

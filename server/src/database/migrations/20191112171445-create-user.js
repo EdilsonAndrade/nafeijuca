@@ -31,6 +31,9 @@ module.exports = {
       expiration: {
         type: Sequelize.DATE,
       },
+      system_admin: {
+        type: Sequelize.BOOLEAN,
+      },
       created_at: {
         type: Sequelize.DATE,
       },

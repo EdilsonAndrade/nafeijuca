@@ -8,7 +8,37 @@ import '../../bootstrap';
 
 class UserController {
   async index(req, res) {
+    const { storeId } = req.params;
+    if (storeId) {
+      const users = await User.findAll({
+        where: { storeId },
+        include: [
+          {
+            model: Store,
+            as: 'store',
+            attributes: [
+              'id',
+              'cnpj',
+              'name',
+              'address',
+              'number',
+              'zipcode',
+              'neighborhood',
+              'addressLineTwo',
+            ],
+          },
+          {
+            model: File,
+            as: 'useravatar',
+          },
+        ],
+        attributes: ['id', 'name', 'email', 'gender', 'birthDate', 'isAdmin'],
+      });
+
+      return res.json(users);
+    }
     const users = await User.findAll({
+      where: { systemAdmin: null },
       include: [
         {
           model: Store,
@@ -45,6 +75,7 @@ class UserController {
       isAdmin,
       storeId,
       avatarId,
+      systemAdmin,
     } = req.body;
     const schema = Yup.object().shape({
       name: Yup.string()
@@ -93,6 +124,7 @@ class UserController {
       isAdmin,
       storeId,
       avatarId: avatarId === '' ? null : avatarId,
+      systemAdmin,
     });
     Queue.add(ConfirmationMail.key, {
       user,
@@ -119,7 +151,15 @@ class UserController {
           as: 'useravatar',
         },
       ],
-      attributes: ['id', 'name', 'email', 'gender', 'birthDate', 'isAdmin'],
+      attributes: [
+        'id',
+        'name',
+        'email',
+        'gender',
+        'birthDate',
+        'isAdmin',
+        'systemAdmin',
+      ],
     });
 
     return res.json(returned);
@@ -154,6 +194,7 @@ class UserController {
       storeId,
       isUserAdmin,
       avatarId,
+      systemAdmin,
     } = req.body;
 
     if (isUserAdmin && req.body.id) {
@@ -194,6 +235,7 @@ class UserController {
           isAdmin,
           storeId,
           avatarId: avatarId === '' ? null : avatarId,
+          systemAdmin,
         },
         { where: { id } }
       );
@@ -208,6 +250,7 @@ class UserController {
         isAdmin,
         storeId,
         avatarId: avatarId === '' ? null : avatarId,
+        systemAdmin,
       });
     }
 
@@ -239,7 +282,15 @@ class UserController {
           as: 'useravatar',
         },
       ],
-      attributes: ['id', 'name', 'email', 'gender', 'birthDate', 'isAdmin'],
+      attributes: [
+        'id',
+        'name',
+        'email',
+        'gender',
+        'birthDate',
+        'isAdmin',
+        'systemAdmin',
+      ],
     });
 
     return res.json(returned);

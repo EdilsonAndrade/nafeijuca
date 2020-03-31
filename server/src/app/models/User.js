@@ -15,6 +15,7 @@ class User extends Model {
         confirmed: Sequelize.BOOLEAN,
         expiration: Sequelize.DATE,
         isAdmin: Sequelize.BOOLEAN,
+        systemAdmin: Sequelize.BOOLEAN,
       },
       {
         sequelize,

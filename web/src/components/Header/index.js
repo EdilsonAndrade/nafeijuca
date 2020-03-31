@@ -8,9 +8,9 @@ import history from '~/services/history';
 
 export default function Header({ props }) {
   const dispatch = useDispatch();
-  const store = useSelector(state => state.store);
+  const store = useSelector(state => state.user.store);
   const [activeMenu, setActiveMenu] = useState('Vendas');
-  const isAdmin = useSelector(state => state.user.isAdmin);
+  const user = useSelector(state => state.user);
   useEffect(() => {
     history.push(history.location.pathname);
     setActiveMenu(history.location.pathname);
@@ -33,7 +33,7 @@ export default function Header({ props }) {
           </LiElement>
         </Menus>
         <Menus adminMenu>
-          {isAdmin ? (
+          {user.isAdmin ? (
             <>
               <LiElement active={activeMenu === '/dashboard'}>
                 <SubMenu
@@ -53,15 +53,20 @@ export default function Header({ props }) {
                   Produtos
                 </SubMenu>
               </LiElement>
-              <LiElement active={activeMenu === '/store'}>
-                <SubMenu
-                  activeStyle={{ color: '#251c1f' }}
-                  to="/store"
-                  onClick={() => setActiveMenu('/store')}
-                >
-                  Lojas
-                </SubMenu>
-              </LiElement>
+              {user.systemAdmin ? (
+                <LiElement active={activeMenu === '/store'}>
+                  <SubMenu
+                    activeStyle={{ color: '#251c1f' }}
+                    to="/store"
+                    onClick={() => setActiveMenu('/store')}
+                  >
+                    Lojas
+                  </SubMenu>
+                </LiElement>
+              ) : (
+                ''
+              )}
+
               <LiElement active={activeMenu === '/users'}>
                 <SubMenu
                   activeStyle={{ color: '#251c1f' }}

@@ -30,6 +30,7 @@ routes.use(authMiddleware, confirmedMiddleware);
 
 routes.put('/users/:userId', UserController.update);
 routes.get('/users', UserController.index);
+routes.get('/users/:storeId', UserController.index);
 routes.delete('/users/:userId', UserController.delete);
 
 routes.delete('/addresses/:addressId', AddressController.delete);

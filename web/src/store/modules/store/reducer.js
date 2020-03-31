@@ -1,6 +1,7 @@
 import { produce } from 'immer';
 
 const INITIAL_DATA = {
+  id: null,
   name: null,
   address: null,
   number: null,

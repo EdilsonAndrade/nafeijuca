@@ -4,18 +4,32 @@ import api from '~/services/api';
 import { saveSuccess, loadSuccess } from './actions';
 
 export function* deleteUser({ payload }) {
-  yield call(api.delete, `/users/${payload}`);
+  yield call(api.delete, `/users/${payload.id}`);
   toast.success('Usuário excluido com sucesso');
-  const users = yield call(api.get, '/users');
+  const { store } = payload;
+  let users = [];
+  if (payload.systemAdmin) {
+    users = yield call(api.get, '/users');
+  } else {
+    users = yield call(api.get, `/users/${store.id}`);
+  }
+
   yield put(loadSuccess(users.data));
 }
 
 export function* saveUpdateUser({ payload }) {
-  const { id, isUserAdmin, email, isAdmin, avatarUrl, avatarId } = payload;
-  let response = null;
+  const {
+    id,
+    isUserAdmin,
+    email,
+    isAdmin,
+    avatarUrl,
+    avatarId,
+    systemAdmin,
+  } = payload;
 
   if (!id) {
-    response = yield call(api.post, '/users', {
+    yield call(api.post, '/users', {
       ...payload,
       avatarId: avatarUrl,
     });
@@ -28,10 +42,15 @@ export function* saveUpdateUser({ payload }) {
       isAdmin,
       oldEmail: email,
     };
-    response = yield call(api.put, `/users/${id}`, datatoUpdate);
+    yield call(api.put, `/users/${id}`, datatoUpdate);
     toast.success('Usuário atualizado com sucesso');
   }
-  const users = yield call(api.get, '/users');
+  let users = [];
+  if (systemAdmin) {
+    users = yield call(api.get, '/users');
+  } else {
+    users = yield call(api.get, `/users/${payload.storeId}`);
+  }
   yield put(loadSuccess(users.data));
 }
 export default all([

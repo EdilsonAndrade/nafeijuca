@@ -8,8 +8,8 @@ module.exports = {
         email: 'edilson.a.andrade@gmail.com',
         password: await bcript.hash('123456', 8),
         confirmed: true,
-        store_Id: 1,
         is_admin: true,
+        system_admin: true,
       },
     ]);
   },

@@ -30,12 +30,16 @@ const columns = [
     label: 'Name',
   },
   {
+    name: 'store.name',
+    label: 'Loja',
+  },
+  {
     name: 'email',
     label: 'E-mail',
   },
   {
     name: 'admin',
-    label: 'IsAdmin',
+    label: 'Administrador',
   },
 ];
 
@@ -45,13 +49,20 @@ export default function Users() {
   const isUserAdmin = useSelector(state => state.user.isAdmin);
   const [update, setUpdate] = useState(false);
   const [open, setOpen] = useState(false);
-  const [userId, setUserId] = useState(null);
+  const [userId, setUser] = useState(null);
   const [storeData, setStoreData] = useState();
-  const users = useSelector(state => state.user.users);
+  const user = useSelector(state => state.user);
+  const { users } = user;
   const dispatch = useDispatch();
 
-  async function handleSubmit(data) {
+  async function handleSubmit(formData) {
     try {
+      let data = null;
+      if (user.systemAdmin) {
+        data = formData;
+      } else {
+        data = { ...formData, storeId: user.store.id };
+      }
       const schema = Yup.object().shape({
         storeId: Yup.string().required('Selecione uma loja'),
         name: Yup.string(6, '6 carecteres').required(
@@ -133,7 +144,7 @@ export default function Users() {
   const rowDelete = (rowsDeleted, data) => {
     const { index } = rowsDeleted.data[0];
     const selectedUser = users[index];
-    setUserId(selectedUser.id);
+    setUser(selectedUser);
     setOpen(true);
     return false;
   };
@@ -152,6 +163,7 @@ export default function Users() {
         avatarId: selectedUser.useravatar ? selectedUser.useravatar.id : null,
       });
       setUpdate(true);
+
       setStoreData({
         value: selectedUser.store.id,
         label: selectedUser.store.name,
@@ -164,17 +176,17 @@ export default function Users() {
 
   useEffect(() => {
     const getUsers = async () => {
-      const response = await api.get('/users');
-      if (response.data) {
-        const formatedData = response.data.map(x => ({
-          ...x,
-          admin: x.isAdmin ? 'Sim' : 'Não',
-        }));
-        dispatch(loadSuccess(formatedData));
+      let response = null;
+      if (!user.store) {
+        response = await api.get('/users');
+      } else {
+        response = await api.get(`/users/${user.store.id}`);
       }
+
+      dispatch(loadSuccess(response.data));
     };
     getUsers();
-  }, [dispatch]);
+  }, [dispatch, user.store]);
 
   return (
     <Container>
@@ -182,18 +194,21 @@ export default function Users() {
         <ContainerColumn>
           <Avatar name="avatarUrl" />
           <Input name="avatarId" hidden />
-          <span>
-            <Select
-              id="storeId"
-              label="Loja"
-              loadOptions={loadStores}
-              cacheOptions
-              defaultOptions
-              value={storeData}
-              onChange={e => setStoreData(e)}
-              name="storeId"
-            />
-          </span>
+          {user.systemAdmin && (
+            <span>
+              <Select
+                id="storeId"
+                label="Loja"
+                loadOptions={loadStores}
+                cacheOptions
+                defaultOptions
+                value={storeData}
+                onChange={e => setStoreData(e)}
+                name="storeId"
+              />
+            </span>
+          )}
+
           <div>
             <Input name="id" type="number" hidden />
             <div>
