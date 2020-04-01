@@ -1,4 +1,5 @@
 import * as Yup from 'yup';
+import { Op } from 'sequelize';
 import Queue from '../../lib/Queue';
 import ConfirmationMail from '../jobs/ConfirmationMail';
 import User from '../models/User';
@@ -38,7 +39,18 @@ class UserController {
       return res.json(users);
     }
     const users = await User.findAll({
-      where: { systemAdmin: null },
+      where: {
+        [Op.or]: [
+          {
+            systemAdmin: {
+              [Op.eq]: null,
+            },
+          },
+          {
+            systemAdmin: { [Op.eq]: false },
+          },
+        ],
+      },
       include: [
         {
           model: Store,

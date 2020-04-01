@@ -17,7 +17,7 @@ const INITIAL_STATE = {
   token: null,
   users: [],
   useravatar: '',
-  systemAdmin: false,
+  systemAdmin: null,
   store: {},
 };
 

@@ -57,12 +57,8 @@ export default function Users() {
 
   async function handleSubmit(formData) {
     try {
-      let data = null;
-      if (user.systemAdmin) {
-        data = formData;
-      } else {
-        data = { ...formData, storeId: user.store.id };
-      }
+      const data = { ...formData, storeId: user.store.id };
+
       const schema = Yup.object().shape({
         storeId: Yup.string().required('Selecione uma loja'),
         name: Yup.string(6, '6 carecteres').required(

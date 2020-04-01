@@ -5,16 +5,14 @@ const ButtonContent = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 15px;
+  padding: 11px;
   color: #fff;
   background: ${props => (props.background ? props.background : '#f28a18')};
-  width: 142px;
-  height: 36px;
+  width: ${props => (props.width ? props.width : '142px')};
   border: none;
-  padding: 8px;
-  margin: 10px;
-  border-radius: 4px;
+  border-radius: 6px;
   font-weight: bold;
+  font-size: 18px;
   svg {
     margin-right: 13px;
   }

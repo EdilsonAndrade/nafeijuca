@@ -15,6 +15,7 @@ export default function Button({
   saveButton,
   icon,
   background,
+  width,
 }) {
   const getIconButton = () => {
     switch (icon) {
@@ -41,6 +42,7 @@ export default function Button({
       saveButton={saveButton}
       onClick={handleClick}
       background={background}
+      width={width}
     >
       {getIconButton()}
       {children}

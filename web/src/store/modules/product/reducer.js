@@ -16,6 +16,8 @@ const INITIAL_DATA = {
   storeId: null,
   createdAt: null,
   updatedAt: null,
+  ProductGroup: null,
+  Store: null,
 };
 
 export default function product(state = INITIAL_DATA, action) {
