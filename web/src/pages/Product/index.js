@@ -1,10 +1,43 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-import { MdPauseCircleFilled, MdPlayCircleFilled } from 'react-icons/md';
-import { Container, CategoryContainer, ProductGroup, Products } from './styles';
+import {
+  Container,
+  CategoryContainer,
+  ProductGroup,
+  Products,
+  ProductChildren,
+  PauseComponent,
+  ArrowLeft,
+  ArrowDown,
+} from './styles';
 import Button from '~/components/Button';
 
 export default function Product() {
+  const [activesSubMenus, setActiveSubMenus] = useState([
+    {
+      id: '1',
+      status: true,
+    },
+    {
+      id: '2',
+      status: false,
+    },
+  ]);
+  const handleActiveDeactiveMenus = id => {
+    let status = false;
+    activesSubMenus.forEach(item => {
+      if (id === item.id) {
+        status = !item.status;
+      }
+    });
+    const actsSub = activesSubMenus.map(m => ({
+      ...m,
+      status: m.id === id ? status : m.status,
+    }));
+    setActiveSubMenus(actsSub);
+    return status;
+  };
+
   return (
     <Container>
       <strong>Cardápio</strong>
@@ -25,7 +58,7 @@ export default function Product() {
         <strong>FEIJOADA LIGHT</strong>
         <div>
           <span>
-            <MdPlayCircleFilled size={22} />
+            <PauseComponent size={22} />
             <span>Pausar</span>
           </span>
           <div>
@@ -35,18 +68,144 @@ export default function Product() {
         </div>
       </ProductGroup>
       <Products>
-        <span>Bana a milanmesa inteira (dividida ao meio)</span>
         <div>
+          <span>Banana milanmesa inteira (dividida ao meio)</span>
           <div>
-            <input type="text" value="4,90" />
-            <MdPauseCircleFilled size={22} active={false} />
-            <span>Pausado</span>
-          </div>
-          <div>
-            <span>Duplicar</span>
-            <span>Editar</span>
+            <div>
+              <input type="text" value="4,90" />
+              <PauseComponent size={22} active={false} />
+              <span>Pausado</span>
+            </div>
+            <div>
+              <span>Duplicar</span>
+              <span>Editar</span>
+            </div>
           </div>
         </div>
+        <div>
+          <span>Vinagrete - Serve 1 pessoa</span>
+          <div>
+            <div>
+              <input type="text" value="4,90" />
+              <PauseComponent size={22} active />
+              <span>Pausar</span>
+            </div>
+            <div>
+              <span>Duplicar</span>
+              <span>Editar</span>
+            </div>
+          </div>
+        </div>
+      </Products>
+      <Products>
+        <div>
+          <span>Feijoada Completa 2 Pessoas</span>
+          <div>
+            <div>
+              <input type="text" value="4,90" />
+              <PauseComponent size={22} active={false} />
+              <span>Pausado</span>
+            </div>
+            <div>
+              <span>Duplicar</span>
+              <span>Editar</span>
+              {activesSubMenus.find(x => x.id === '1' && x.status === true) ? (
+                <ArrowDown onClick={() => handleActiveDeactiveMenus('1')} />
+              ) : (
+                <ArrowLeft onClick={() => handleActiveDeactiveMenus('1')} />
+              )}
+            </div>
+          </div>
+        </div>
+        <ProductChildren
+          id="1"
+          active={activesSubMenus.find(x => x.id === '1' && x.status === true)}
+        >
+          <strong>Escolha um complemento</strong>
+          <div>
+            <div>Couve - Serve 1 Pessoa</div>
+            <div>
+              <input type="text" value="4,90" />
+              <PauseComponent size={22} active={false} />
+              <span>Pausado</span>
+            </div>
+          </div>
+          <div>
+            <div>Farofa - Serve 1 Pessoa</div>
+            <div>
+              <input type="text" value="4,90" />
+              <PauseComponent size={22} active={false} />
+              <span>Pausado</span>
+            </div>
+          </div>
+          <div>
+            <div>Torresmo - Serve 1 Pessoa</div>
+            <div>
+              <input type="text" value="4,90" />
+              <PauseComponent size={22} active={false} />
+              <span>Pausado</span>
+            </div>
+          </div>
+          <div>
+            <div>Banana a milanesa - Uma banana (dividida ao meio)</div>
+            <div>
+              <input type="text" value="4,90" />
+              <PauseComponent size={22} active />
+              <span>Pausar</span>
+            </div>
+          </div>
+        </ProductChildren>
+      </Products>
+      <Products>
+        <div>
+          <span>Feijoada Completa 1 Pessoa</span>
+          <div>
+            <div>
+              <input type="text" value="14,90" />
+              <PauseComponent size={22} active={false} />
+              <span>Pausado</span>
+            </div>
+            <div>
+              <span>Duplicar</span>
+              <span>Editar</span>
+              {activesSubMenus.find(x => x.id === '2' && x.status === true) ? (
+                <ArrowDown onClick={() => handleActiveDeactiveMenus('2')} />
+              ) : (
+                <ArrowLeft onClick={() => handleActiveDeactiveMenus('2')} />
+              )}
+            </div>
+          </div>
+        </div>
+        <ProductChildren
+          id="2"
+          active={activesSubMenus.find(x => x.id === '2' && x.status === true)}
+        >
+          <strong>Escolha um complemento</strong>
+          <div>
+            <div>Molho de pimenta</div>
+            <div>
+              <input type="text" value="4,90" />
+              <PauseComponent size={22} active={false} />
+              <span>Pausado</span>
+            </div>
+          </div>
+          <div>
+            <div>Farofa - Servem 2 Pessoas</div>
+            <div>
+              <input type="text" value="4,90" />
+              <PauseComponent size={22} active={false} />
+              <span>Pausado</span>
+            </div>
+          </div>
+          <div>
+            <div>Torresmo - Serve 2 Pessoas</div>
+            <div>
+              <input type="text" value="4,90" />
+              <PauseComponent size={22} active={false} />
+              <span>Pausado</span>
+            </div>
+          </div>
+        </ProductChildren>
       </Products>
     </Container>
   );
