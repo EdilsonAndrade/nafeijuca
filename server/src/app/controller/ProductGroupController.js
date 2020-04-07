@@ -6,7 +6,6 @@ import Product from '../models/Product';
 class ProductGroupController {
   async store(req, res) {
     const { storeId } = req.params;
-    console.log(JSON.stringify(req.body));
     const store = await Store.findOne({ where: { id: storeId, active: true } });
     if (!store) {
       return res.status(400).json({ error: 'Store not found' });
