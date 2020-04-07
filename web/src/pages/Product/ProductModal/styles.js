@@ -34,10 +34,6 @@ export const BodyContent = styled.div`
         margin: 5px;
         display: flex;
         flex-direction: column;
-
-        strong {
-          text-align: center;
-        }
       }
     }
 

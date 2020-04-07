@@ -10,7 +10,19 @@ class ProductController {
       equivalentAmount: Yup.number().required(),
       price: Yup.number().required(),
       storeId: Yup.number().required(),
+      weekdaysActive: Yup.array().required(),
     });
+
+    const { weekdaysActive } = req.body;
+    let indice = 0;
+    let weekDays = '';
+    weekdaysActive.forEach(d => {
+      if (d === true) {
+        weekDays += `${indice},`;
+      }
+      indice += 1;
+    });
+    weekDays = weekDays.substr(0, weekDays.length - 1);
 
     if (!(await schema.isValid(req.body))) {
       return res.status(401).json({ error: 'Validation failed' });
@@ -21,8 +33,16 @@ class ProductController {
     if (!store) {
       return res.status(401).json({ error: 'Store not found' });
     }
-
-    const product = await Product.create(req.body);
+    console.log(`nome do produto = ${req.body.name}`);
+    const productExist = await Product.findOne({
+      where: { name: req.body.name },
+    });
+    console.log(JSON.stringify(productExist));
+    if (productExist) {
+      return res.status(401).json({ error: 'Product already exists' });
+    }
+    const data = { ...req.body, weekdaysActive: weekDays };
+    const product = await Product.create(data);
 
     return res.json(product);
   }

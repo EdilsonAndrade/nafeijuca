@@ -80,7 +80,7 @@ export default function Product() {
           <div>
             <div>
               <input type="text" value="4,90" />
-              <PauseComponent size={22} active={false} />
+              <PauseComponent size={22} active={false.toString()} />
               <span>Pausado</span>
             </div>
             <div>

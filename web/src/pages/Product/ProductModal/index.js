@@ -16,8 +16,9 @@ import {
 import Button from '~/components/Button';
 import Input from '~/components/Input';
 import * as ProductGroupActions from '~/store/modules/productGroup/actions';
+import { saveRequest } from '~/store/modules/product/actions';
 import api from '~/services/api';
-import InputMask from '~/components/InputMask';
+import InputNumber from '~/components/InputNumber';
 
 export default function ProductModal({ open, handleClose }) {
   const dispatch = useDispatch();
@@ -28,7 +29,43 @@ export default function ProductModal({ open, handleClose }) {
   const productGroups = useSelector(state => state.productGroup.productGroups);
 
   const handleSubmitProduct = async data => {
-    console.log(data);
+    console.log(JSON.stringify(data));
+    try {
+      const schema = Yup.object().shape({
+        name: Yup.string().required('Produto obrigatório'),
+        description: Yup.string().required('Descrição obrigatória'),
+        equivalentAmount: Yup.string().required(
+          'Total equivalente obrigatório'
+        ),
+        price: Yup.string().required('Preço obrigatório'),
+        quantity: Yup.string().required('Quantidade obrigatório'),
+        productGroupId: Yup.string().required('Grupo é obrigatório'),
+      });
+
+      await schema.validate(data, {
+        abortEarly: false,
+      });
+      dispatch(saveRequest(data));
+    } catch (err) {
+      const validationErros = {};
+      const { response } = err;
+      if (response) {
+        const { error } = response.data;
+        if (error.includes('already')) {
+          toast.error('Producto com este nome já existe');
+        } else {
+          toast.error(error);
+        }
+      } else if (err instanceof Yup.ValidationError) {
+        err.inner.forEach(error => {
+          validationErros[error.path] = error.message;
+        });
+        formRefProduct.current.setErrors(validationErros);
+      } else {
+        toast.error('Ocorreu um erro no servidor, tenta mais tarde');
+        toast.error(err);
+      }
+    }
   };
   const handleSubmitGroup = async data => {
     try {
@@ -164,6 +201,9 @@ export default function ProductModal({ open, handleClose }) {
             <div className="titleCenter">
               <strong>Selecione o grupo na lista e crie um produto</strong>
             </div>
+            <div>
+              <Input name="storeId" hidden value={user.store.id} />
+            </div>
             <span>
               <Select
                 name="productGroupId"
@@ -190,13 +230,25 @@ export default function ProductModal({ open, handleClose }) {
                 />
               </div>
               <div>
-                <InputMask name="price" mask="99.99" label="Produto" />
+                <InputNumber
+                  name="price"
+                  label="Preço"
+                  decimalSeparator=","
+                  decimalScale={2}
+                  allowNegative={false}
+                  prefix="R$"
+                  fixedDecimalScale
+                />
               </div>
               <div>
-                <InputMask
+                <InputNumber
                   name="promotionPrice"
-                  mask="99.99"
                   label="Preço promocional"
+                  decimalSeparator=","
+                  decimalScale={2}
+                  allowNegative={false}
+                  prefix="R$"
+                  fixedDecimalScale
                 />
               </div>
               <div>
@@ -218,33 +270,33 @@ export default function ProductModal({ open, handleClose }) {
             </div>
             <div className="weekDays">
               <div>
-                <Switch name="monday" label="Segunda" />
+                <Switch name="weekdaysActive.2" label="Segunda" />
               </div>
               <div>
-                <Switch name="tuesday" label="Terça" />
-              </div>
-
-              <div>
-                <Switch name="wednesday" label="Quarta" />
+                <Switch name="weekdaysActive.3" label="Terça" />
               </div>
 
               <div>
-                <Switch name="thursday" label="Quinta" />
+                <Switch name="weekdaysActive.4" label="Quarta" />
               </div>
 
               <div>
-                <Switch name="friday" label="Sexta" />
+                <Switch name="weekdaysActive.5" label="Quinta" />
               </div>
 
               <div>
-                <Switch name="saturday" label="Sábado" />
+                <Switch name="weekdaysActive.6" label="Sexta" />
               </div>
 
               <div>
-                <Switch name="sunday" label="Domingo" />
+                <Switch name="weekdaysActive.7" label="Sábado" />
+              </div>
+
+              <div>
+                <Switch name="weekdaysActive.1" label="Domingo" />
               </div>
               <div>
-                <Button width="200px" buttonType="submit">
+                <Button width="20yarn start0px" buttonType="submit">
                   Salvar produto
                 </Button>
               </div>
