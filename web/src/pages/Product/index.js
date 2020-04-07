@@ -11,8 +11,10 @@ import {
   ArrowDown,
 } from './styles';
 import Button from '~/components/Button';
+import ProductModal from './ProductModal';
 
 export default function Product() {
+  const [openModal, setOpenModal] = useState(false);
   const [activesSubMenus, setActiveSubMenus] = useState([
     {
       id: '1',
@@ -46,14 +48,19 @@ export default function Product() {
         na foto, nome e detalhes
       </h2>
       <CategoryContainer>
-        <Button width="230px" buttonType="button">
-          Adicionar categoria
+        <Button
+          width="230px"
+          buttonType="button"
+          handleClick={() => setOpenModal(true)}
+        >
+          Adicionar produto
         </Button>
         <div>
           <span>Editar código PDV</span>
           <span>Reordenar cardápio</span>
         </div>
       </CategoryContainer>
+      <ProductModal open={openModal} handleClose={() => setOpenModal(false)} />
       <ProductGroup active>
         <strong>FEIJOADA LIGHT</strong>
         <div>

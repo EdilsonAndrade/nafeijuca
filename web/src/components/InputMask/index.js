@@ -1,9 +1,10 @@
 import React, { useRef, useEffect } from 'react';
-import InputMask from 'react-input-mask';
+
 import PropTypes from 'prop-types';
 import { useField } from '@unform/core';
+import { InputMaskContainer } from './styles';
 
-export default function InputMaskForm({ name, ...rest }) {
+export default function InputMaskForm({ name, label, ...rest }) {
   const ref = useRef();
 
   const { fieldName, defaultValue = '', registerField, error } = useField(name);
@@ -21,7 +22,13 @@ export default function InputMaskForm({ name, ...rest }) {
 
   return (
     <>
-      <InputMask {...rest} defaultValue={defaultValue} maskChar="" ref={ref} />
+      {label ? <strong>{label}</strong> : ''}
+      <InputMaskContainer
+        {...rest}
+        defaultValue={defaultValue}
+        maskChar=""
+        ref={ref}
+      />
       {error && <span>{error}</span>}
     </>
   );

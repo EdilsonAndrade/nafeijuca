@@ -13,6 +13,7 @@ const INITIAL_DATA = {
   createdAt: null,
   updatedAt: null,
   storeId: null,
+  productGroups: [],
 };
 
 export default function productGroup(state = INITIAL_DATA, action) {
@@ -47,6 +48,10 @@ export default function productGroup(state = INITIAL_DATA, action) {
         draft.updatedAt = updatedAt;
         draft.storeId = storeId;
 
+        break;
+      }
+      case '@productGroup/LOAD_SUCCESS': {
+        draft.productGroups = action.payload;
         break;
       }
       default:

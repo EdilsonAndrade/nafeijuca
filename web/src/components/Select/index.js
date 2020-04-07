@@ -30,7 +30,7 @@ const Select = ({ name, label, ...rest }) => {
   }, [fieldName, registerField, rest.isMulti]);
   return (
     <>
-      {label && <label>{label}</label>}
+      {label && <strong>{label}</strong>}
       <AsyncSelectField
         cacheOptions
         defaultValue={defaultValue}

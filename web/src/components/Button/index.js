@@ -16,6 +16,10 @@ export default function Button({
   icon,
   background,
   width,
+  borderRadius,
+  marginTop,
+  position,
+  left,
 }) {
   const getIconButton = () => {
     switch (icon) {
@@ -43,6 +47,10 @@ export default function Button({
       onClick={handleClick}
       background={background}
       width={width}
+      borderRadius={borderRadius}
+      marginTop={marginTop}
+      position={position}
+      left={left}
     >
       {getIconButton()}
       {children}
@@ -59,10 +67,18 @@ Button.propTypes = {
   buttonType: PropTypes.string.isRequired,
   saveButton: PropTypes.bool,
   icon: PropTypes.string,
+  borderRadius: PropTypes.string,
+  marginTop: PropTypes.string,
+  position: PropTypes.string,
+  left: PropTypes.string,
 };
 
 Button.defaultProps = {
   handleClick: () => {},
   saveButton: false,
   icon: '',
+  borderRadius: '',
+  marginTop: '',
+  position: '',
+  left: '',
 };
