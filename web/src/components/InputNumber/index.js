@@ -13,6 +13,9 @@ export default function InputNumber({ name, label, ...rest }) {
       getValue: (ref, value) => {
         return ref.state.numAsString;
       },
+      setValue: (ref, value) => {
+        console.tron.warn(ref);
+      },
       clearValue: (ref, value) => {
         ref.state = null;
       },

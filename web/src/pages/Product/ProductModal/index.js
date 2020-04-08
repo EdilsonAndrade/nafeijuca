@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 import { Form } from '@unform/web';
@@ -27,9 +27,20 @@ export default function ProductModal({ open, handleClose }) {
   const user = useSelector(state => state.user);
   const [productGroupData, setProductGroupData] = useState();
   const productGroups = useSelector(state => state.productGroup.productGroups);
+  const productGroup = useSelector(state => state.productGroup);
+  const product = useSelector(state => state.product);
 
+  useEffect(() => {
+    if (productGroup && formGroupRef.current !== null) {
+      formGroupRef.current.setData(productGroup);
+    }
+  }, [productGroup]);
+  useEffect(() => {
+    if (product && formRefProduct.current !== null) {
+      formRefProduct.current.setData(product);
+    }
+  }, [product]);
   const handleSubmitProduct = async data => {
-    console.log(JSON.stringify(data));
     try {
       const schema = Yup.object().shape({
         name: Yup.string().required('Produto obrigatório'),
@@ -74,7 +85,6 @@ export default function ProductModal({ open, handleClose }) {
         quantityTotal: Yup.string().required(
           'Quantidade total deve ser informada'
         ),
-        discount: Yup.string().required,
       });
 
       await schema.validate(data, {
@@ -151,6 +161,7 @@ export default function ProductModal({ open, handleClose }) {
         </HeaderContainer>
         <BodyContent>
           <Form ref={formGroupRef} onSubmit={handleSubmitGroup}>
+            <Input hidden name="id" />
             <div className="titleCenter">
               <strong>Defina o nome do grupo ou selecione da lista</strong>
             </div>
@@ -180,12 +191,15 @@ export default function ProductModal({ open, handleClose }) {
                 />
               </div>
               <div>
+                <Switch name="active" label="Ativo ?" />
+              </div>
+              <div>
                 <Switch name="star" label="Destaque ?" />
               </div>
               <div>
                 <Switch
                   name="considerQuantity"
-                  label="Considerar total de quantidade ?"
+                  label="Considerar quantidade ?"
                 />
               </div>
               <div>
@@ -198,6 +212,7 @@ export default function ProductModal({ open, handleClose }) {
           <hr />
 
           <Form ref={formRefProduct} onSubmit={handleSubmitProduct}>
+            <Input hidden name="id" />
             <div className="titleCenter">
               <strong>Selecione o grupo na lista e crie um produto</strong>
             </div>

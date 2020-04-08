@@ -23,8 +23,8 @@ const INITIAL_DATA = {
 
 export default function product(state = INITIAL_DATA, action) {
   return produce(state, draft => {
-    switch (action.payload) {
-      case '@product/SAVE_SUCCESS': {
+    switch (action.type) {
+      case '@product/EDIT_SUCCESS': {
         const {
           id,
           name,

@@ -1,7 +1,7 @@
 import { all, put, call, takeLatest } from 'redux-saga/effects';
 import { toast } from 'react-toastify';
 import api from '~/services/api';
-import * as ProductActions from './actions';
+import { loadSuccess } from './actions';
 
 function* saveProduct({ payload }) {
   try {
@@ -13,7 +13,7 @@ function* saveProduct({ payload }) {
         `/stores/${payload.storeId}/products`
       );
       toast.success('Produto salvo com sucesso');
-      yield put(ProductActions.loadSuccess(products.data));
+      yield put(loadSuccess(products.data));
     }
   } catch (err) {
     const { response } = err;
@@ -30,5 +30,15 @@ function* saveProduct({ payload }) {
     }
   }
 }
-
-export default all([takeLatest('@product/SAVE_REQUEST', saveProduct)]);
+function* getProducts({ payload }) {
+  try {
+    const response = yield call(api.get, `/stores/${payload}/products`);
+    yield put(loadSuccess(response.data));
+  } catch (err) {
+    toast.error(err);
+  }
+}
+export default all([
+  takeLatest('@product/SAVE_REQUEST', saveProduct),
+  takeLatest('@product/LOAD_REQUEST', getProducts),
+]);

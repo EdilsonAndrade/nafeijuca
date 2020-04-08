@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
-
+import React, { useState, useEffect, useRef } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { Form } from '@unform/web';
 import {
   Container,
   CategoryContainer,
@@ -12,8 +13,15 @@ import {
 } from './styles';
 import Button from '~/components/Button';
 import ProductModal from './ProductModal';
+import * as ProductGroupActions from '~/store/modules/productGroup/actions';
+import * as ProductActions from '~/store/modules/product/actions';
+import InputNumber from '~/components/InputNumber';
 
 export default function Product() {
+  const productGroups = useSelector(state => state.productGroup.productGroups);
+  const user = useSelector(state => state.user);
+  const dispatch = useDispatch();
+  const productRef = useRef(null);
   const [openModal, setOpenModal] = useState(false);
   const [activesSubMenus, setActiveSubMenus] = useState([
     {
@@ -25,6 +33,20 @@ export default function Product() {
       status: false,
     },
   ]);
+  useEffect(() => {
+    dispatch(ProductGroupActions.loadRequest(user.store.id));
+  }, [dispatch, user.store.id]);
+
+  const handleEditProductGroup = productGroup => {
+    dispatch(ProductGroupActions.editSuccess(productGroup));
+    setOpenModal(true);
+  };
+
+  const handleEditProduct = (productToEdit, productGroup) => {
+    dispatch(ProductGroupActions.editSuccess(productGroup));
+    dispatch(ProductActions.editSuccess(productToEdit));
+    setOpenModal(true);
+  };
   const handleActiveDeactiveMenus = id => {
     let status = false;
     activesSubMenus.forEach(item => {
@@ -39,7 +61,78 @@ export default function Product() {
     setActiveSubMenus(actsSub);
     return status;
   };
-
+  const renderProductGroupAndProduct = () => {
+    return productGroups.map(pg => {
+      return (
+        <>
+          <ProductGroup active={pg.active}>
+            <strong>{pg.name}</strong>
+            <div>
+              <span>
+                <Button icon="none" naked>
+                  <PauseComponent size={22} />
+                </Button>
+                <span>{pg.active ? 'Pausar' : 'Pausado'}</span>
+              </span>
+              <div>
+                <Button icon="none" naked fontSize="16px">
+                  Duplicar
+                </Button>
+                <Button
+                  icon="none"
+                  naked
+                  fontSize="16px"
+                  handleClick={() => handleEditProductGroup(pg)}
+                >
+                  Editar
+                </Button>
+              </div>
+            </div>
+          </ProductGroup>
+          {pg.Products.map(product => (
+            <Products>
+              <div>
+                <span>{product.name}</span>
+                <div>
+                  <div>
+                    <InputNumber
+                      name="preco"
+                      decimalSeparator=","
+                      decimalScale={2}
+                      allowNegative={false}
+                      prefix="R$"
+                      fixedDecimalScale
+                      value={product.price}
+                    />
+                    <Button icon="none" naked>
+                      <PauseComponent
+                        size={22}
+                        color={product.active ? '#444' : 'rgb(255,76,0)'}
+                      />
+                    </Button>
+                    <span>{product.active ? 'Pausar' : 'Pausado'}</span>
+                  </div>
+                  <div>
+                    <Button icon="none" naked fontSize="16px">
+                      Duplicar
+                    </Button>
+                    <Button
+                      icon="none"
+                      naked
+                      fontSize="16px"
+                      handleClick={() => handleEditProduct(product, pg)}
+                    >
+                      Editar
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            </Products>
+          ))}
+        </>
+      );
+    });
+  };
   return (
     <Container>
       <strong>Cardápio</strong>
@@ -61,50 +154,8 @@ export default function Product() {
         </div>
       </CategoryContainer>
       <ProductModal open={openModal} handleClose={() => setOpenModal(false)} />
-      <ProductGroup active>
-        <strong>FEIJOADA LIGHT</strong>
-        <div>
-          <span>
-            <PauseComponent size={22} />
-            <span>Pausar</span>
-          </span>
-          <div>
-            <span>Duplicar</span>
-            <span>Editar</span>
-          </div>
-        </div>
-      </ProductGroup>
-      <Products>
-        <div>
-          <span>Banana milanmesa inteira (dividida ao meio)</span>
-          <div>
-            <div>
-              <input type="text" value="4,90" />
-              <PauseComponent size={22} active={false.toString()} />
-              <span>Pausado</span>
-            </div>
-            <div>
-              <span>Duplicar</span>
-              <span>Editar</span>
-            </div>
-          </div>
-        </div>
-        <div>
-          <span>Vinagrete - Serve 1 pessoa</span>
-          <div>
-            <div>
-              <input type="text" value="4,90" />
-              <PauseComponent size={22} active />
-              <span>Pausar</span>
-            </div>
-            <div>
-              <span>Duplicar</span>
-              <span>Editar</span>
-            </div>
-          </div>
-        </div>
-      </Products>
-      <Products>
+      <Form ref={productRef}>{renderProductGroupAndProduct()}</Form>
+      {/* <Products>
         <div>
           <span>Feijoada Completa 2 Pessoas</span>
           <div>
@@ -213,7 +264,7 @@ export default function Product() {
             </div>
           </div>
         </ProductChildren>
-      </Products>
+      </Products> */}
     </Container>
   );
 }

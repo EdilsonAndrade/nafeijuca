@@ -14,7 +14,7 @@ export const InputField = styled(NumberFormat)`
   border: 1px solid #eee;
   border-radius: 6px;
   font-size: 16px;
-  color: #999;
+  color: #444;
   &::placeholder {
     color: #999;
   }

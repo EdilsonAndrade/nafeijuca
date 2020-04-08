@@ -192,5 +192,7 @@ export const ProductChildren = styled.ul`
   }
 `;
 export const PauseComponent = styled(MdPauseCircleFilled)`
-  color: ${props => (props.active ? '#444' : 'rgb(255,76,0)')};
+  svg {
+    color: ${props => (props.active ? '#444' : 'rgb(255,76,0)')};
+  }
 `;

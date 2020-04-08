@@ -20,6 +20,8 @@ export default function Button({
   marginTop,
   position,
   left,
+  naked,
+  fontSize,
 }) {
   const getIconButton = () => {
     switch (icon) {
@@ -51,6 +53,8 @@ export default function Button({
       marginTop={marginTop}
       position={position}
       left={left}
+      naked={naked}
+      fontSize={fontSize}
     >
       {getIconButton()}
       {children}
@@ -71,6 +75,8 @@ Button.propTypes = {
   marginTop: PropTypes.string,
   position: PropTypes.string,
   left: PropTypes.string,
+  naked: PropTypes.bool,
+  fontSize: PropTypes.string,
 };
 
 Button.defaultProps = {
@@ -81,4 +87,6 @@ Button.defaultProps = {
   marginTop: '',
   position: '',
   left: '',
+  naked: false,
+  fontSize: '',
 };

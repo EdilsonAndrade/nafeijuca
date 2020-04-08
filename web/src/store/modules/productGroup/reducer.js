@@ -19,7 +19,7 @@ const INITIAL_DATA = {
 export default function productGroup(state = INITIAL_DATA, action) {
   return produce(state, draft => {
     switch (action.type) {
-      case '@productGroup/SAVE_SUCCESS': {
+      case '@productGroup/EDIT_SUCCESS': {
         const {
           id,
           name,
