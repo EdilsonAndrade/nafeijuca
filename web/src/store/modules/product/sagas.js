@@ -1,22 +1,23 @@
 import { all, put, call, takeLatest } from 'redux-saga/effects';
 import { toast } from 'react-toastify';
 import api from '~/services/api';
-import { loadSuccess } from './actions';
+import { loadSuccess, editSuccess } from './actions';
+import * as GroupActions from '../productGroup/actions';
 
 function* saveProduct({ payload }) {
   try {
     const { id } = payload;
-    if (!id) {
-      const response = yield call(api.post, '/products', payload);
-      if (response.id) {
-        toast.success('Produto salvo com sucesso');
-        const products = yield call(
-          api.get,
-          `/stores/${payload.storeId}/products`
-        );
-        toast.success('Produto salvo com sucesso');
-        yield put(loadSuccess(products.data));
-      }
+    if (!Number(id)) {
+      console.tron.warn('vou salvar');
+      yield call(api.post, '/products', payload);
+      const products = yield call(
+        api.get,
+        `/stores/${payload.storeId}/products`
+      );
+      toast.success('Produto salvo com sucesso');
+      yield put(GroupActions.loadRequest(payload.storeId));
+      yield put(editSuccess(payload));
+      yield put(loadSuccess(products.data));
     } else {
       yield call(api.put, `/products/${id}`, payload);
 
@@ -25,6 +26,8 @@ function* saveProduct({ payload }) {
         `/stores/${payload.storeId}/products`
       );
       toast.success('Produto atualizado com sucesso');
+      yield put(GroupActions.loadRequest(payload.storeId));
+      yield put(editSuccess(payload));
       yield put(loadSuccess(products.data));
     }
   } catch (err) {

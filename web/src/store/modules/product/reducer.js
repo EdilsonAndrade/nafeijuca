@@ -10,7 +10,13 @@ const INITIAL_DATA = {
   promotionPrice: null,
   promotionExpire: null,
   active: null,
-  weekdaysActive: null,
+  monday: null,
+  tuesday: null,
+  wednesday: null,
+  thursday: null,
+  friday: null,
+  saturday: null,
+  sunday: null,
   imageId: null,
   productGroupId: null,
   storeId: null,
@@ -35,7 +41,13 @@ export default function product(state = INITIAL_DATA, action) {
           promotionPrice,
           promotionExpire,
           active,
-          weekdaysActive,
+          monday,
+          tuesday,
+          wednesday,
+          thursday,
+          friday,
+          saturday,
+          sunday,
           imageId,
           productGroupId,
           storeId,
@@ -53,7 +65,13 @@ export default function product(state = INITIAL_DATA, action) {
         draft.promotionPrice = promotionPrice;
         draft.promotionExpire = promotionExpire;
         draft.active = active;
-        draft.weekdaysActive = weekdaysActive;
+        draft.monday = monday;
+        draft.tuesday = tuesday;
+        draft.wednesday = wednesday;
+        draft.thursday = thursday;
+        draft.friday = friday;
+        draft.saturday = saturday;
+        draft.sunday = sunday;
         draft.imageId = imageId;
         draft.productGroupId = productGroupId;
         draft.storeId = storeId;

@@ -15,9 +15,11 @@ export default function InputNumber({ name, label, ...rest }) {
         return ref.state.numAsString;
       },
       setValue: (ref, value) => {
-        ref.state.numAsString = value;
-        ref.state.value = value;
-        setValue(value);
+        if (value) {
+          ref.state.numAsString = value;
+          ref.state.value = value;
+          setValue(value);
+        }
       },
       clearValue: (ref, value) => {
         ref.state = null;

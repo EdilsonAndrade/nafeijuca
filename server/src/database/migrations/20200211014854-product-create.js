@@ -34,8 +34,26 @@ module.exports = {
       active: {
         type: Sequelize.BOOLEAN,
       },
-      weekdays_active: {
-        type: Sequelize.STRING,
+      monday: {
+        type: Sequelize.BOOLEAN,
+      },
+      tuesday: {
+        type: Sequelize.BOOLEAN,
+      },
+      wednesday: {
+        type: Sequelize.BOOLEAN,
+      },
+      thursday: {
+        type: Sequelize.BOOLEAN,
+      },
+      friday: {
+        type: Sequelize.BOOLEAN,
+      },
+      saturday: {
+        type: Sequelize.BOOLEAN,
+      },
+      sunday: {
+        type: Sequelize.BOOLEAN,
       },
       image_id: {
         type: Sequelize.INTEGER,

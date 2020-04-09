@@ -23,17 +23,8 @@ export default function Product() {
 
   useEffect(() => {
     setTimeout(() => {
-      if (formRefProduct.current) {
-        const weekDays = product.weekdaysActive.split(',');
-        const weekdaysActiveFormated = weekDays.map(d => {
-          return d;
-        });
-        const [...rest] = weekDays;
-        console.log(JSON.stringify({ ...rest }));
-        formRefProduct.current.setData({
-          ...product,
-          weekdaysActive: rest,
-        });
+      if (product.Store && formRefProduct.current) {
+        formRefProduct.current.setData(product);
 
         setProductGroupData({
           value: product.Store.id,
@@ -53,15 +44,17 @@ export default function Product() {
         ),
         price: Yup.string().required('Preço obrigatório'),
         quantity: Yup.string().required('Quantidade obrigatório'),
-        productGroupId: Yup.string().required('Grupo é obrigatório'),
+        pgId: Yup.string().required('Grupo é obrigatório'),
       });
 
       await schema.validate(data, {
         abortEarly: false,
       });
-      dispatch(saveRequest(data));
+      if (data.promotionPrice === '') {
+        data.promotionPrice = null;
+      }
+      dispatch(saveRequest({ ...data, productGroupId: data.pgId }));
     } catch (err) {
-      console.log(err);
       const validationErros = {};
       const { response } = err;
       if (response) {
@@ -180,30 +173,30 @@ export default function Product() {
       </div>
       <div className="weekDays">
         <div>
-          <Switch name="weekdaysActive.2" label="Segunda" />
+          <Switch name="monday" label="Segunda" />
         </div>
         <div>
-          <Switch name="weekdaysActive.3" label="Terça" />
-        </div>
-
-        <div>
-          <Switch name="weekdaysActive.4" label="Quarta" />
+          <Switch name="tuesday" label="Terça" />
         </div>
 
         <div>
-          <Switch name="weekdaysActive.5" label="Quinta" />
+          <Switch name="wednesday" label="Quarta" />
         </div>
 
         <div>
-          <Switch name="weekdaysActive.6" label="Sexta" />
+          <Switch name="thursday" label="Quinta" />
         </div>
 
         <div>
-          <Switch name="weekdaysActive.7" label="Sábado" />
+          <Switch name="friday" label="Sexta" />
         </div>
 
         <div>
-          <Switch name="weekdaysActive.1" label="Domingo" />
+          <Switch name="saturday" label="Sábado" />
+        </div>
+
+        <div>
+          <Switch name="sunday" label="Domingo" />
         </div>
         <div>
           <Button width="200px" buttonType="submit">

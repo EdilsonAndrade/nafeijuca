@@ -30,8 +30,13 @@ export default function ProductGroup() {
       await schema.validate(data, {
         abortEarly: false,
       });
+      if (data.discount === '') {
+        data.discount = null;
+      }
 
-      dispatch(ProductGroupActions.saveRequest(data));
+      dispatch(
+        ProductGroupActions.saveRequest({ ...data, storeId: user.store.id })
+      );
     } catch (err) {
       const validationErros = {};
       const { response } = err;

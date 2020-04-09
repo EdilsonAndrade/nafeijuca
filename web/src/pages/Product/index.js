@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Form } from '@unform/web';
 import {
@@ -19,6 +19,7 @@ import InputNumber from '~/components/InputNumber';
 
 export default function Product() {
   const productGroups = useSelector(state => state.productGroup.productGroups);
+
   const user = useSelector(state => state.user);
   const dispatch = useDispatch();
   const productRef = useRef(null);
@@ -44,7 +45,6 @@ export default function Product() {
 
   const handleEditProduct = (productToEdit, productGroup) => {
     dispatch(ProductGroupActions.editSuccess(productGroup));
-    console.log(JSON.stringify(productToEdit));
     dispatch(ProductActions.editSuccess(productToEdit));
     setOpenModal(true);
   };
@@ -141,6 +141,8 @@ export default function Product() {
       );
     });
   };
+
+  useEffect(() => {});
   return (
     <Container>
       <strong>Cardápio</strong>

@@ -10,7 +10,6 @@ function* saveProductGroup({ payload }) {
       yield call(api.post, `/stores/${storeId}/productgroups`, payload);
       toast.success('Grupo  criado com sucesso');
     } else {
-      console.tron.warn('atualiza porra');
       const response = yield call(api.put, `/productgroups/${id}`, payload);
       toast.success('Grupo atualizado com sucesso');
       yield put(editSuccess(response.data));
@@ -21,8 +20,8 @@ function* saveProductGroup({ payload }) {
     const { response } = err;
     if (response) {
       const { error } = response.data;
-      if (error.includes('already')) {
-        toast.error('Usuário com este e-mail já existe');
+      if (error && error.includes('already')) {
+        toast.error('Produto já existe');
       } else {
         toast.error(error);
       }
@@ -34,6 +33,7 @@ function* saveProductGroup({ payload }) {
 }
 function* getProductsGroups({ payload }) {
   try {
+    console.tron.warn('entrando pra alterar o product');
     const response = yield call(api.get, `/stores/${payload}/productgroups`);
     yield put(loadSuccess(response.data));
   } catch (err) {
