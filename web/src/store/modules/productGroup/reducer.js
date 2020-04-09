@@ -13,6 +13,7 @@ const INITIAL_DATA = {
   createdAt: null,
   updatedAt: null,
   storeId: null,
+  store: null,
   productGroups: [],
 };
 
@@ -33,8 +34,8 @@ export default function productGroup(state = INITIAL_DATA, action) {
           createdAt,
           updatedAt,
           storeId,
+          Store,
         } = action.payload;
-
         draft.id = id;
         draft.name = name;
         draft.description = description;
@@ -47,6 +48,7 @@ export default function productGroup(state = INITIAL_DATA, action) {
         draft.createdAt = createdAt;
         draft.updatedAt = updatedAt;
         draft.storeId = storeId;
+        draft.store = Store;
 
         break;
       }

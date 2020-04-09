@@ -41,6 +41,7 @@ export default function product(state = INITIAL_DATA, action) {
           storeId,
           createdAt,
           updatedAt,
+          Store,
         } = action.payload;
 
         draft.id = id;
@@ -58,7 +59,7 @@ export default function product(state = INITIAL_DATA, action) {
         draft.storeId = storeId;
         draft.createdAt = createdAt;
         draft.updatedAt = updatedAt;
-
+        draft.Store = Store;
         break;
       }
       case '@product/LOAD_SUCCESS': {
