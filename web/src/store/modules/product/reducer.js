@@ -31,6 +31,9 @@ export default function product(state = INITIAL_DATA, action) {
   return produce(state, draft => {
     switch (action.type) {
       case '@product/EDIT_SUCCESS': {
+        if (!action.payload) {
+          return INITIAL_DATA;
+        }
         const {
           id,
           name,

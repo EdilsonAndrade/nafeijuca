@@ -142,7 +142,11 @@ export default function Product() {
     });
   };
 
-  useEffect(() => {});
+  const handleNewCategory = () => {
+    dispatch(ProductGroupActions.editSuccess(null));
+    dispatch(ProductActions.editSuccess(null));
+    setOpenModal(true);
+  };
   return (
     <Container>
       <strong>Cardápio</strong>
@@ -154,7 +158,7 @@ export default function Product() {
         <Button
           width="230px"
           buttonType="button"
-          handleClick={() => setOpenModal(true)}
+          handleClick={handleNewCategory}
         >
           Adicionar produto
         </Button>

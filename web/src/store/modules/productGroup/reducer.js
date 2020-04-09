@@ -21,6 +21,9 @@ export default function productGroup(state = INITIAL_DATA, action) {
   return produce(state, draft => {
     switch (action.type) {
       case '@productGroup/EDIT_SUCCESS': {
+        if (!action.payload) {
+          return INITIAL_DATA;
+        }
         const {
           id,
           name,
