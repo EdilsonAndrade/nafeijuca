@@ -76,6 +76,11 @@ class ProductGroupController {
         include: [
           {
             model: Product,
+            include: [
+              {
+                model: Store,
+              },
+            ],
           },
           {
             model: Store,
@@ -94,6 +99,11 @@ class ProductGroupController {
         {
           model: Product,
           required: false,
+          include: [
+            {
+              model: Store,
+            },
+          ],
         },
       ],
     });

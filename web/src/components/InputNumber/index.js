@@ -1,10 +1,11 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useField } from '@unform/core';
 import { InputField } from './styles';
 
 export default function InputNumber({ name, label, ...rest }) {
   const inputRef = useRef(null);
-  const { fieldName, defaultValue = '', registerField, error } = useField(name);
+  const { fieldName, registerField, error } = useField(name);
+  const [value, setValue] = useState();
   useEffect(() => {
     registerField({
       name: fieldName,
@@ -14,7 +15,9 @@ export default function InputNumber({ name, label, ...rest }) {
         return ref.state.numAsString;
       },
       setValue: (ref, value) => {
-        console.tron.warn(ref);
+        ref.state.numAsString = value;
+        ref.state.value = value;
+        setValue(value);
       },
       clearValue: (ref, value) => {
         ref.state = null;
@@ -24,7 +27,7 @@ export default function InputNumber({ name, label, ...rest }) {
   return (
     <>
       {label ? <strong>{label}</strong> : ''}
-      <InputField ref={inputRef} defaultValue={defaultValue} {...rest} />
+      <InputField ref={inputRef} defaultValue={value} {...rest} />
       {error && (
         <span style={{ color: '#f00', fontWeight: 'bold' }}>{error}</span>
       )}
