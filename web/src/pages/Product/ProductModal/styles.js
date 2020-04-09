@@ -55,3 +55,35 @@ export const BodyContent = styled.div`
     }
   }
 `;
+
+export const TabContainer = styled.div`
+  width: 100%;
+  display: flex;
+  margin-top: 10px;
+  background: #666;
+  padding: 5px 0 0 5px;
+  border: none;
+`;
+
+export const Tab = styled.div`
+  width: 150px;
+  padding: 20px;
+  height: 50px;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 18px;
+  cursor: pointer;
+  & + div {
+    margin-left: 2px;
+  }
+  background: ${props => (props.active ? '#f28a18' : '#eee')};
+  color: ${props => (props.active ? '' : '#bbbaba')};
+`;
+
+export const TabContent = styled.div`
+  display: ${props => (props.active ? '' : 'none')};
+`;
