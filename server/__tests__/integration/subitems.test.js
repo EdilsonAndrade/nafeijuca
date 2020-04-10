@@ -24,19 +24,17 @@ describe('Product Subitems', () => {
 
     const fakeProductItem = await factory.attrs('SubItem', {
       name: 'Couve',
-      mandatory: true,
       price: 9,
       detail: 'Serve 1 Pessoa',
+      mandatory: true,
     });
     const fakeProductItemTwo = await factory.attrs('SubItem', {
       name: 'Farofa',
-      mandatory: true,
       price: 11,
       detail: 'Serve 1 Pessoa',
     });
     const fakeProductItemThree = await factory.attrs('SubItem', {
       name: 'Torresmo',
-      mandatory: true,
       price: 10,
       detail: 'Serve 2 Pessoas',
     });
@@ -59,9 +57,10 @@ describe('Product Subitems', () => {
       .get(`/stores/${fakeStore.id}/products`)
       .set('Authorization', `Bearer ${userStore.generateToken().token}`);
 
-    expect(response.body[0].SubItems[0].name).toEqual('Couve');
-    expect(response.body[0].SubItems[1].name).toEqual('Farofa');
-    expect(response.body[0].SubItems[2].name).toEqual('Torresmo');
-    expect(response.body[0].SubItems.length).toBeGreaterThan(2);
+    expect(response.body[0].SubItems[2].ProductsItems.mandatory).toEqual(true);
+    expect(response.body[0].SubItems[2].name).toEqual('Couve');
+    expect(response.body[0].SubItems[0].name).toEqual('Farofa');
+    expect(response.body[0].SubItems[1].name).toEqual('Torresmo');
+    expect(response.body[0].SubItems.length).toBeGreaterThan(0);
   });
 });

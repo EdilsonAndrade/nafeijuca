@@ -40,7 +40,12 @@ class Product extends Model {
         foreignKey: 'productId',
       },
     });
-    this.hasMany(models.SubItem, { foreignKey: 'productId' });
+    this.belongsToMany(models.SubItem, {
+      through: {
+        model: models.ProductsItems,
+      },
+    });
+    this.hasMany(models.ProductsItems, { as: 'ProductsSubItems' });
   }
 }
 

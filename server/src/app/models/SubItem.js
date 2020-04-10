@@ -6,9 +6,6 @@ class SubItem extends Model {
       {
         name: Sequelize.STRING,
         detail: Sequelize.STRING,
-        mandatory: Sequelize.BOOLEAN,
-        min: Sequelize.INTEGER,
-        max: Sequelize.INTEGER,
         active: Sequelize.BOOLEAN,
         quantity: Sequelize.INTEGER,
         price: Sequelize.DECIMAL,
@@ -18,6 +15,16 @@ class SubItem extends Model {
       }
     );
     return this;
+  }
+
+  static associate(models) {
+    this.belongsToMany(models.Product, {
+      through: {
+        model: models.ProductsItems,
+      },
+    });
+
+    this.hasMany(models.ProductsItems, { as: 'subItemsProducts' });
   }
 }
 

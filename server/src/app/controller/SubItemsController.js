@@ -4,16 +4,17 @@ import SubItem from '../models/SubItem';
 class SubItemsController {
   async store(req, res) {
     const { productId } = req.params;
-    console.log(`inserir subitem= ${req.body}`);
     const product = await Product.findByPk(productId);
 
     if (!product) {
       return res.status(401).json('Product not found');
     }
 
-    const subitem = await SubItem.create({
-      productId,
-      ...req.body,
+    const { min, max, mandatory } = req.body;
+    const subitem = await SubItem.create(req.body);
+
+    await subitem.addProduct(product, {
+      through: { min, max, mandatory },
     });
 
     return res.json(subitem);

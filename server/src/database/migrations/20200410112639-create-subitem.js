@@ -14,15 +14,6 @@ module.exports = {
       detail: {
         type: Sequelize.STRING,
       },
-      mandatory: {
-        type: Sequelize.BOOLEAN,
-      },
-      min: {
-        type: Sequelize.INTEGER,
-      },
-      max: {
-        type: Sequelize.INTEGER,
-      },
       active: {
         type: Sequelize.BOOLEAN,
       },
@@ -31,15 +22,6 @@ module.exports = {
       },
       price: {
         type: Sequelize.DECIMAL,
-      },
-      product_id: {
-        type: Sequelize.INTEGER,
-        references: {
-          model: 'products',
-          key: 'id',
-        },
-        onDelete: 'CASCADE',
-        onUpdate: 'CASCADE',
       },
       created_at: {
         type: Sequelize.DATE,

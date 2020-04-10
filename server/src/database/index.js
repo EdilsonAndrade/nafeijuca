@@ -11,6 +11,7 @@ import Client from '../app/models/Client';
 import Order from '../app/models/Order';
 import OrderProduct from '../app/models/OrderProduct';
 import SubItem from '../app/models/SubItem';
+import ProductsItems from '../app/models/ProductsItems';
 
 const models = [
   User,
@@ -23,6 +24,7 @@ const models = [
   Order,
   OrderProduct,
   SubItem,
+  ProductsItems,
 ];
 
 class Database {
