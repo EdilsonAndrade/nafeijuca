@@ -43,8 +43,14 @@ describe('PRODUCTS', () => {
     const fakeStore = await factory.create('Store', {
       active: false,
     });
-    const fakeProduct = await factory.attrs('Product');
-    fakeProduct.storeId = fakeStore.id;
+    const productGroup = await factory.create('ProductGroup', {
+      storeId: fakeStore.id,
+    });
+    const fakeProduct = await factory.attrs('Product', {
+      productGroupId: productGroup.id,
+      storeId: fakeStore.id,
+    });
+
     const response = await request(app)
       .post('/products')
       .set('Authorization', `Bearer ${productUser.generateToken().token}`)
@@ -100,7 +106,10 @@ describe('PRODUCTS', () => {
   });
 
   it('On update product UPDATED', async () => {
-    const product = await factory.create('Product');
+    const productGroup = await factory.create('ProductGroup');
+    const product = await factory.create('Product', {
+      productGroupId: productGroup.id,
+    });
     const productUser = await factory.create('User', {
       isAdmin: true,
     });
@@ -126,7 +135,10 @@ describe('PRODUCTS', () => {
 
   it('On delete product SUCCESS', async () => {
     await truncate();
-    const product = await factory.create('Product');
+    const productGroup = await factory.create('ProductGroup');
+    const product = await factory.create('Product', {
+      productGroupId: productGroup.id,
+    });
     const productUser = await factory.create('User', {
       isAdmin: true,
     });
@@ -164,9 +176,12 @@ describe('PRODUCTS', () => {
   it('on get product one product', async () => {
     await truncate();
     const store = await factory.create('Store');
+    const productGroup = await factory.create('ProductGroup');
     const product = await factory.create('Product', {
+      productGroupId: productGroup.id,
       storeId: store.id,
     });
+
     const productUser = await factory.create('User', {
       isAdmin: true,
     });
@@ -181,8 +196,11 @@ describe('PRODUCTS', () => {
   it('on get all products', async () => {
     await truncate();
     const store = await factory.create('Store');
+    const productGroup = await factory.create('ProductGroup');
+
     await factory.create('Product', {
       storeId: store.id,
+      productGroupId: productGroup.id,
     });
     const productUser = await factory.create('User', {
       isAdmin: true,

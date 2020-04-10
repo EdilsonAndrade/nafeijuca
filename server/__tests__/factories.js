@@ -44,4 +44,11 @@ factory.define('Product', Product, {
   price: faker.commerce.price(),
 });
 
+factory.define('SubItem', Product, {
+  name: faker.commerce.product(),
+  quantity: faker.random.number(),
+  min: faker.random.number(),
+  max: faker.random.number(),
+  price: faker.commerce.price(),
+});
 export default factory;

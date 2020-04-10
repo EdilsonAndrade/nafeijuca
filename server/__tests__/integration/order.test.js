@@ -18,15 +18,20 @@ describe('ORDERS', () => {
       storeId: fakeStore.id,
       confirmed: true,
     });
-
+    const productGroup = await factory.create('ProductGroup', {
+      storeId: fakeStore.id,
+    });
     const product1 = await factory.create('Product', {
       storeId: fakeStore.id,
+      productGroupId: productGroup.id,
     });
     const product2 = await factory.create('Product', {
       storeId: fakeStore.id,
+      productGroupId: productGroup.id,
     });
     const product3 = await factory.create('Product', {
       storeId: fakeStore.id,
+      productGroupId: productGroup.id,
     });
 
     // create an order with array of products
@@ -63,15 +68,20 @@ describe('ORDERS', () => {
       storeId: fakeStore.id,
       confirmed: true,
     });
-
+    const productGroup = await factory.create('ProductGroup', {
+      storeId: fakeStore.id,
+    });
     const product1 = await factory.create('Product', {
       storeId: fakeStore.id,
+      productGroupId: productGroup.id,
     });
     const product2 = await factory.create('Product', {
       storeId: fakeStore.id,
+      productGroupId: productGroup.id,
     });
     const product3 = await factory.create('Product', {
       storeId: fakeStore.id,
+      productGroupId: productGroup.id,
     });
 
     // create an order with array of products

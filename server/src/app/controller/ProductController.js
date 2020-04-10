@@ -2,6 +2,7 @@ import * as Yup from 'yup';
 import Product from '../models/Product';
 import Store from '../models/Store';
 import ProductGroup from '../models/ProductGroup';
+import SubItem from '../models/SubItem';
 
 class ProductController {
   async store(req, res) {
@@ -21,11 +22,9 @@ class ProductController {
     if (!store) {
       return res.status(401).json({ error: 'Store not found' });
     }
-    console.log(`nome do produto = ${req.body.name}`);
     const productExist = await Product.findOne({
       where: { name: req.body.name },
     });
-    console.log(JSON.stringify(productExist));
     if (productExist) {
       return res.status(401).json({ error: 'Product already exists' });
     }
@@ -72,6 +71,9 @@ class ProductController {
         {
           model: Store,
         },
+        {
+          model: SubItem,
+        },
       ],
     });
     if (productId && !product) {
@@ -96,6 +98,9 @@ class ProductController {
         },
         {
           model: Store,
+        },
+        {
+          model: SubItem,
         },
       ],
     });

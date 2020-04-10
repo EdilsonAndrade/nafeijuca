@@ -79,7 +79,7 @@ routes.get('/clients/:id/orders', OrderController.index);
 
 // product subitems
 routes.post('/products/:productId/subitems', SubItemsController.store);
-routes.get('/products/:productId/subitems', SubItemsController.index);
+routes.put('/subitems/:subItemId', SubItemsController.update);
 
 routes.post('/files', upload.single('file'), FileUploadController.store);
 export default routes;

@@ -171,6 +171,7 @@ class UserController {
         'birthDate',
         'isAdmin',
         'systemAdmin',
+        'expiration',
       ],
     });
 
@@ -302,6 +303,8 @@ class UserController {
         'birthDate',
         'isAdmin',
         'systemAdmin',
+        'confirmed',
+        'expiration',
       ],
     });
 

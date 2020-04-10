@@ -5,7 +5,7 @@ import app from '../../src/app';
 import truncate from '../utils/truncate';
 
 describe('User', () => {
-  it('should create a user for a active store and sen email with link confirmation', async () => {
+  it('should create a user for a active store and send email with link confirmation', async () => {
     const fakeUser = await factory.attrs('User');
     const fakerStore = await factory.create('Store', {
       active: true,

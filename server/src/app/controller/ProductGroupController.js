@@ -2,6 +2,7 @@ import * as Yup from 'yup';
 import ProductGroup from '../models/ProductGroup';
 import Store from '../models/Store';
 import Product from '../models/Product';
+import SubItem from '../models/SubItem';
 
 class ProductGroupController {
   async store(req, res) {
@@ -80,6 +81,9 @@ class ProductGroupController {
               {
                 model: Store,
               },
+              {
+                model: SubItem,
+              },
             ],
           },
           {
@@ -102,6 +106,9 @@ class ProductGroupController {
           include: [
             {
               model: Store,
+            },
+            {
+              model: SubItem,
             },
           ],
         },

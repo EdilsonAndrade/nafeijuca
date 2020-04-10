@@ -7,32 +7,39 @@ module.exports = {
         autoIncrement: true,
         allowNull: false,
       },
-      product_id: {
-        type: Sequelize.INTEGER,
-        references: {
-          model: 'products',
-          key: 'id',
-        },
-        onDelete: 'SET NULL',
-        onUpdate: 'SET NULL',
-      },
-      subproduct_id: {
-        type: Sequelize.INTEGER,
-        references: {
-          model: 'products',
-          key: 'id',
-        },
-        onDelete: 'SET NULL',
-        onUpdate: 'SET NULL',
-      },
-      comments: {
+      name: {
         type: Sequelize.STRING,
+        allowNull: false,
+      },
+      detail: {
+        type: Sequelize.STRING,
+      },
+      mandatory: {
+        type: Sequelize.BOOLEAN,
       },
       min: {
         type: Sequelize.INTEGER,
       },
       max: {
         type: Sequelize.INTEGER,
+      },
+      active: {
+        type: Sequelize.BOOLEAN,
+      },
+      quantity: {
+        type: Sequelize.INTEGER,
+      },
+      price: {
+        type: Sequelize.DECIMAL,
+      },
+      product_id: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'products',
+          key: 'id',
+        },
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE',
       },
       created_at: {
         type: Sequelize.DATE,

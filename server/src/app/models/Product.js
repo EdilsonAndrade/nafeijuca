@@ -40,6 +40,7 @@ class Product extends Model {
         foreignKey: 'productId',
       },
     });
+    this.hasMany(models.SubItem, { foreignKey: 'productId' });
   }
 }
 

@@ -10,8 +10,8 @@ class ConfirmationController {
     const cryptr = new Cryptr(process.env.CRYPTKEY);
     const { userId } = req.params;
     const id = cryptr.decrypt(userId);
-    const user = await User.findByPk(id);
 
+    const user = await User.findByPk(id);
     if (!user) {
       return res.status(404).json({ error: 'User not found' });
     }
@@ -24,7 +24,6 @@ class ConfirmationController {
     await user.update({
       confirmed: true,
     });
-
     return res.json(user);
   }
 

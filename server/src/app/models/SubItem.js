@@ -4,21 +4,20 @@ class SubItem extends Model {
   static init(sequelize) {
     super.init(
       {
-        comments: Sequelize.STRING,
+        name: Sequelize.STRING,
+        detail: Sequelize.STRING,
+        mandatory: Sequelize.BOOLEAN,
+        min: Sequelize.INTEGER,
+        max: Sequelize.INTEGER,
+        active: Sequelize.BOOLEAN,
+        quantity: Sequelize.INTEGER,
+        price: Sequelize.DECIMAL,
       },
       {
         sequelize,
       }
     );
     return this;
-  }
-
-  static associate(models) {
-    this.belongsTo(models.Product, { foreignKey: 'productId', as: 'Product' });
-    this.belongsTo(models.Product, {
-      foreignKey: 'subproductId',
-      as: 'ProductSubitem',
-    });
   }
 }
 
