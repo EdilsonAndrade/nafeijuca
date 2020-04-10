@@ -45,7 +45,6 @@ class Product extends Model {
         model: models.ProductsItems,
       },
     });
-    this.hasMany(models.ProductsItems, { as: 'ProductsSubItems' });
   }
 }
 
