@@ -35,8 +35,6 @@ export default function ProductModal({ open, handleClose }) {
           </Button>
         </HeaderContainer>
         <BodyContent>
-          <ProductGroup />
-          <hr />
           <TabContainer>
             <Tab onClick={() => setTab('PRODUTO')} active={tab === 'PRODUTO'}>
               Produto
@@ -49,6 +47,8 @@ export default function ProductModal({ open, handleClose }) {
             </Tab>
           </TabContainer>
           <TabContent active={tab === 'PRODUTO'}>
+            <ProductGroup />
+            <hr />
             <Product />
           </TabContent>
           <TabContent active={tab === 'COMPLEMENTO'}>

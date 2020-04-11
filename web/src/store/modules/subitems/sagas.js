@@ -5,18 +5,20 @@ import * as ProductActions from '../product/actions';
 import * as GroupActions from '../productGroup/actions';
 
 function* saveSubItem({ payload }) {
-  const { id, productId } = payload;
-  if (!id) {
-    yield call(api.post, `/product/${productId}`, payload);
-    toast.success('Complemento cadastrado com sucesso');
-    yield put(GroupActions.loadRequest(payload.storeId));
-    yield put(ProductActions.loadRequest(payload.storeId));
-  } else {
-    yield call(api.post, `/subitems/${id}`, payload);
-    toast.success('Complemento cadastrado com sucesso');
-    yield put(GroupActions.loadRequest(payload.storeId));
-    yield put(ProductActions.loadRequest(payload.storeId));
+  const { productId } = payload;
+  try {
+    if (!payload.SubItem.id) {
+      yield call(api.post, `/products/${productId}/subitems`, payload);
+      toast.success('Complemento cadastrado com sucesso');
+    } else {
+      yield call(api.put, `/subitems/${payload.SubItem.id}`, payload);
+      toast.success('Complemento atualizado com sucesso');
+    }
+  } catch (error) {
+    toast.error(JSON.stringify(error));
   }
+  yield put(GroupActions.loadRequest(payload.storeId));
+  yield put(ProductActions.loadRequest(payload.storeId));
 }
 
-export default all([takeLatest('@subitem/SAVE_REQQUEST', saveSubItem)]);
+export default all([takeLatest('@subitem/SAVE_REQUEST', saveSubItem)]);

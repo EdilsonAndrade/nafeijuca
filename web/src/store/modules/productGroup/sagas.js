@@ -33,7 +33,6 @@ function* saveProductGroup({ payload }) {
 }
 function* getProductsGroups({ payload }) {
   try {
-    console.tron.warn('entrando pra alterar o product');
     const response = yield call(api.get, `/stores/${payload}/productgroups`);
     yield put(loadSuccess(response.data));
   } catch (err) {

@@ -9,9 +9,9 @@ class SubItemsController {
     if (!product) {
       return res.status(401).json('Product not found');
     }
-
-    const { min, max, mandatory } = req.body;
-    const subitem = await SubItem.create(req.body);
+    const subItemToSave = req.body.SubItem;
+    const { min, max, mandatory } = subItemToSave.ProductsItems;
+    const subitem = await SubItem.create(subItemToSave);
 
     await subitem.addProduct(product, {
       through: { min, max, mandatory },
@@ -22,14 +22,26 @@ class SubItemsController {
 
   async update(req, res) {
     const { subItemId } = req.params;
+    const { id } = req.body;
+    console.log(`cheguei aqui com ${req.body}`);
+    const product = await Product.findByPk(id);
 
+    if (!product) {
+      return res.status(401).json('Product not found');
+    }
     const subItem = await SubItem.findByPk(subItemId);
 
     if (!subItem) {
       return res.json({ error: 'Sub item not found' });
     }
-
-    const updatedSubItem = await subitem.update(req.body);
+    const subItemToUpdate = req.body.SubItem;
+    const { min, max, mandatory } = subItemToUpdate.ProductsItems;
+    // TODO
+    // https://sequelize.readthedocs.io/en/latest/docs/associations/
+    const updatedSubItem = await subItem.update(subItemToUpdate);
+    await subitem.setProduct(product, {
+      through: { min, max, mandatory },
+    });
     return res.json(updatedSubItem);
   }
 }

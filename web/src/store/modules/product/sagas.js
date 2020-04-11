@@ -8,7 +8,6 @@ function* saveProduct({ payload }) {
   try {
     const { id } = payload;
     if (!Number(id)) {
-      console.tron.warn('vou salvar');
       yield call(api.post, '/products', payload);
       const products = yield call(
         api.get,

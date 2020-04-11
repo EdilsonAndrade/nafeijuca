@@ -2,7 +2,7 @@ import styled, { css } from 'styled-components';
 
 export const InputField = styled.input`
   display: ${props => (props.hidden ? 'none' : 'block')};
-
+  width: ${props => (props.width ? props.width : '')};
   ${props =>
     props.hidden &&
     css`

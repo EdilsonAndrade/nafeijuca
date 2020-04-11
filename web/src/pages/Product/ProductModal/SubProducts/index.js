@@ -4,56 +4,75 @@ import { toast } from 'react-toastify';
 import { Form } from '@unform/web';
 import * as Yup from 'yup';
 import Switch from '~/components/Switch';
-
+import Grid from '~/components/Grid';
 import Button from '~/components/Button';
 import Input from '~/components/Input';
 import * as ProductGroupActions from '~/store/modules/productGroup/actions';
-import { saveRequest } from '~/store/modules/product/actions';
+import { saveRequest } from '~/store/modules/subitems/actions';
 import api from '~/services/api';
 import InputNumber from '~/components/InputNumber';
+import Modal from '~/components/Modal';
+
+const columns = [
+  {
+    name: 'id',
+    label: 'Id',
+  },
+  {
+    name: 'name',
+    label: 'Name',
+  },
+  {
+    name: 'detail',
+    label: 'Detalhe',
+  },
+  {
+    name: 'mandatory',
+    label: 'Obrigatório',
+  },
+  {
+    name: 'min',
+    label: 'Minimo',
+  },
+  {
+    name: 'max',
+    label: 'Máximo',
+  },
+  {
+    name: 'price',
+    label: 'Preço',
+  },
+];
 
 export default function SubProducts() {
   const dispatch = useDispatch();
-  const formRefProduct = useRef(null);
+  const [open, setOpen] = useState(false);
+  const formSubItemRef = useRef(null);
   const user = useSelector(state => state.user);
-
+  const [subItems, setSubItems] = useState();
   const product = useSelector(state => state.product);
-
+  const [subItemId, setSubItemId] = useState(null);
   useEffect(() => {
     setTimeout(() => {
-      if (product.Store && formRefProduct.current) {
-        formRefProduct.current.setData(product);
-      }
+      formSubItemRef.current.setData(product);
     }, 50);
+    setSubItems(product.SubItems);
   }, [product]);
 
-  const handleSubmitProduct = async data => {
+  const handleSubmiteSubItem = async data => {
     try {
-      const schema = Yup.object().shape({
-        name: Yup.string().required('Produto obrigatório'),
-        description: Yup.string().required('Descrição obrigatória'),
-        equivalentAmount: Yup.string().required(
-          'Total equivalente obrigatório'
-        ),
-        price: Yup.string().required('Preço obrigatório'),
-        quantity: Yup.string().required('Quantidade obrigatório'),
-        pgId: Yup.string().required('Grupo é obrigatório'),
-      });
-
-      await schema.validate(data, {
-        abortEarly: false,
-      });
-      if (data.promotionPrice === '') {
-        data.promotionPrice = null;
+      if (data.SubItem.name === '') {
+        toast.error('Nome do sub item obrigatório!');
+      } else {
+        dispatch(saveRequest({ ...data, productId: data.id }));
       }
-      dispatch(saveRequest({ ...data, productGroupId: data.pgId }));
     } catch (err) {
       const validationErros = {};
       const { response } = err;
       if (response) {
         const { error } = response.data;
         if (error.includes('already')) {
-          toast.error('Produto com este nome já existe');
+          toast.error('Complemento com este nome já existe');
         } else {
           toast.error(error);
         }
@@ -61,7 +80,7 @@ export default function SubProducts() {
         err.inner.forEach(error => {
           validationErros[error.path] = error.message;
         });
-        formRefProduct.current.setErrors(validationErros);
+        formSubItemRef.current.setErrors(validationErros);
       } else {
         toast.error('Ocorreu um erro no servidor, tenta mais tarde');
         toast.error(err);
@@ -69,28 +88,73 @@ export default function SubProducts() {
     }
   };
 
+  const rowDelete = (rowsDeleted, data) => {
+    const { index } = rowsDeleted.data[0];
+    const selectedSubItem = subItems[index];
+    setSubItemId(selectedSubItem);
+    setOpen(true);
+    return false;
+  };
+  const handleConfirmDelete = () => {
+    // dispatch(deleteRequest(subItemId));
+    formSubItemRef.current.reset();
+    setOpen(false);
+  };
+  const handleRowSelect = (currentRowsSelected, allRowsSelected) => {
+    const { index } = currentRowsSelected[0];
+    const selectedSubItem = subItems[index];
+    console.tron.warn(JSON.stringify(selectedSubItem));
+    if (allRowsSelected.length > 0) {
+      formSubItemRef.current.setData({
+        SubItem: {
+          ...selectedSubItem,
+        },
+        // ...selectedSubItem,
+        // avatarUrl: selectedSubItem.useravatar
+        //   ? selectedSubItem.useravatar.url
+        //   : null,
+        // avatarId: selectedSubItem.useravatar
+        //   ? selectedSubItem.useravatar.id
+        //   : null,
+      });
+    } else {
+      formSubItemRef.current.reset();
+    }
+  };
   return (
-    <Form ref={formRefProduct} id="productForm" onSubmit={handleSubmitProduct}>
+    <Form ref={formSubItemRef} id="productForm" onSubmit={handleSubmiteSubItem}>
       <Input hidden name="id" />
+      <Input hidden name="storeId" />
       <div>
-        <Input name="storeId" hidden value={user.store.id} />
+        <Input name="SubItem.id" hidden />
       </div>
       <div>
         <div>
-          <Input name="name" label="Nome" />
+          <Input width="310px" name="SubItem.name" label="Nome" />
         </div>
         <div>
-          <Input name="description" label="Detalhe" />
+          <Input width="320px" name="SubItem.detail" label="Detalhe" />
         </div>
         <div>
-          <Input name="min" label="Minimo" type="number" />
+          <Input
+            width="80px"
+            name="SubItem.ProductsItems.min"
+            label="Minimo"
+            type="number"
+          />
         </div>
         <div>
-          <Input name="max" label="Máximo" type="number" />
+          <Input
+            width="80px"
+            name="SubItem.ProductsItems.max"
+            label="Máximo"
+            type="number"
+          />
         </div>
         <div>
           <InputNumber
-            name="price"
+            width="120px"
+            name="SubItem.price"
             label="Preço"
             decimalSeparator=","
             decimalScale={2}
@@ -100,12 +164,41 @@ export default function SubProducts() {
           />
         </div>
         <div>
-          <Input name="quantity" label="Quantidade em estoque" type="number" />
+          <Input
+            name="SubItem.quantity"
+            label="Quantidade em estoque"
+            type="number"
+          />
         </div>
         <div>
-          <Switch name="active" label="Ativar?" />
+          <Switch name="SubItem.active" label="Ativar?" />
+        </div>
+        <div>
+          <Switch
+            name="SubItem.ProductsItems.mandatory"
+            label="Obrigatório ?"
+          />
+        </div>
+        <div>
+          <Button width="100px" buttonType="submit">
+            Salvar
+          </Button>
         </div>
       </div>
+
+      <Grid
+        data={subItems}
+        columns={columns}
+        handleRowSelect={handleRowSelect}
+        handleRowDelete={rowDelete}
+      />
+      <Modal
+        message="Deseja excluir este complemento?"
+        open={open}
+        handleClose={() => setOpen(false)}
+        dialog
+        handleConfirm={handleConfirmDelete}
+      />
     </Form>
   );
 }

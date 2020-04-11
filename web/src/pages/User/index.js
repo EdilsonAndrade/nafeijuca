@@ -57,7 +57,6 @@ export default function Users() {
 
   async function handleSubmit(formData) {
     try {
-      console.tron.warn(JSON.stringify(formData));
       let data = {};
       if (!user.systemAdmin) {
         data = { ...formData, storeId: user.store.id };

@@ -7,7 +7,7 @@ export const InputField = styled(NumberFormat)`
     css`
       width: '0px';
     `}
-
+    width: ${props => (props.width ? props.width : '')};
   padding: 13px 8px;
   margin: 15px 0;
 

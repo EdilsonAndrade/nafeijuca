@@ -4,6 +4,7 @@ import load from './load/reducer';
 import productGroup from './productGroup/reducer';
 import product from './product/reducer';
 import store from './store/reducer';
+import subitem from './subitems/reducer';
 
 export default combineReducers({
   user,
@@ -11,4 +12,5 @@ export default combineReducers({
   productGroup,
   product,
   store,
+  subitem,
 });
