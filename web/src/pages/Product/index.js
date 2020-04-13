@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Form } from '@unform/web';
 import {
@@ -19,24 +19,34 @@ import InputNumber from '~/components/InputNumber';
 
 export default function Product() {
   const productGroups = useSelector(state => state.productGroup.productGroups);
-
+  const [activesSubMenus, setActiveSubMenus] = useState();
   const user = useSelector(state => state.user);
   const dispatch = useDispatch();
   const productRef = useRef(null);
   const [openModal, setOpenModal] = useState(false);
-  const [activesSubMenus, setActiveSubMenus] = useState([
-    {
-      id: '1',
-      status: true,
-    },
-    {
-      id: '2',
-      status: false,
-    },
-  ]);
+
   useEffect(() => {
     dispatch(ProductGroupActions.loadRequest(user.store.id));
   }, [dispatch, user.store.id]);
+
+  useEffect(() => {
+    if (productGroups) {
+      const activesMenus = [];
+
+      productGroups.forEach(g => {
+        const products = g.Products;
+        products.forEach(p => {
+          activesMenus.push({
+            id: p.id,
+            status: true,
+          });
+        });
+      });
+
+      console.tron.warn(activesMenus);
+      setActiveSubMenus(activesMenus);
+    }
+  }, [productGroups]);
 
   const handleEditProductGroup = productGroup => {
     dispatch(ProductGroupActions.editSuccess(productGroup));
@@ -63,19 +73,22 @@ export default function Product() {
     return status;
   };
 
-  const renderMandatoryChildren = subItems => {
+  const renderMandatoryChildren = (subItems, productId) => {
     const mandatoryItems = subItems.filter(
       x => x.ProductsItems.mandatory === true
     );
-    console.tron.warn(`tenho mandatory = ${JSON.stringify(mandatoryItems)}`);
-    if (mandatoryItems) {
-      let count = 0;
-      return mandatoryItems.map(s => {
-        count += 1;
-        return (
-          <ProductChildren key={s.id} id={s.Id} active="true">
-            {count === 1 ? <strong>Escolha um complemento</strong> : ''}
 
+    if (mandatoryItems && mandatoryItems.length > 0) {
+      return (
+        <ProductChildren
+          id={productId}
+          active={
+            activesSubMenus &&
+            activesSubMenus.find(x => x.id === productId && x.status === true)
+          }
+        >
+          <strong>Escolha um complemento</strong>
+          {mandatoryItems.map(s => (
             <div>
               <div>{s.name}</div>
               <div>
@@ -84,38 +97,41 @@ export default function Product() {
                 <span>{s.active ? 'Pausar' : 'Pausado'}</span>
               </div>
             </div>
-          </ProductChildren>
-        );
-      });
+          ))}
+        </ProductChildren>
+      );
     }
   };
-  const renderNonMandatoryChildren = subItems => {
+
+  const renderNonMandatoryChildren = (subItems, productId) => {
     const nonMandatoryItems = subItems.filter(
       x => x.ProductsItems.mandatory === false
     );
-    let count = 0;
-    return nonMandatoryItems.map(s => {
-      count += 1;
+    if (nonMandatoryItems && nonMandatoryItems.length > 0) {
       return (
-        <ProductChildren key={s.id} id={s.Id} active="true">
-          {count === 1 ? (
-            <strong>Deseja adicionar algum complemento ?</strong>
-          ) : (
-            ''
-          )}
-
-          <div>
-            <div>{s.name}</div>
+        <ProductChildren
+          id={productId}
+          active={
+            activesSubMenus &&
+            activesSubMenus.find(x => x.id === productId && x.status === true)
+          }
+        >
+          <strong>Deseja adicionar algum complemento</strong>
+          {nonMandatoryItems.map(s => (
             <div>
-              <InputNumber name="price" />
-              <PauseComponent size={22} />
-              <span>{s.active ? 'Pausar' : 'Pausado'}</span>
+              <div>{s.name}</div>
+              <div>
+                <InputNumber name="price" />
+                <PauseComponent size={22} />
+                <span>{s.active ? 'Pausar' : 'Pausado'}</span>
+              </div>
             </div>
-          </div>
+          ))}
         </ProductChildren>
       );
-    });
+    }
   };
+
   const renderProductGroupAndProduct = () => {
     return productGroups.map(pg => {
       return (
@@ -186,22 +202,23 @@ export default function Product() {
                     >
                       Editar
                     </Button>
-                    {activesSubMenus.find(
-                      x => x.id === '2' && x.status === true
+                    {activesSubMenus &&
+                    activesSubMenus.find(
+                      x => x.id === product.id && x.status === true
                     ) ? (
                       <ArrowDown
-                        onClick={() => handleActiveDeactiveMenus('2')}
+                        onClick={() => handleActiveDeactiveMenus(product.id)}
                       />
                     ) : (
                       <ArrowLeft
-                        onClick={() => handleActiveDeactiveMenus('2')}
+                        onClick={() => handleActiveDeactiveMenus(product.id)}
                       />
                     )}
                   </div>
                 </div>
               </div>
-              {renderMandatoryChildren(product.SubItems)}
-              {renderNonMandatoryChildren(product.SubItems)}
+              {renderMandatoryChildren(product.SubItems, product.id)}
+              {renderNonMandatoryChildren(product.SubItems, product.id)}
             </Products>
           ))}
         </div>
@@ -236,116 +253,6 @@ export default function Product() {
       </CategoryContainer>
       <ProductModal open={openModal} handleClose={() => setOpenModal(false)} />
       <Form ref={productRef}>{renderProductGroupAndProduct()}</Form>
-      {/* <Products>
-        <div>
-          <span>Feijoada Completa 2 Pessoas</span>
-          <div>
-            <div>
-              <input type="text" />
-              <PauseComponent size={22} />
-              <span>Pausado</span>
-            </div>
-            <div>
-              <span>Duplicar</span>
-              <span>Editar</span>
-              {activesSubMenus.find(x => x.id === '1' && x.status === true) ? (
-                <ArrowDown onClick={() => handleActiveDeactiveMenus('1')} />
-              ) : (
-                <ArrowLeft onClick={() => handleActiveDeactiveMenus('1')} />
-              )}
-            </div>
-          </div>
-        </div>
-        <ProductChildren
-          id="1"
-          active={activesSubMenus.find(x => x.id === '1' && x.status === true)}
-        >
-          <strong>Escolha um complemento</strong>
-          <div>
-            <div>Couve - Serve 1 Pessoa</div>
-            <div>
-              <input type="text" />
-              <PauseComponent size={22} />
-              <span>Pausado</span>
-            </div>
-          </div>
-          <div>
-            <div>Farofa - Serve 1 Pessoa</div>
-            <div>
-              <input type="text" />
-              <PauseComponent size={22} />
-              <span>Pausado</span>
-            </div>
-          </div>
-          <div>
-            <div>Torresmo - Serve 1 Pessoa</div>
-            <div>
-              <input type="text" />
-              <PauseComponent size={22} />
-              <span>Pausado</span>
-            </div>
-          </div>
-          <div>
-            <div>Banana a milanesa - Uma banana (dividida ao meio)</div>
-            <div>
-              <input type="text" />
-              <PauseComponent size={22} />
-              <span>Pausar</span>
-            </div>
-          </div>
-        </ProductChildren>
-      </Products>
-      <Products>
-        <div>
-          <span>Feijoada Completa 1 Pessoa</span>
-          <div>
-            <div>
-              <input type="text" />
-              <PauseComponent size={22} />
-              <span>Pausado</span>
-            </div>
-            <div>
-              <span>Duplicar</span>
-              <span>Editar</span>
-              {activesSubMenus.find(x => x.id === '2' && x.status === true) ? (
-                <ArrowDown onClick={() => handleActiveDeactiveMenus('2')} />
-              ) : (
-                <ArrowLeft onClick={() => handleActiveDeactiveMenus('2')} />
-              )}
-            </div>
-          </div>
-        </div>
-        <ProductChildren
-          id="2"
-          active={activesSubMenus.find(x => x.id === '2' && x.status === true)}
-        >
-          <strong>Escolha um complemento</strong>
-          <div>
-            <div>Molho de pimenta</div>
-            <div>
-              <input type="text" />
-              <PauseComponent size={22} />
-              <span>Pausado</span>
-            </div>
-          </div>
-          <div>
-            <div>Farofa - Servem 2 Pessoas</div>
-            <div>
-              <input type="text" />
-              <PauseComponent size={22} />
-              <span>Pausado</span>
-            </div>
-          </div>
-          <div>
-            <div>Torresmo - Serve 2 Pessoas</div>
-            <div>
-              <input type="text" />
-              <PauseComponent size={22} />
-              <span>Pausado</span>
-            </div>
-          </div>
-        </ProductChildren>
-      </Products> */}
     </Container>
   );
 }
