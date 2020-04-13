@@ -17,8 +17,9 @@ function* saveSubItem({ payload }) {
   } catch (error) {
     toast.error(JSON.stringify(error));
   }
-  yield put(GroupActions.loadRequest(payload.storeId));
-  yield put(ProductActions.loadRequest(payload.storeId));
+  // yield put(GroupActions.loadRequest(payload.storeId));
+  // yield put(ProductActions.loadRequest(payload.storeId));
+  yield put(ProductActions.editRequest(productId));
 }
 
 export default all([takeLatest('@subitem/SAVE_REQUEST', saveSubItem)]);

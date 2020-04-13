@@ -5,6 +5,12 @@ export const saveRequest = data => {
   };
 };
 
+export const editRequest = productId => {
+  return {
+    type: '@product/EDIT_REQUEST',
+    payload: productId,
+  };
+};
 export const editSuccess = data => {
   return {
     type: '@product/EDIT_SUCCESS',

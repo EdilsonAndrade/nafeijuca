@@ -62,6 +62,60 @@ export default function Product() {
     setActiveSubMenus(actsSub);
     return status;
   };
+
+  const renderMandatoryChildren = subItems => {
+    const mandatoryItems = subItems.filter(
+      x => x.ProductsItems.mandatory === true
+    );
+    console.tron.warn(`tenho mandatory = ${JSON.stringify(mandatoryItems)}`);
+    if (mandatoryItems) {
+      let count = 0;
+      return mandatoryItems.map(s => {
+        count += 1;
+        return (
+          <ProductChildren key={s.id} id={s.Id} active="true">
+            {count === 1 ? <strong>Escolha um complemento</strong> : ''}
+
+            <div>
+              <div>{s.name}</div>
+              <div>
+                <InputNumber name="price" />
+                <PauseComponent size={22} />
+                <span>{s.active ? 'Pausar' : 'Pausado'}</span>
+              </div>
+            </div>
+          </ProductChildren>
+        );
+      });
+    }
+  };
+  const renderNonMandatoryChildren = subItems => {
+    const nonMandatoryItems = subItems.filter(
+      x => x.ProductsItems.mandatory === false
+    );
+    let count = 0;
+    return nonMandatoryItems.map(s => {
+      count += 1;
+      return (
+        <ProductChildren key={s.id} id={s.Id} active="true">
+          {count === 1 ? (
+            <strong>Deseja adicionar algum complemento ?</strong>
+          ) : (
+            ''
+          )}
+
+          <div>
+            <div>{s.name}</div>
+            <div>
+              <InputNumber name="price" />
+              <PauseComponent size={22} />
+              <span>{s.active ? 'Pausar' : 'Pausado'}</span>
+            </div>
+          </div>
+        </ProductChildren>
+      );
+    });
+  };
   const renderProductGroupAndProduct = () => {
     return productGroups.map(pg => {
       return (
@@ -132,9 +186,22 @@ export default function Product() {
                     >
                       Editar
                     </Button>
+                    {activesSubMenus.find(
+                      x => x.id === '2' && x.status === true
+                    ) ? (
+                      <ArrowDown
+                        onClick={() => handleActiveDeactiveMenus('2')}
+                      />
+                    ) : (
+                      <ArrowLeft
+                        onClick={() => handleActiveDeactiveMenus('2')}
+                      />
+                    )}
                   </div>
                 </div>
               </div>
+              {renderMandatoryChildren(product.SubItems)}
+              {renderNonMandatoryChildren(product.SubItems)}
             </Products>
           ))}
         </div>
@@ -169,7 +236,7 @@ export default function Product() {
       </CategoryContainer>
       <ProductModal open={openModal} handleClose={() => setOpenModal(false)} />
       <Form ref={productRef}>{renderProductGroupAndProduct()}</Form>
-      <Products>
+      {/* <Products>
         <div>
           <span>Feijoada Completa 2 Pessoas</span>
           <div>
@@ -278,7 +345,7 @@ export default function Product() {
             </div>
           </div>
         </ProductChildren>
-      </Products>
+      </Products> */}
     </Container>
   );
 }

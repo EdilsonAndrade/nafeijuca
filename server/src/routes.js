@@ -65,6 +65,7 @@ routes.post('/products', isAdmin, ProductController.store);
 routes.put('/products/:productId', isAdmin, ProductController.update);
 routes.delete('/products/:productId', isAdmin, ProductController.delete);
 routes.get('/stores/:storeId/products/:productId', ProductController.index);
+routes.get('/products/:productId', ProductController.index);
 routes.get('/stores/:storeId/products', ProductController.index);
 
 // clients

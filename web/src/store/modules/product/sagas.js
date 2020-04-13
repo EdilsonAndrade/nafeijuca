@@ -47,7 +47,16 @@ function* saveProduct({ payload }) {
 function* getProducts({ payload }) {
   try {
     const response = yield call(api.get, `/stores/${payload}/products`);
+
     yield put(loadSuccess(response.data));
+  } catch (err) {
+    toast.error(err);
+  }
+}
+function* getOneProduct({ payload }) {
+  try {
+    const response = yield call(api.get, `/products/${payload}`);
+    yield put(editSuccess(response.data));
   } catch (err) {
     toast.error(err);
   }
@@ -55,4 +64,5 @@ function* getProducts({ payload }) {
 export default all([
   takeLatest('@product/SAVE_REQUEST', saveProduct),
   takeLatest('@product/LOAD_REQUEST', getProducts),
+  takeLatest('@product/EDIT_REQUEST', getOneProduct),
 ]);

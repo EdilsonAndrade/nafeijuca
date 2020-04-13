@@ -1,5 +1,6 @@
 import Product from '../models/Product';
 import SubItem from '../models/SubItem';
+import ProductsItems from '../models/ProductsItems';
 
 class SubItemsController {
   async store(req, res) {
@@ -23,7 +24,6 @@ class SubItemsController {
   async update(req, res) {
     const { subItemId } = req.params;
     const { id } = req.body;
-    console.log(`cheguei aqui com ${req.body}`);
     const product = await Product.findByPk(id);
 
     if (!product) {
@@ -36,12 +36,13 @@ class SubItemsController {
     }
     const subItemToUpdate = req.body.SubItem;
     const { min, max, mandatory } = subItemToUpdate.ProductsItems;
-    // TODO
-    // https://sequelize.readthedocs.io/en/latest/docs/associations/
+
     const updatedSubItem = await subItem.update(subItemToUpdate);
-    await subitem.setProduct(product, {
-      through: { min, max, mandatory },
+    const productItems = await ProductsItems.findOne({
+      productId: id,
+      subItemId: updatedSubItem.id,
     });
+    await productItems.update({ min, max, mandatory });
     return res.json(updatedSubItem);
   }
 }

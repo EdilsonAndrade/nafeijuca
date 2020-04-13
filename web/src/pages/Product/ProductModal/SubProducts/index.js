@@ -103,19 +103,11 @@ export default function SubProducts() {
   const handleRowSelect = (currentRowsSelected, allRowsSelected) => {
     const { index } = currentRowsSelected[0];
     const selectedSubItem = subItems[index];
-    console.tron.warn(JSON.stringify(selectedSubItem));
     if (allRowsSelected.length > 0) {
       formSubItemRef.current.setData({
         SubItem: {
           ...selectedSubItem,
         },
-        // ...selectedSubItem,
-        // avatarUrl: selectedSubItem.useravatar
-        //   ? selectedSubItem.useravatar.url
-        //   : null,
-        // avatarId: selectedSubItem.useravatar
-        //   ? selectedSubItem.useravatar.id
-        //   : null,
       });
     } else {
       formSubItemRef.current.reset();
