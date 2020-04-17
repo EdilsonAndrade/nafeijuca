@@ -16,13 +16,17 @@ export const FadeContainer = styled(Fade)`
   > div {
     display: flex;
     flex-direction: column;
-  }
-  span {
-    display: flex;
-    flex-direction: row;
+    align-items: center;
     justify-content: center;
-    margin-top: 20px;
   }
+`;
+
+export const ButtonContents = styled.span`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 300px;
+  margin: 20px auto;
 `;
 export const Title = styled.strong`
   font-size: 45px;

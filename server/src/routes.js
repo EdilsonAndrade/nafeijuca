@@ -24,8 +24,6 @@ routes.put('/confirmation', ConfirmationController.update);
 routes.get('/users/:userId/confirmation', ConfirmationController.index);
 routes.post('/sessions', SessionController.store);
 
-routes.get('/stores/:storeId/productgroups', ProductGroupController.index);
-
 routes.use(authMiddleware, confirmedMiddleware);
 
 routes.put('/users/:userId', UserController.update);
@@ -59,7 +57,7 @@ routes.delete(
   isAdmin,
   ProductGroupController.delete
 );
-
+routes.get('/stores/:storeId/productgroups', ProductGroupController.index);
 // products routes
 routes.post('/products', isAdmin, ProductController.store);
 routes.put('/products/:productId', isAdmin, ProductController.update);
@@ -81,6 +79,7 @@ routes.get('/clients/:id/orders', OrderController.index);
 // product subitems
 routes.post('/products/:productId/subitems', SubItemsController.store);
 routes.put('/subitems/:subItemId', SubItemsController.update);
+routes.delete('/subitems/:subItemId', SubItemsController.delete);
 
 routes.post('/files', upload.single('file'), FileUploadController.store);
 export default routes;

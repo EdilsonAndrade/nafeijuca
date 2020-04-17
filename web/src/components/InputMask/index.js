@@ -36,5 +36,9 @@ export default function InputMaskForm({ name, label, ...rest }) {
 InputMaskForm.propTypes = {
   name: PropTypes.string.isRequired,
   mask: PropTypes.string.isRequired,
-  label: PropTypes.string.isRequired,
+  label: PropTypes.string,
+};
+
+InputMaskForm.defaultProps = {
+  label: '',
 };

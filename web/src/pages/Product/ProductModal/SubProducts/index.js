@@ -7,9 +7,7 @@ import Switch from '~/components/Switch';
 import Grid from '~/components/Grid';
 import Button from '~/components/Button';
 import Input from '~/components/Input';
-import * as ProductGroupActions from '~/store/modules/productGroup/actions';
-import { saveRequest } from '~/store/modules/subitems/actions';
-import api from '~/services/api';
+import { saveRequest, deleteRequest } from '~/store/modules/subitems/actions';
 import InputNumber from '~/components/InputNumber';
 import Modal from '~/components/Modal';
 
@@ -52,6 +50,7 @@ export default function SubProducts() {
   const [subItems, setSubItems] = useState();
   const product = useSelector(state => state.product);
   const [subItemId, setSubItemId] = useState(null);
+
   useEffect(() => {
     setTimeout(() => {
       formSubItemRef.current.setData(product);
@@ -91,12 +90,13 @@ export default function SubProducts() {
   const rowDelete = (rowsDeleted, data) => {
     const { index } = rowsDeleted.data[0];
     const selectedSubItem = subItems[index];
-    setSubItemId(selectedSubItem);
+
+    setSubItemId({ ...selectedSubItem, storeId: user.store.id });
     setOpen(true);
     return false;
   };
   const handleConfirmDelete = () => {
-    // dispatch(deleteRequest(subItemId));
+    dispatch(deleteRequest(subItemId));
     formSubItemRef.current.reset();
     setOpen(false);
   };

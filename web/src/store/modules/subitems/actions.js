@@ -11,3 +11,10 @@ export const saveSuccess = data => {
     payload: data,
   };
 };
+
+export const deleteRequest = data => {
+  return {
+    type: '@subitem/DELETE_REQUEST',
+    payload: data,
+  };
+};

@@ -17,9 +17,21 @@ function* saveSubItem({ payload }) {
   } catch (error) {
     toast.error(JSON.stringify(error));
   }
-  // yield put(GroupActions.loadRequest(payload.storeId));
-  // yield put(ProductActions.loadRequest(payload.storeId));
+  yield put(GroupActions.loadRequest(payload.storeId));
   yield put(ProductActions.editRequest(productId));
 }
 
-export default all([takeLatest('@subitem/SAVE_REQUEST', saveSubItem)]);
+function* deleteSubItem({ payload }) {
+  console.tron.warn(JSON.stringify(payload));
+  const { ProductId } = payload.ProductsItems;
+
+  toast.success('Sub item excluido com sucesso!');
+  yield call(api.delete, `/subitems/${payload.id}`);
+  yield put(ProductActions.editRequest(ProductId));
+  yield put(GroupActions.loadRequest(payload.storeId));
+}
+
+export default all([
+  takeLatest('@subitem/SAVE_REQUEST', saveSubItem),
+  takeLatest('@subitem/DELETE_REQUEST', deleteSubItem),
+]);

@@ -2,7 +2,13 @@ import React from 'react';
 
 import Backdrop from '@material-ui/core/Backdrop';
 
-import { ModalContainer, FadeContainer, Title, Message } from './styles';
+import {
+  ModalContainer,
+  FadeContainer,
+  ButtonContents,
+  Title,
+  Message,
+} from './styles';
 import Button from '../Button';
 
 export default function Modal({
@@ -24,7 +30,7 @@ export default function Modal({
         <div>
           {title ? <Title>{title}</Title> : ''}
           <Message id="transition-modal-description">{message}</Message>
-          <span>
+          <ButtonContents>
             <Button
               icon="delete"
               buttonType="button"
@@ -41,7 +47,7 @@ export default function Modal({
             >
               SIM
             </Button>
-          </span>
+          </ButtonContents>
         </div>
       </FadeContainer>
     </ModalContainer>

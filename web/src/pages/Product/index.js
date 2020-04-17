@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Form } from '@unform/web';
+import { toast } from 'react-toastify';
 import {
   Container,
   CategoryContainer,
@@ -16,6 +17,7 @@ import ProductModal from './ProductModal';
 import * as ProductGroupActions from '~/store/modules/productGroup/actions';
 import * as ProductActions from '~/store/modules/product/actions';
 import InputNumber from '~/components/InputNumber';
+import { formatPrice } from '~/services/formatDecimal';
 
 export default function Product() {
   const productGroups = useSelector(state => state.productGroup.productGroups);
@@ -26,8 +28,12 @@ export default function Product() {
   const [openModal, setOpenModal] = useState(false);
 
   useEffect(() => {
-    dispatch(ProductGroupActions.loadRequest(user.store.id));
-  }, [dispatch, user.store.id]);
+    if (user.store !== null) {
+      dispatch(ProductGroupActions.loadRequest(user.store.id));
+    } else {
+      toast.warn('Usuário não associado à alguma loja');
+    }
+  }, [dispatch, user.store]);
 
   useEffect(() => {
     if (productGroups) {
@@ -43,7 +49,6 @@ export default function Product() {
         });
       });
 
-      console.tron.warn(activesMenus);
       setActiveSubMenus(activesMenus);
     }
   }, [productGroups]);
@@ -58,6 +63,7 @@ export default function Product() {
     dispatch(ProductActions.editSuccess(productToEdit));
     setOpenModal(true);
   };
+
   const handleActiveDeactiveMenus = id => {
     let status = false;
     activesSubMenus.forEach(item => {
@@ -71,6 +77,15 @@ export default function Product() {
     }));
     setActiveSubMenus(actsSub);
     return status;
+  };
+
+  const handleChangePrice = (e, productId) => {
+    if (e.key === 'Enter') {
+      console.tron.warn(e.target.value);
+      console.tron.warn(productId);
+    } else {
+      toast.warn('Para salvar, aperte enter');
+    }
   };
 
   const renderMandatoryChildren = (subItems, productId) => {
@@ -89,10 +104,19 @@ export default function Product() {
         >
           <strong>Escolha um complemento</strong>
           {mandatoryItems.map(s => (
-            <div>
+            <div key={s.id}>
               <div>{s.name}</div>
               <div>
-                <InputNumber name="price" />
+                <InputNumber
+                  name="price"
+                  decimalSeparator=","
+                  decimalScale={2}
+                  allowNegative={false}
+                  prefix="R$"
+                  fixedDecimalScale
+                  value={s.price}
+                  onKeyUp={e => handleChangePrice(e, productId)}
+                />
                 <PauseComponent size={22} />
                 <span>{s.active ? 'Pausar' : 'Pausado'}</span>
               </div>
@@ -118,10 +142,19 @@ export default function Product() {
         >
           <strong>Deseja adicionar algum complemento</strong>
           {nonMandatoryItems.map(s => (
-            <div>
+            <div key={s.id}>
               <div>{s.name}</div>
               <div>
-                <InputNumber name="price" />
+                <InputNumber
+                  name="price"
+                  decimalSeparator=","
+                  decimalScale={2}
+                  allowNegative={false}
+                  prefix="R$"
+                  fixedDecimalScale
+                  value={s.price}
+                  onKeyUp={e => handleChangePrice(e, productId)}
+                />
                 <PauseComponent size={22} />
                 <span>{s.active ? 'Pausar' : 'Pausado'}</span>
               </div>
@@ -202,17 +235,21 @@ export default function Product() {
                     >
                       Editar
                     </Button>
-                    {activesSubMenus &&
-                    activesSubMenus.find(
-                      x => x.id === product.id && x.status === true
-                    ) ? (
-                      <ArrowDown
-                        onClick={() => handleActiveDeactiveMenus(product.id)}
-                      />
+                    {product.SubItems.length > 0 ? (
+                      activesSubMenus &&
+                      activesSubMenus.find(
+                        x => x.id === product.id && x.status === true
+                      ) ? (
+                        <ArrowDown
+                          onClick={() => handleActiveDeactiveMenus(product.id)}
+                        />
+                      ) : (
+                        <ArrowLeft
+                          onClick={() => handleActiveDeactiveMenus(product.id)}
+                        />
+                      )
                     ) : (
-                      <ArrowLeft
-                        onClick={() => handleActiveDeactiveMenus(product.id)}
-                      />
+                      ''
                     )}
                   </div>
                 </div>
@@ -231,7 +268,8 @@ export default function Product() {
     dispatch(ProductActions.editSuccess(null));
     setOpenModal(true);
   };
-  return (
+
+  return user.store !== null ? (
     <Container>
       <strong>Cardápio</strong>
       <h2>
@@ -254,5 +292,7 @@ export default function Product() {
       <ProductModal open={openModal} handleClose={() => setOpenModal(false)} />
       <Form ref={productRef}>{renderProductGroupAndProduct()}</Form>
     </Container>
+  ) : (
+    ''
   );
 }

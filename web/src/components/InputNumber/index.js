@@ -15,7 +15,7 @@ export default function InputNumber({ name, label, ...rest }) {
         return ref.state.numAsString;
       },
       setValue: (ref, value) => {
-        if (value) {
+        if (value && ref.state !== null) {
           ref.state.numAsString = value;
           ref.state.value = value;
           setValue(value);

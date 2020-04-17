@@ -23,12 +23,7 @@ class SubItemsController {
 
   async update(req, res) {
     const { subItemId } = req.params;
-    const { id } = req.body;
-    const product = await Product.findByPk(id);
 
-    if (!product) {
-      return res.status(401).json('Product not found');
-    }
     const subItem = await SubItem.findByPk(subItemId);
 
     if (!subItem) {
@@ -36,14 +31,35 @@ class SubItemsController {
     }
     const subItemToUpdate = req.body.SubItem;
     const { min, max, mandatory } = subItemToUpdate.ProductsItems;
-
     const updatedSubItem = await subItem.update(subItemToUpdate);
-    const productItems = await ProductsItems.findOne({
-      productId: id,
-      subItemId: updatedSubItem.id,
-    });
-    await productItems.update({ min, max, mandatory });
+
+    if (min || max || mandatory) {
+      const { id } = req.body;
+      const product = await Product.findByPk(id);
+
+      if (!product) {
+        return res.status(401).json('Product not found');
+      }
+
+      const productItems = await ProductsItems.findOne({
+        productId: id,
+        subItemId: updatedSubItem.id,
+      });
+      await productItems.update({ min, max, mandatory });
+    }
     return res.json(updatedSubItem);
+  }
+
+  async delete(req, res) {
+    const { subItemId } = req.params;
+    const subItem = await SubItem.findByPk(subItemId);
+
+    if (!subItem) {
+      return res.json({ error: 'Sub item not found' });
+    }
+
+    await subItem.destroy();
+    return res.json();
   }
 }
 export default new SubItemsController();
