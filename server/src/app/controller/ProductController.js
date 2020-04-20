@@ -3,6 +3,7 @@ import Product from '../models/Product';
 import Store from '../models/Store';
 import ProductGroup from '../models/ProductGroup';
 import SubItem from '../models/SubItem';
+import File from '../models/File';
 
 class ProductController {
   async store(req, res) {
@@ -49,12 +50,30 @@ class ProductController {
   async delete(req, res) {
     const { productId } = req.params;
 
-    const product = await Product.findByPk(productId);
+    const product = await Product.findByPk(productId, {
+      include: [
+        {
+          model: File,
+        },
+        {
+          model: SubItem,
+        },
+      ],
+    });
     if (!product) {
       return res.status(401).json({ error: 'Product not found' });
     }
 
     await product.destroy();
+
+    if (product.File) {
+      const file = await File.findByPk(product.File.id);
+      file.destroy();
+    }
+    if (product.SubItem) {
+      const subItem = await SubItem.findByPk(product.SubItem.id);
+      await subItem.destroy();
+    }
 
     return res.json({ message: 'Product deleted' });
   }
@@ -73,6 +92,9 @@ class ProductController {
         },
         {
           model: SubItem,
+        },
+        {
+          model: File,
         },
       ],
     });

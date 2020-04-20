@@ -13,6 +13,11 @@ export default function Input({ name, label, ...rest }) {
       clearValue: ref => {
         ref.value = null;
       },
+      setValue: (ref, value) => {
+        if (value && ref) {
+          ref.value = value;
+        }
+      },
     });
   }, [fieldName, registerField]);
   return (

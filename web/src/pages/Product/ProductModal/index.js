@@ -16,7 +16,7 @@ import ProductGroup from './ProductGroup';
 import SubProducts from './SubProducts';
 
 export default function ProductModal({ open, handleClose }) {
-  const [tab, setTab] = useState('PRODUTO');
+  const [tab, setTab] = useState('GRUPO');
   return (
     <ModalContainer open={open}>
       <ModalContent>
@@ -36,6 +36,9 @@ export default function ProductModal({ open, handleClose }) {
         </HeaderContainer>
         <BodyContent>
           <TabContainer>
+            <Tab onClick={() => setTab('GRUPO')} active={tab === 'GRUPO'}>
+              Grupo
+            </Tab>
             <Tab onClick={() => setTab('PRODUTO')} active={tab === 'PRODUTO'}>
               Produto
             </Tab>
@@ -46,11 +49,13 @@ export default function ProductModal({ open, handleClose }) {
               Complementos
             </Tab>
           </TabContainer>
-          <TabContent active={tab === 'PRODUTO'}>
+          <TabContent active={tab === 'GRUPO'}>
             <ProductGroup />
-            <hr />
+          </TabContent>
+          <TabContent active={tab === 'PRODUTO'}>
             <Product />
           </TabContent>
+
           <TabContent active={tab === 'COMPLEMENTO'}>
             <SubProducts />
           </TabContent>

@@ -26,6 +26,7 @@ const INITIAL_DATA = {
   Store: null,
   products: [],
   SubItems: [],
+  File: null,
 };
 
 export default function product(state = INITIAL_DATA, action) {
@@ -59,6 +60,7 @@ export default function product(state = INITIAL_DATA, action) {
           updatedAt,
           Store,
           SubItems,
+          File,
         } = action.payload;
 
         draft.id = id;
@@ -84,6 +86,7 @@ export default function product(state = INITIAL_DATA, action) {
         draft.updatedAt = updatedAt;
         draft.Store = Store;
         draft.SubItems = SubItems;
+        draft.File = File;
         break;
       }
       case '@product/LOAD_SUCCESS': {

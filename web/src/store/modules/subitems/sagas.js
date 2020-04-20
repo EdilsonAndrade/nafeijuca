@@ -22,7 +22,6 @@ function* saveSubItem({ payload }) {
 }
 
 function* deleteSubItem({ payload }) {
-  console.tron.warn(JSON.stringify(payload));
   const { ProductId } = payload.ProductsItems;
 
   toast.success('Sub item excluido com sucesso!');

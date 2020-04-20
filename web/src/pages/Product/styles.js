@@ -57,7 +57,7 @@ export const ProductGroup = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;
-    width: 22.5%;
+    width: 28.9%;
     margin-right: 10px;
     > span {
       display: flex;
@@ -103,7 +103,7 @@ export const Products = styled.div`
     justify-content: space-between;
     align-items: center;
     > div {
-      width: 29.5%;
+      width: ${props => (props.promotionPrice ? '590px' : '35.8%')};
       > div {
         display: flex;
         justify-content: space-between;
@@ -142,6 +142,17 @@ export const Products = styled.div`
   @media (min-width: 2000px) {
     > div {
       width: 100%;
+      > div {
+        width: ${props => (props.promotionPrice ? '596px' : '528px')};
+      }
+    }
+  }
+  @media (max-width: 1754px) {
+    > div {
+      width: 100%;
+      > div {
+        width: ${props => (props.promotionPrice ? '40.8%' : '35.9%')};
+      }
     }
   }
 `;
@@ -180,7 +191,7 @@ export const ProductChildren = styled.ul`
     > div {
       display: flex;
       align-items: center;
-      width: 30%;
+      width: 36.3%;
       input {
         padding: 5px;
         width: 110px;
@@ -190,9 +201,33 @@ export const ProductChildren = styled.ul`
       }
     }
   }
+  @media (min-width: 2000px) {
+    > div {
+      > div {
+        width: 30.3%;
+      }
+    }
+  }
+  @media (max-width: 1754px) {
+    > div {
+      > div {
+        width: 36.8%;
+      }
+    }
+  }
 `;
 export const PauseComponent = styled(MdPauseCircleFilled)`
   svg {
     color: ${props => (props.active ? '#444' : 'rgb(255,76,0)')};
   }
+`;
+
+export const FullPrice = styled.span`
+  width: 60px;
+  margin: 0 5px;
+  font-size: 16px;
+  text-decoration: line-through;
+  text-align: right;
+  color: #656868;
+  line-height: 1;
 `;

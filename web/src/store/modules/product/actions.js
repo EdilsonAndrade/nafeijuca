@@ -18,6 +18,12 @@ export const editSuccess = data => {
   };
 };
 
+export const deleteRequest = data => {
+  return {
+    type: '@product/DELETE_REQUEST',
+    payload: data,
+  };
+};
 export const loadRequest = storeId => {
   return {
     type: '@product/LOAD_REQUEST',

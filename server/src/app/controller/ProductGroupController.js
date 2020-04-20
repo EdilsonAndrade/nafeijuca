@@ -3,6 +3,7 @@ import ProductGroup from '../models/ProductGroup';
 import Store from '../models/Store';
 import Product from '../models/Product';
 import SubItem from '../models/SubItem';
+import File from '../models/File';
 
 class ProductGroupController {
   async store(req, res) {
@@ -84,6 +85,9 @@ class ProductGroupController {
               {
                 model: SubItem,
               },
+              {
+                model: File,
+              },
             ],
           },
           {
@@ -109,6 +113,9 @@ class ProductGroupController {
             },
             {
               model: SubItem,
+            },
+            {
+              model: File,
             },
           ],
         },

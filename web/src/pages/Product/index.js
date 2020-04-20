@@ -11,13 +11,14 @@ import {
   PauseComponent,
   ArrowLeft,
   ArrowDown,
+  FullPrice,
 } from './styles';
 import Button from '~/components/Button';
 import ProductModal from './ProductModal';
 import * as ProductGroupActions from '~/store/modules/productGroup/actions';
 import * as ProductActions from '~/store/modules/product/actions';
+import * as SubItensActions from '~/store/modules/subitems/actions';
 import InputNumber from '~/components/InputNumber';
-import { formatPrice } from '~/services/formatDecimal';
 
 export default function Product() {
   const productGroups = useSelector(state => state.productGroup.productGroups);
@@ -55,6 +56,7 @@ export default function Product() {
 
   const handleEditProductGroup = productGroup => {
     dispatch(ProductGroupActions.editSuccess(productGroup));
+    dispatch(ProductActions.editSuccess(null));
     setOpenModal(true);
   };
 
@@ -64,6 +66,28 @@ export default function Product() {
     setOpenModal(true);
   };
 
+  const handlePauseUnPauseProduct = productToPause => {
+    dispatch(
+      ProductActions.saveRequest({
+        ...productToPause,
+        active: !productToPause.active,
+      })
+    );
+  };
+
+  const handlePauseUnPauseSubItems = subItem => {
+    dispatch(
+      SubItensActions.saveRequest({
+        id: subItem.ProductsItems.ProductId,
+        storeId: user.store.id,
+        SubItem: {
+          ...subItem,
+          active: !subItem.active,
+          productId: subItem.ProductsItems.ProductId,
+        },
+      })
+    );
+  };
   const handleActiveDeactiveMenus = id => {
     let status = false;
     activesSubMenus.forEach(item => {
@@ -79,15 +103,41 @@ export default function Product() {
     return status;
   };
 
-  const handleChangePrice = (e, productId) => {
+  const handleChangePriceSubItem = (e, subItem) => {
     if (e.key === 'Enter') {
-      console.tron.warn(e.target.value);
-      console.tron.warn(productId);
+      const newPrice = Number(
+        e.target.value.replace(',', '.').replace('R$', '')
+      ).toFixed(2);
+      dispatch(
+        SubItensActions.saveRequest({
+          id: subItem.ProductsItems.ProductId,
+          storeId: user.store.id,
+          SubItem: {
+            ...subItem,
+            price: newPrice,
+            productId: subItem.ProductsItems.ProductId,
+          },
+        })
+      );
     } else {
       toast.warn('Para salvar, aperte enter');
     }
   };
-
+  const handleChangePriceProduct = (e, product) => {
+    if (e.key === 'Enter') {
+      const newPrice = Number(
+        e.target.value.replace(',', '.').replace('R$', '')
+      ).toFixed(2);
+      dispatch(
+        ProductActions.saveRequest({
+          ...product,
+          price: newPrice,
+        })
+      );
+    } else {
+      toast.warn('Para salvar, aperte enter');
+    }
+  };
   const renderMandatoryChildren = (subItems, productId) => {
     const mandatoryItems = subItems.filter(
       x => x.ProductsItems.mandatory === true
@@ -112,12 +162,24 @@ export default function Product() {
                   decimalSeparator=","
                   decimalScale={2}
                   allowNegative={false}
-                  prefix="R$"
                   fixedDecimalScale
+                  prefix="R$"
                   value={s.price}
-                  onKeyUp={e => handleChangePrice(e, productId)}
+                  onKeyUp={e => handleChangePriceSubItem(e, s)}
                 />
-                <PauseComponent size={22} />
+                <Button
+                  icon="none"
+                  naked
+                  buttonType="button"
+                  handleClick={() => {
+                    handlePauseUnPauseSubItems(s);
+                  }}
+                >
+                  <PauseComponent
+                    size={22}
+                    color={s.active ? '#444' : 'rgb(255,76,0)'}
+                  />
+                </Button>
                 <span>{s.active ? 'Pausar' : 'Pausado'}</span>
               </div>
             </div>
@@ -149,13 +211,25 @@ export default function Product() {
                   name="price"
                   decimalSeparator=","
                   decimalScale={2}
-                  allowNegative={false}
                   prefix="R$"
+                  allowNegative={false}
                   fixedDecimalScale
                   value={s.price}
-                  onKeyUp={e => handleChangePrice(e, productId)}
+                  onKeyUp={e => handleChangePriceSubItem(e, s)}
                 />
-                <PauseComponent size={22} />
+                <Button
+                  icon="none"
+                  naked
+                  buttonType="button"
+                  handleClick={() => {
+                    handlePauseUnPauseSubItems(s);
+                  }}
+                >
+                  <PauseComponent
+                    size={22}
+                    color={s.active ? '#444' : 'rgb(255,76,0)'}
+                  />
+                </Button>
                 <span>{s.active ? 'Pausar' : 'Pausado'}</span>
               </div>
             </div>
@@ -195,21 +269,47 @@ export default function Product() {
             </div>
           </ProductGroup>
           {pg.Products.map(product => (
-            <Products key={product.id}>
+            <Products promotionPrice={product.promotionPrice} key={product.id}>
               <div>
                 <span>{product.name}</span>
                 <div>
                   <div>
-                    <InputNumber
-                      name="preco"
-                      decimalSeparator=","
-                      decimalScale={2}
-                      allowNegative={false}
-                      prefix="R$"
-                      fixedDecimalScale
-                      value={product.price}
-                    />
-                    <Button icon="none" naked buttonType="button">
+                    {product.promotionPrice ? (
+                      <>
+                        <FullPrice>
+                          {Number(product.price).toFixed(2)}
+                        </FullPrice>
+                        <InputNumber
+                          name="preco"
+                          decimalSeparator=","
+                          decimalScale={2}
+                          allowNegative={false}
+                          prefix="R$"
+                          fixedDecimalScale
+                          value={product.promotionPrice}
+                        />
+                      </>
+                    ) : (
+                      <InputNumber
+                        name="preco"
+                        decimalSeparator=","
+                        decimalScale={2}
+                        allowNegative={false}
+                        fixedDecimalScale
+                        prefix="R$"
+                        value={product.price}
+                        onKeyUp={e => handleChangePriceProduct(e, product)}
+                      />
+                    )}
+
+                    <Button
+                      icon="none"
+                      naked
+                      buttonType="button"
+                      handleClick={() => {
+                        handlePauseUnPauseProduct(product);
+                      }}
+                    >
                       <PauseComponent
                         size={22}
                         color={product.active ? '#444' : 'rgb(255,76,0)'}

@@ -1,7 +1,7 @@
 import { all, put, call, takeLatest } from 'redux-saga/effects';
 import { toast } from 'react-toastify';
 import api from '~/services/api';
-import { loadSuccess, editSuccess } from './actions';
+import { loadSuccess, editSuccess, loadRequest } from './actions';
 import * as GroupActions from '../productGroup/actions';
 
 function* saveProduct({ payload }) {
@@ -61,8 +61,16 @@ function* getOneProduct({ payload }) {
     toast.error(err);
   }
 }
+function* deleteProduct({ payload }) {
+  const { id, Store } = payload;
+  yield call(api.delete, `/products/${id}`);
+  yield put(loadRequest(Store.id));
+  yield put(GroupActions.loadRequest(Store.id));
+  toast.success('Produto excluido com sucesso!');
+}
 export default all([
   takeLatest('@product/SAVE_REQUEST', saveProduct),
   takeLatest('@product/LOAD_REQUEST', getProducts),
   takeLatest('@product/EDIT_REQUEST', getOneProduct),
+  takeLatest('@product/DELETE_REQUEST', deleteProduct),
 ]);

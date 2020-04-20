@@ -35,7 +35,6 @@ function* saveProductGroup({ payload }) {
 function* loadRequest({ payload }) {
   try {
     const response = yield call(api.get, `/stores/${payload}/productgroups`);
-    console.tron.warn({ response });
     yield put(loadSuccess(response.data));
   } catch (err) {
     const { response } = err;

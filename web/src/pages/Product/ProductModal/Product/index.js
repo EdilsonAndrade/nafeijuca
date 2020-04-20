@@ -5,16 +5,18 @@ import { Form } from '@unform/web';
 import * as Yup from 'yup';
 import Select from '~/components/Select';
 import Switch from '~/components/Switch';
-
+import Modal from '~/components/Modal';
 import Button from '~/components/Button';
 import Input from '~/components/Input';
 import * as ProductGroupActions from '~/store/modules/productGroup/actions';
-import { saveRequest } from '~/store/modules/product/actions';
+import { saveRequest, deleteRequest } from '~/store/modules/product/actions';
 import api from '~/services/api';
 import InputNumber from '~/components/InputNumber';
+import { ImageContainer } from './styles';
 
 export default function Product() {
   const dispatch = useDispatch();
+  const [open, setOpen] = useState(false);
   const formRefProduct = useRef(null);
   const user = useSelector(state => state.user);
   const [productGroupData, setProductGroupData] = useState();
@@ -26,14 +28,27 @@ export default function Product() {
     setTimeout(() => {
       if (product.Store && formRefProduct.current) {
         formRefProduct.current.setData(product);
+        if (product.File) {
+          formRefProduct.current.setFieldValue('imageId', {
+            id: product.File.id,
+            url: product.File.url,
+          });
+        }
 
         setProductGroupData({
           value: productGroupSelected.id,
           label: productGroupSelected.name,
         });
+      } else {
+        formRefProduct.current.setFieldValue('storeId', user.store.id);
       }
     }, 50);
-  }, [product, productGroupSelected.id, productGroupSelected.name]);
+  }, [
+    product,
+    productGroupSelected.id,
+    productGroupSelected.name,
+    user.store.id,
+  ]);
 
   const handleSubmitProduct = async data => {
     try {
@@ -104,6 +119,14 @@ export default function Product() {
       resolve(dataSt);
     });
   };
+
+  const handleDeleteProduct = () => {
+    setOpen(true);
+  };
+  const handleConfirmDelete = () => {
+    dispatch(deleteRequest(product));
+    setOpen(false);
+  };
   return (
     <Form ref={formRefProduct} id="productForm" onSubmit={handleSubmitProduct}>
       <Input hidden name="id" />
@@ -111,7 +134,7 @@ export default function Product() {
         <strong>Selecione o grupo na lista e crie um produto</strong>
       </div>
       <div>
-        <Input name="storeId" hidden value={user.store.id} />
+        <Input hidden name="storeId" />
       </div>
 
       <span>
@@ -125,6 +148,7 @@ export default function Product() {
           onChange={e => setProductGroupData(e)}
         />
       </span>
+      <ImageContainer name="imageId" />
       <div>
         <div>
           <Input name="name" label="Produto" />
@@ -204,7 +228,27 @@ export default function Product() {
             Salvar produto
           </Button>
         </div>
+        {product.id ? (
+          <div>
+            <Button
+              width="200px"
+              buttonType="button"
+              handleClick={handleDeleteProduct}
+            >
+              Excluir produto
+            </Button>
+          </div>
+        ) : (
+          ''
+        )}
       </div>
+      <Modal
+        message="Deseja excluir este produto?"
+        open={open}
+        handleClose={() => setOpen(false)}
+        dialog
+        handleConfirm={handleConfirmDelete}
+      />
     </Form>
   );
 }
