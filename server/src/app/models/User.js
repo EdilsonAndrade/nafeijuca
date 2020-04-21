@@ -16,6 +16,7 @@ class User extends Model {
         expiration: Sequelize.DATE,
         isAdmin: Sequelize.BOOLEAN,
         systemAdmin: Sequelize.BOOLEAN,
+        phone: Sequelize.STRING,
       },
       {
         sequelize,

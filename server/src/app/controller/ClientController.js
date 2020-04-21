@@ -3,6 +3,8 @@ import { Op } from 'sequelize';
 import User from '../models/User';
 import Client from '../models/Client';
 import Store from '../models/Store';
+import File from '../models/File';
+import Address from '../models/Address';
 
 class ClientController {
   async store(req, res) {
@@ -71,6 +73,12 @@ class ClientController {
         },
         {
           model: Store,
+        },
+        {
+          model: File,
+        },
+        {
+          model: Address,
         },
       ],
       order: [['name', 'asc']],

@@ -3,12 +3,13 @@ import styled from 'styled-components';
 export const Container = styled.div`
   width: 100%;
   margin: 10px 0;
-  div.barMenu {
-    background: #fff;
-    padding: 10px;
-    display: flex;
-    justify-content: space-between;
-  }
+`;
+
+export const SubBarContent = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: flex-start;
+  align-items: center;
 `;
 export const Content = styled.div`
   display: flex;

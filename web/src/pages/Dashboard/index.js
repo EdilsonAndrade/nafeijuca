@@ -1,9 +1,10 @@
-import React from 'react';
-import { MdDelete } from 'react-icons/md';
+import React, { useState } from 'react';
+import { MdDelete, MdAccountCircle } from 'react-icons/md';
 import GroupCard from '~/components/GroupCard';
 import ProductCard from '~/components/ProductCard';
 import {
   Container,
+  SubBarContent,
   Content,
   ProductCards,
   ClientOrder,
@@ -14,15 +15,29 @@ import {
   ProductTotal,
 } from './styles';
 import SearchInput from '~/components/SearchComponent';
+import Button from '~/components/Button';
 
 export default function Dashboard() {
+  const [open, setOpen] = useState(false);
+
   return (
     <Container>
-      <SearchInput
-        searchFor="products"
-        placeHolder="Digite um nome de produto"
-      />
-
+      <SubBarContent id="subBar">
+        <SearchInput
+          searchFor="products"
+          placeHolder="Digite um nome de produto"
+        />
+        <Button
+          icon="none"
+          naked
+          buttonType="button"
+          handleClick={() => {
+            setOpen(true);
+          }}
+        >
+          <MdAccountCircle size={52} color="#fff" />
+        </Button>
+      </SubBarContent>
       <Content className="container">
         <ProductCards>
           <GroupCard groupName="Feijoada Light">
