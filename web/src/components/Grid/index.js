@@ -2,14 +2,19 @@ import React from 'react';
 
 import { GridContainer } from './styles';
 
-export default function Grid({ handleRowSelect, handleRowDelete, ...rest }) {
+export default function Grid({
+  handleRowSelect,
+  handleRowDelete,
+  rowsPerPage,
+  ...rest
+}) {
   const options = {
     filterType: 'checkbox',
     selectableRows: 'single',
     selectableRowsOnClick: true,
     onRowsSelect: handleRowSelect,
     onRowsDelete: handleRowDelete,
-    rowsPerPage: 5,
+    rowsPerPage: rowsPerPage || 5,
     print: false,
     selectTableRows: 'single',
     selectableRowsHeader: false,

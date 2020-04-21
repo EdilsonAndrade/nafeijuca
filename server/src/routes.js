@@ -25,16 +25,18 @@ routes.get('/users/:userId/confirmation', ConfirmationController.index);
 routes.post('/sessions', SessionController.store);
 
 routes.use(authMiddleware, confirmedMiddleware);
-
+// users
 routes.put('/users/:userId', UserController.update);
 routes.get('/users', UserController.index);
 routes.get('/users/:storeId', UserController.index);
 routes.delete('/users/:userId', UserController.delete);
 
+// address
 routes.delete('/addresses/:addressId', AddressController.delete);
 routes.post('/addresses/', AddressController.store);
 routes.get('/addresses', AddressController.index);
 
+// store
 routes.delete('/stores/:storeId', isAdmin, StoreController.delete);
 routes.post('/stores/', isAdmin, StoreController.store);
 routes.get('/stores/', isAdmin, StoreController.index);
@@ -68,6 +70,7 @@ routes.get('/stores/:storeId/products', ProductController.index);
 
 // clients
 routes.get('/stores/:storeId/clients/:search', ClientController.index);
+routes.get('/stores/:storeId/clients', ClientController.index);
 routes.post('/clients', ClientController.store);
 routes.put('/clients/:clientId', ClientController.update);
 routes.delete('/clients/:clientId', ClientController.delete);

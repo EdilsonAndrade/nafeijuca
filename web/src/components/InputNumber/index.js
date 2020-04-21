@@ -12,6 +12,9 @@ export default function InputNumber({ name, label, ...rest }) {
       ref: inputRef.current,
       path: 'state',
       getValue: (ref, value) => {
+        if (ref.state.numAsString === '') {
+          return null;
+        }
         return ref.state.numAsString;
       },
       setValue: (ref, value) => {

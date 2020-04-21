@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { MdDelete, MdAccountCircle } from 'react-icons/md';
 import GroupCard from '~/components/GroupCard';
 import ProductCard from '~/components/ProductCard';
+import CustomerModal from '~/pages/CustomerModal';
 import {
   Container,
   SubBarContent,
@@ -145,6 +146,7 @@ export default function Dashboard() {
           </OrderTotal>
         </ClientOrder>
       </Content>
+      <CustomerModal open={open} handleClose={() => setOpen(false)} />
     </Container>
   );
 }

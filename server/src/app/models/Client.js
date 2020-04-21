@@ -18,6 +18,7 @@ class Client extends Model {
   static associate(models) {
     this.belongsTo(models.Store, { foreignKey: 'storeId' });
     this.belongsTo(models.User, { foreignKey: 'userId' });
+    this.hasMany(models.Address, { foreignKey: 'clientId' });
   }
 }
 

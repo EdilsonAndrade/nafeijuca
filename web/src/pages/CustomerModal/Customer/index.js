@@ -1,8 +1,13 @@
-import React from 'react';
-
+import React, { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import Input from '~/components/Input';
+import InputNumber from '~/components/InputNumber';
+import Button from '~/components/Button';
+import Select from '~/components/Select';
 
 export default function Customer() {
+  const addresses = useSelector(state => state.client.Address);
+
   return (
     <>
       <Input name="id" hidden />
@@ -15,8 +20,16 @@ export default function Customer() {
           <Input name="email" label="E-mail" />
         </div>
         <div>
-          <Input name="phone" label="Telefone" />
+          <InputNumber
+            name="phone"
+            label="Telefone"
+            type="tel"
+            format="(##)#####-##-##"
+            mask="_"
+          />
         </div>
+
+        <Button buttonType="submit">Salvar</Button>
       </div>
     </>
   );

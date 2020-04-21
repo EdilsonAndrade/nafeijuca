@@ -3,6 +3,12 @@ import styled from 'styled-components';
 export const Container = styled.div`
   width: 100%;
   margin: 10px 0;
+  div.barMenu {
+    background: #fff;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+  }
 `;
 
 export const SubBarContent = styled.div`
@@ -10,6 +16,19 @@ export const SubBarContent = styled.div`
   width: 100%;
   justify-content: flex-start;
   align-items: center;
+  > div {
+    > div {
+      background: #fff;
+      width: 300px;
+      border: 1px solid #eee;
+      border-radius: 6px;
+      input {
+        width: 87%;
+        margin-left: 17px;
+        border: none;
+      }
+    }
+  }
 `;
 export const Content = styled.div`
   display: flex;
