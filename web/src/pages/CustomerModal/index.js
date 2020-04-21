@@ -79,14 +79,19 @@ export default function CustomerModal({ open, handleClose }) {
   };
 
   const handleRowSelect = (currentRowsSelected, allRowsSelected) => {
-    console.log(currentRowsSelected);
     const { dataIndex } = currentRowsSelected[0];
     const selectedClient = clients[dataIndex];
     if (allRowsSelected.length > 0) {
-      formRef.current.setData({
-        ...selectedClient,
-        Address: selectedClient.Addresses ? selectedClient.Addresses[0] : null,
-      });
+      if (selectedClient.Addresses.length === 1) {
+        formRef.current.setData({
+          ...selectedClient,
+          Address: selectedClient.Addresses
+            ? selectedClient.Addresses[0]
+            : null,
+        });
+      } else {
+        formRef.current.setData(selectedClient);
+      }
 
       dispatch(
         editSuccess({ ...selectedClient, Address: selectedClient.Addresses })
@@ -114,7 +119,7 @@ export default function CustomerModal({ open, handleClose }) {
         <BodyContent>
           <h2>Cadastro de Clientes</h2>
           <Form ref={formRef} onSubmit={handleSaveClient}>
-            <Customer />
+            <Customer formRef={formRef} />
             <Address />
             <CustomersGrid data={clients} handleRowSelect={handleRowSelect} />
           </Form>

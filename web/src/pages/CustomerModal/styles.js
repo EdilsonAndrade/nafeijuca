@@ -26,11 +26,17 @@ export const BodyContent = styled.div`
     display: flex;
     flex-direction: column;
     padding: 10px;
-    > div {
+    span.select {
+      margin: 0 5px;
+      width: 350px;
+    }
+    > div.rows {
       display: flex;
       align-items: center;
-
-      div {
+      button {
+        margin-top: 17px;
+      }
+      div.columns {
         margin: 5px;
         display: flex;
         flex-direction: column;

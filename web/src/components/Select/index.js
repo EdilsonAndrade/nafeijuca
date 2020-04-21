@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 import { useField } from '@unform/core';
 import PropTypes from 'prop-types';
-import { AsyncSelectField } from './styles';
+import { Container, AsyncSelectField } from './styles';
 
 const Select = ({ name, label, ...rest }) => {
   const selectRef = useRef(null);
@@ -29,7 +29,7 @@ const Select = ({ name, label, ...rest }) => {
     });
   }, [fieldName, registerField, rest.isMulti]);
   return (
-    <>
+    <Container>
       {label && <strong>{label}</strong>}
       <AsyncSelectField
         cacheOptions
@@ -41,7 +41,7 @@ const Select = ({ name, label, ...rest }) => {
       {error && (
         <span style={{ color: '#f00', fontWeight: 'bold' }}>{error}</span>
       )}
-    </>
+    </Container>
   );
 };
 export default Select;

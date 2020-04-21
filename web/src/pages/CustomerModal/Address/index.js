@@ -1,48 +1,50 @@
 import React from 'react';
+import { Scope } from '@unform/core';
 
 import Input from '~/components/Input';
 import InputNumber from '~/components/InputNumber';
 
 export default function Address() {
   return (
-    <>
-      <div>
-        <div>
+    <Scope path="Address">
+      <Input name="id" hidden />
+      <div className="rows">
+        <div className="columns">
           <Input
-            name="Address.address"
+            name="address"
             label="Endereço"
             width="300px"
             placeholder="Endereço"
           />
         </div>
 
-        <div>
+        <div className="columns">
           <Input
-            name="Address.number"
+            name="number"
             label="Número"
             width="60px"
             placeholder="Número"
           />
         </div>
-        <div>
+        <div className="columns">
           <Input
-            name="Address.addressLineTwo"
+            name="addressLineTwo"
             label="Complemento"
             width="150px"
             placeholder="Complemento"
           />
         </div>
-        <div>
+        <div className="columns">
           <Input
-            name="Address.neighborhood"
+            name="neighborhood"
             label="Bairro"
             width="160px"
             placeholder="Bairro"
           />
         </div>
-        <div>
+        <div className="columns">
           <InputNumber
-            name="Address.zipcode"
+            name="zipcode"
             label="Cep"
             width="120px"
             format="#####-###"
@@ -50,31 +52,21 @@ export default function Address() {
           />
         </div>
 
-        <div>
-          <Input
-            name="Address.latitude"
-            label="Latitude"
-            width="200px"
-            disabled
-          />
+        <div className="columns">
+          <Input name="latitude" label="Latitude" width="200px" disabled />
         </div>
-        <div>
-          <Input
-            name="Address.longitude"
-            label="Longitude"
-            width="200px"
-            disabled
-          />
+        <div className="columns">
+          <Input name="longitude" label="Longitude" width="200px" disabled />
         </div>
-        <div>
+        <div className="columns">
           <InputNumber
-            name="Address.km"
+            name="km"
             label="Distancia da loja em KM"
             width="60px"
             disabled
           />
         </div>
       </div>
-    </>
+    </Scope>
   );
 }
