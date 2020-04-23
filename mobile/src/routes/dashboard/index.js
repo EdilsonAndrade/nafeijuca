@@ -8,8 +8,15 @@ export default function DashboardNavigation() {
   return (
     <Stack.Navigator
       initialRouteName="Dashboard"
-      screenOptions={{headerShown: false}}>
-      <Stack.Screen name="Dashboard" component={Dashboard} />
+      screenOptions={{
+        headerShown: false,
+        headerTransparent: true,
+      }}>
+      <Stack.Screen
+        name="Dashboard"
+        component={Dashboard}
+        options={{headerTransparent: true}}
+      />
     </Stack.Navigator>
   );
 }

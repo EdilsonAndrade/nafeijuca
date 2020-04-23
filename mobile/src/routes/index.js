@@ -6,55 +6,76 @@ import DashboardNavigation from './dashboard';
 import ProfileNavigation from './profile';
 import SearchNavigation from './search';
 import OrdersNavigation from './order';
+
 export default function Route() {
+  const icons = {
+    Home: {
+      name: 'home',
+    },
+    Search: {
+      name: 'search',
+    },
+    Order: {
+      name: 'event-note',
+    },
+    Mail: {
+      name: 'mail-outline',
+    },
+    Profile: {
+      name: 'person-outline',
+    },
+  };
   return (
     <Tab.Navigator
-      initialRouteName="Inicio"
+      initialRouteName="home"
+      screenOptions={({route}) => ({
+        tabBarIcon: ({color, size}) => {
+          const {name} = icons[route.name];
+          return <Icon name={name} color={color} size={size} />;
+        },
+      })}
       tabBarOptions={{
+        style: {
+          backgroundColor: '#fff',
+          borderTopColor: 'rgba(255, 255, 253, 0.2)',
+        },
         activeTintColor: '#000',
+        inactiveTintColor: '#ddd',
       }}>
       <Tab.Screen
-        name="Inicio"
+        name="Home"
         component={DashboardNavigation}
         options={{
-          tabBarIcon: ({focused}) => (
-            <Icon name="home" color={focused ? '#000' : '#ddd'} size={32} />
-          ),
+          title: 'Inicio',
+          headerTransparent: true,
         }}
       />
       <Tab.Screen
-        name="Busca"
+        name="Search"
         component={SearchNavigation}
         options={{
-          tabBarIcon: ({focused}) => (
-            <Icon name="search" color={focused ? '#000' : '#ddd'} size={32} />
-          ),
+          title: 'Pesquisar',
         }}
       />
       <Tab.Screen
-        name="Pedidos"
+        name="Order"
         component={OrdersNavigation}
         options={{
-          tabBarIcon: ({focused}) => (
-            <Icon
-              name="event-note"
-              color={focused ? '#000' : '#ddd'}
-              size={32}
-            />
-          ),
+          title: 'Pedidos',
         }}
       />
       <Tab.Screen
-        name="Perfil"
+        name="Profile"
         component={ProfileNavigation}
         options={{
-          tabBarIcon: ({focused}) => (
-            <Icon
-              name="person-outline"
-              color={focused ? '#000' : '#ddd'}
-              size={32}
-            />
-          ),
+          title: 'Perfil',
+        }}
+      />
+      <Tab.Screen
+        name="Mail"
+        component={ProfileNavigation}
+        options={{
+          title: 'Mensagens',
         }}
       />
     </Tab.Navigator>
