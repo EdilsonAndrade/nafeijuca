@@ -1,16 +1,17 @@
 import React from 'react';
-import {AnimatedViewContainer, ImageContent} from './styles';
+import { StatusBar } from 'react-native';
+import { AnimatedViewContainer, ImageContent } from './styles';
 import HeaderBackImage from '../../assets/capa.png';
 
-import {StatusBar} from 'react-native';
 import MiddleHeaderBar from './MiddleHeaderBar';
+
 export default function Dashboard() {
   return (
     <AnimatedViewContainer>
       <StatusBar
         barStyle="defaut"
         color="#fff"
-        translucent={true}
+        translucent
         backgroundColor="rgba(0, 0, 0, 0.0)"
       />
       <ImageContent source={HeaderBackImage} />

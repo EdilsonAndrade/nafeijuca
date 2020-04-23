@@ -1,7 +1,9 @@
 import React from 'react';
-import NaFeijucaImageText from '../../../assets/nafeijucatext.png';
-import {MiddleHeaderBarContent, ImageFeijucaContent} from '../styles';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import NaFeijucaImageText from '~/assets/nafeijucatext.png';
+
+import { MiddleHeaderBarContent, ImageFeijucaContent } from '../styles';
+
 export default function MiddleHeaderBar() {
   return (
     <MiddleHeaderBarContent>
