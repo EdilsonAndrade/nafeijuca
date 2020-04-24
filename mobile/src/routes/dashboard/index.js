@@ -1,8 +1,9 @@
 import React from 'react';
-import {createStackNavigator} from '@react-navigation/stack';
+import { createStackNavigator } from '@react-navigation/stack';
+import Dashboard from '~/pages/Dashboard';
+import Product from '~/pages/Product';
 
 const Stack = createStackNavigator();
-import Dashboard from '../../pages/Dashboard';
 
 export default function DashboardNavigation() {
   return (
@@ -10,12 +11,21 @@ export default function DashboardNavigation() {
       initialRouteName="Dashboard"
       screenOptions={{
         headerShown: false,
-        headerTransparent: true,
-      }}>
+      }}
+    >
       <Stack.Screen
         name="Dashboard"
         component={Dashboard}
-        options={{headerTransparent: true}}
+
+      />
+      <Stack.Screen
+        name="Product"
+        component={Product}
+        options={
+          {
+            title: '',
+          }
+        }
       />
     </Stack.Navigator>
   );

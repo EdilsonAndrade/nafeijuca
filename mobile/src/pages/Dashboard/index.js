@@ -1,21 +1,43 @@
 import React from 'react';
-import { StatusBar } from 'react-native';
-import { AnimatedViewContainer, ImageContent } from './styles';
-import HeaderBackImage from '../../assets/capa.png';
 
-import MiddleHeaderBar from './MiddleHeaderBar';
+import PropTypes from 'prop-types';
+import {
+  TitleContent, MainSafeAreaView, MainScrollViewVertical,
+} from './styles';
+import HeaderBackImage from '~/assets/capa.png';
+import Iconimage from '~/assets/icon.png';
+import Store from './Store';
+import HeaderTranslucent from '~/components/HeaderTranslucent';
 
-export default function Dashboard() {
+
+export default function Dashboard({ navigation }) {
   return (
-    <AnimatedViewContainer>
-      <StatusBar
-        barStyle="defaut"
-        color="#fff"
-        translucent
-        backgroundColor="rgba(0, 0, 0, 0.0)"
+    <>
+      <HeaderTranslucent
+        showButtons={false}
+        headerBackImage={HeaderBackImage}
+        iconImage={Iconimage}
       />
-      <ImageContent source={HeaderBackImage} />
-      <MiddleHeaderBar />
-    </AnimatedViewContainer>
+      <MainSafeAreaView>
+        <TitleContent>
+          Selecione uma filial
+        </TitleContent>
+
+        <MainScrollViewVertical
+          decelerationRate="fast"
+          showsVerticalScrollIndicator={false}
+        >
+          <Store navigation={navigation} />
+        </MainScrollViewVertical>
+      </MainSafeAreaView>
+    </>
   );
 }
+
+Dashboard.propTypes = {
+  navigation: PropTypes.shape({}),
+};
+
+Dashboard.defaultProps = {
+  navigation: {},
+};

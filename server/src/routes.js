@@ -23,7 +23,7 @@ routes.post('/users', UserController.store);
 routes.put('/confirmation', ConfirmationController.update);
 routes.get('/users/:userId/confirmation', ConfirmationController.index);
 routes.post('/sessions', SessionController.store);
-
+routes.get('/stores/', StoreController.index);
 routes.use(authMiddleware, confirmedMiddleware);
 // users
 routes.put('/users/:userId', UserController.update);

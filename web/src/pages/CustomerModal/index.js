@@ -28,8 +28,10 @@ export default function CustomerModal({ open, handleClose }) {
   const user = useSelector(state => state.user);
 
   useEffect(() => {
-    dispatch(loadRequest(user.store.id));
-  }, [dispatch, user.store.id]);
+    if (user.store) {
+      dispatch(loadRequest(user.store.id));
+    }
+  }, [dispatch, user.store]);
 
   const handleSaveClient = async data => {
     try {
