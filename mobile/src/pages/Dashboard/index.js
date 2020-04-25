@@ -8,17 +8,19 @@ import HeaderBackImage from '~/assets/capa.png';
 import Iconimage from '~/assets/icon.png';
 import Store from './Store';
 import HeaderTranslucent from '~/components/HeaderTranslucent';
-
+import Location from '~/components/Location';
 
 export default function Dashboard({ navigation }) {
   return (
     <>
       <HeaderTranslucent
-        showButtons={false}
+        showBack={false}
+        showShare={false}
         headerBackImage={HeaderBackImage}
         iconImage={Iconimage}
       />
       <MainSafeAreaView>
+        <Location navigation={navigation} />
         <TitleContent>
           Selecione uma filial
         </TitleContent>

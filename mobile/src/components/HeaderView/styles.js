@@ -1,22 +1,17 @@
 import styled, { css } from 'styled-components/native';
-import { Animated } from 'react-native';
 
-export const AnimatedViewContainer = styled(Animated.View)`
+
+export const ViewContainer = styled.View`
   width: 100%;
   justify-content: center;
-  ${
-  (props) => (props.size
-    ? css`
-    height:props.size;
-    `
-    : null)
-};
+  height: ${(props) => props.size};
+  
   
 `;
 export const ImageContent = styled.Image`
   position: absolute;
   width: 100%;
-  height: 110px;
+  height: ${(props) => props.size};
   opacity:${(props) => (props.opacity ? props.opacity : '0.5')};
   top:1px;
 

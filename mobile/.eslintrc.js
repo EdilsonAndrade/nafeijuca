@@ -23,6 +23,7 @@ module.exports = {
   rules: {
     'react/jsx-filename-extension':['warn', {extensions: ['.jsx', '.js']}],
     "no-param-reassign": "off",
+    "camelcase": "off",
   },
   settings:{
     "import/resolver":{

@@ -13,7 +13,7 @@ export default function Product({ navigation }) {
   const storeSelected = useSelector((state) => state.store);
   return (
     <>
-      <HeaderTranslucent navigation={navigation} showButtons headerBackImage={HeaderBackProduct} opacity="1" />
+      <HeaderTranslucent navigation={navigation} showBack showShare headerBackImage={HeaderBackProduct} opacity="1" />
       <MainSafeAreaView>
         <MainScrollViewVertical
           decelerationRate="fast"

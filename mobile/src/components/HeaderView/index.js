@@ -3,28 +3,26 @@ import { StatusBar } from 'react-native';
 import PropTypes from 'prop-types';
 
 import MiddleHeaderBar from '~/components/MiddleHeaderBar';
-import { AnimatedViewContainer, ImageContent } from './styles';
+import { ViewContainer, ImageContent } from './styles';
 
-export default function HeaderTranslucent({
-  showBack, showShare, headerBackImage, iconImage, opacity, navigation, size,
+export default function HeaderView({
+  showBack, showShare, headerBackImage, iconImage, opacity, navigation, headerSize, imageSize, backButtonColor,
 }) {
   return (
-    <AnimatedViewContainer size={size !== null ? size : ''}>
+    <ViewContainer size={headerSize}>
       <StatusBar
-        barStyle="defaut"
-        color="#fff"
-        translucent
+        barStyle="dark-content"
         backgroundColor="rgba(0, 0, 0, 0.0)"
       />
-      <ImageContent source={headerBackImage} opacity={opacity} />
-      <MiddleHeaderBar showBack={showBack} showShare={showShare} iconImage={iconImage} navigation={navigation} />
+      <ImageContent source={headerBackImage} opacity={opacity} size={imageSize} />
+      <MiddleHeaderBar backButtonColor={backButtonColor} showBack={showBack} showShare={showShare} iconImage={iconImage} navigation={navigation} />
 
 
-    </AnimatedViewContainer>
+    </ViewContainer>
   );
 }
 
-HeaderTranslucent.propTypes = {
+HeaderView.propTypes = {
   showShare: PropTypes.bool,
   showBack: PropTypes.bool,
   headerBackImage: PropTypes.number,
@@ -34,8 +32,9 @@ HeaderTranslucent.propTypes = {
     goBack: PropTypes.func,
   }),
   size: PropTypes.string,
+  backButtonColor: PropTypes.string,
 };
-HeaderTranslucent.defaultProps = {
+HeaderView.defaultProps = {
   showShare: false,
   showBack: false,
   headerBackImage: null,
@@ -43,4 +42,5 @@ HeaderTranslucent.defaultProps = {
   opacity: null,
   navigation: {},
   size: '',
+  backButtonColor: '',
 };
