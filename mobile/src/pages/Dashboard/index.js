@@ -18,6 +18,7 @@ export default function Dashboard({ navigation }) {
         showShare={false}
         headerBackImage={HeaderBackImage}
         iconImage={Iconimage}
+        opacity=".6"
       />
       <MainSafeAreaView>
         <Location navigation={navigation} />

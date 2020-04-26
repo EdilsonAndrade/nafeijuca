@@ -1,11 +1,12 @@
 import React from 'react';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-const Tab = createBottomTabNavigator();
 import DashboardNavigation from './dashboard';
 import ProfileNavigation from './profile';
 import SearchNavigation from './search';
 import OrdersNavigation from './order';
+
+const Tab = createBottomTabNavigator();
 
 export default function Route() {
   const icons = {
@@ -28,9 +29,9 @@ export default function Route() {
   return (
     <Tab.Navigator
       initialRouteName="home"
-      screenOptions={({route}) => ({
-        tabBarIcon: ({color, size}) => {
-          const {name} = icons[route.name];
+      screenOptions={({ route }) => ({
+        tabBarIcon: ({ color, size }) => {
+          const { name } = icons[route.name];
           return <Icon name={name} color={color} size={size} />;
         },
       })}
@@ -41,13 +42,14 @@ export default function Route() {
         },
         activeTintColor: '#000',
         inactiveTintColor: '#ddd',
-      }}>
+      }}
+    >
       <Tab.Screen
         name="Home"
         component={DashboardNavigation}
         options={{
           title: 'Inicio',
-          headerTransparent: true,
+
         }}
       />
       <Tab.Screen

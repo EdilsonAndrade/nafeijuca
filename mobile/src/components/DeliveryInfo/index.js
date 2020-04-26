@@ -12,7 +12,7 @@ export default function DeliveryInfo() {
     <DeliveryInfoView>
 
       <DeliveryBikeTimeAndPriceContainer>
-        <Icon name="directions-bike" size={32} color="#000" />
+        <Icon name="motorcycle" size={32} color="#000" />
         <DeliveryPriceTimeContainer>
           <TimeTextContent>Entrega em 30-40 min</TimeTextContent>
           <PriceContent>Valor da entrega R$ 9,00</PriceContent>

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import Geolocation from '@react-native-community/geolocation';
 import AsyncStorage from '@react-native-community/async-storage';
@@ -6,8 +7,10 @@ import { GMAPS_KEY } from 'react-native-dotenv';
 import GeoCode from 'react-geocode';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { Button, AddressText } from './styles';
+import * as UserActions from '~/store/modules/user/actions';
 
 export default function Location({ navigation }) {
+  const dispatch = useDispatch();
   const [location, setLocation] = useState();
 
 
@@ -22,6 +25,7 @@ export default function Location({ navigation }) {
           (position) => {
             const { latitude, longitude } = position.coords;
             if (latitude && longitude) {
+              dispatch(UserActions.setLocationSuccess({ latitude, longitude }));
               GeoCode.setApiKey(GMAPS_KEY);
               GeoCode.setLanguage('pt-BR');
               GeoCode.fromLatLng(latitude, longitude).then(

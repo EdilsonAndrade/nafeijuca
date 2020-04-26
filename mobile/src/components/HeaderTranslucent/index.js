@@ -11,7 +11,7 @@ export default function HeaderTranslucent({
   return (
     <AnimatedViewContainer size={size !== null ? size : ''}>
       <StatusBar
-        barStyle="defaut"
+        barStyle="dark-content"
         color="#fff"
         translucent
         backgroundColor="rgba(0, 0, 0, 0.0)"
