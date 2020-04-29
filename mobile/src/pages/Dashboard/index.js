@@ -8,7 +8,7 @@ import HeaderBackImage from '~/assets/capa.png';
 import Iconimage from '~/assets/icon.png';
 import Store from './Store';
 import HeaderTranslucent from '~/components/HeaderTranslucent';
-import Location from '~/components/Location';
+import LocationLabel from './LocationLabel';
 
 export default function Dashboard({ navigation }) {
   return (
@@ -21,7 +21,7 @@ export default function Dashboard({ navigation }) {
         opacity=".6"
       />
       <MainSafeAreaView>
-        <Location navigation={navigation} />
+        <LocationLabel navigation={navigation} />
         <TitleContent>
           Selecione uma filial
         </TitleContent>

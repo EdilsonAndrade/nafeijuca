@@ -1,57 +1,35 @@
 import styled from 'styled-components/native';
 
+export const Container = styled.View`
+background:#fff;
+flex:1;
+`;
 
-export const ContainerBackAndInput = styled.View`
-background:#eee;
+
+export const ViewContainer = styled.SafeAreaView`
+display:flex;
 flex-direction:row;
 align-items:center;
-justify-content:center;
-width:90%;
-border-radius:8px;
+justify-content:flex-start;
+width:315px;
+height:30px;
+
+left:-10px;
+padding:10px 0;
 `;
 
-export const InputAddress = styled.TextInput`
-font-size:15px;
-background:#eee;
-width:80%;
-
-padding:5px;
-color:#666;
-`;
-
-
-export const MainSafeAreaView = styled.SafeAreaView.attrs({
-
-})`
-  background: #fff;
-  margin-top:10px;
-  height:87%;
+export const StreetText = styled.Text`
+font-size:18px;
+color:#000;
 `;
 
 
-export const FlatListAddresses = styled.FlatList``;
-
-export const AddressContainer = styled.View`
-  display:flex;
-  flex-direction:row;
-  align-items:center;
-  padding:5px 15px;
+export const DetailsAddress = styled.Text``;
+export const ViewInfo = styled.View`
+ 
 `;
-
-export const AddressTitleAndDetailContent = styled.View`
-display: flex;
-margin-left:10px;
-`;
-
-export const AddressName = styled.Text.attrs({
-  numberOfLines: 2,
-})`
-font-size: 16px;
-color:#666;
-
-`;
-
-export const AddressDetail = styled.Text`
-font-size: 13px;
-color:#666;
+export const InfoText = styled.Text`
+text-align:center;
+color:#EB6B6B;
+font-weight:bold;
 `;

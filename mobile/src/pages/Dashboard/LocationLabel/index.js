@@ -29,18 +29,13 @@ export default function Location({ navigation }) {
               GeoCode.setApiKey(GMAPS_KEY);
               GeoCode.setLanguage('pt-BR');
               GeoCode.fromLatLng(latitude, longitude).then(
-                (response) => {
+                async (response) => {
                   const { address_components } = response.results[0];
                   const street = address_components[1].short_name;
                   const neiborhood = address_components[2].short_name;
                   setLocation(`${street} - ${neiborhood}`);
                   myLocation = `${street} - ${neiborhood}`;
-                  AsyncStorage.setItem('myAddress', myLocation).then(
-                    (response) => {
-                    },
-                    (error) => {
-                    },
-                  );
+                  await AsyncStorage.setItem('myAddress', myLocation);
                 },
                 (error) => {
                   console.tron.warn(error);

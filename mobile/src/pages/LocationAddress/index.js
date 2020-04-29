@@ -3,7 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {
-  Container, TitleContent, MainSafeAreaView, MainScrollViewVertical, ContainerInputAddress, InputAddress, FlatListAddresses,
+  Container, TitleContent, MainSafeAreaView, MainScrollViewVertical, ContainerInputAddress, ButtonAddress, TextAddress,
 } from './styles';
 import HeaderBackImage from '~/assets/mapa.png';
 import Header from '~/components/HeaderView';
@@ -33,7 +33,10 @@ export default function LocationAddress({ navigation }) {
           </TitleContent>
           <ContainerInputAddress>
             <Icon name="search" size={32} color="#EB6B6B" />
-            <InputAddress placeholder="Endereço e número" onFocus={() => navigation.navigate('SearchAddress')} />
+            <ButtonAddress onPress={() => navigation.navigate('SearchAddress')}>
+              <TextAddress>Endereço e número</TextAddress>
+            </ButtonAddress>
+
           </ContainerInputAddress>
         </Container>
 

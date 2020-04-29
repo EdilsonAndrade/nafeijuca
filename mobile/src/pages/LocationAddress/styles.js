@@ -1,5 +1,5 @@
 import styled from 'styled-components/native';
-import { SafeAreaView, FlatList } from 'react-native';
+import { SafeAreaView, TouchableWithoutFeedback } from 'react-native';
 
 
 export const MainSafeAreaView = styled(SafeAreaView)`
@@ -51,7 +51,12 @@ padding:5px;
 
 `;
 
-export const InputAddress = styled.TextInput`
+export const TextAddress = styled.Text`
 width:100%;
 font-size:15px;
+`;
+
+export const ButtonAddress = styled(TouchableWithoutFeedback)`
+width:100%;
+
 `;

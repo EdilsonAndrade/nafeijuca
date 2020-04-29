@@ -1,18 +1,18 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import PropTypes from 'prop-types';
 import Dashboard from '~/pages/Dashboard';
 import Product from '~/pages/Product';
 import LocationAddress from '~/pages/LocationAddress';
 import SearchAddress from '~/pages/SearchAddress';
-
+import MapAddress from '~/pages/MapAddress';
+import AddressConfirmation from '~/pages/AddressConfirmation';
 
 const Stack = createStackNavigator();
 
-export default function DashboardNavigation({ navigation }) {
+export default function DashboardNavigation() {
   return (
     <Stack.Navigator
-      initialRouteName="Dashboard"
+
       screenOptions={{
         headerShown: false,
       }}
@@ -25,41 +25,27 @@ export default function DashboardNavigation({ navigation }) {
       <Stack.Screen
         name="Product"
         component={Product}
-        options={
-          {
-            title: '',
-          }
-        }
+
       />
       <Stack.Screen
         name="LocationAddress"
         component={LocationAddress}
-        options={
-          {
-            title: '',
-          }
-        }
+
       />
       <Stack.Screen
         name="SearchAddress"
         component={SearchAddress}
-        options={
-          {
-            title: '',
 
-          }
-        }
       />
+      <Stack.Screen
+        name="MapAddress"
+        component={MapAddress}
+      />
+      <Stack.Screen
+        name="AddressConfirmation"
+        component={AddressConfirmation}
+      />
+
     </Stack.Navigator>
   );
 }
-
-DashboardNavigation.propTypes = {
-  navigation: PropTypes.shape({
-    goBack: PropTypes.func,
-  }),
-};
-
-DashboardNavigation.defaultProps = {
-  navigation: {},
-};
