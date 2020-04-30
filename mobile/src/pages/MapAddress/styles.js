@@ -1,6 +1,6 @@
 import styled from 'styled-components/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { TouchableHighlight } from 'react-native';
+import { RectButton } from 'react-native-gesture-handler';
 
 export const MarkerView = styled.View`
   
@@ -41,10 +41,10 @@ align-items:center;
 justify-content:center;
 width:90%;
 top:80%;
-left:7%;
+left:5%;
 
 `;
-export const ConfirmButton = styled(TouchableHighlight)`
+export const ConfirmButton = styled(RectButton)`
   background-color:#ffc700;
   align-self: stretch;
   width:100%;

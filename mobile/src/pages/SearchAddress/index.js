@@ -27,7 +27,7 @@ export default function SearchAddress({ navigation }) {
       latitude: location.lat,
       longitude: location.lng,
       address: {
-        addressLine: address_components.length > 5 ? address_components[1].short_name : address_components[0].short_name,
+        street: address_components.length > 5 ? address_components[1].short_name : address_components[0].short_name,
         number: address_components.length > 5 ? address_components[0].short_name : 0,
         neighborhood: address_components.length > 5 ? address_components[2].short_name : address_components[1].short_name,
         city: address_components.length > 5 ? address_components[3].short_name : address_components[2].short_name,
@@ -35,7 +35,7 @@ export default function SearchAddress({ navigation }) {
       },
     }));
 
-    await AsyncStorage.setItem('myAddress', myLocation);
+    await AsyncStorage.setItem('myAddress', JSON.stringify(myLocation));
 
     navigation.navigate('MapAddress');
   };

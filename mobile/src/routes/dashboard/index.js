@@ -44,6 +44,7 @@ export default function DashboardNavigation() {
       <Stack.Screen
         name="AddressConfirmation"
         component={AddressConfirmation}
+
       />
 
     </Stack.Navigator>

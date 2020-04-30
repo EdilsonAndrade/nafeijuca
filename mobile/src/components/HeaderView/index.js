@@ -31,8 +31,9 @@ HeaderView.propTypes = {
   navigation: PropTypes.shape({
     goBack: PropTypes.func,
   }),
-  headerSize: PropTypes.string,
+  headerSize: PropTypes.string.isRequired,
   backButtonColor: PropTypes.string,
+  imageSize: PropTypes.string.isRequired,
 };
 HeaderView.defaultProps = {
   showShare: false,
@@ -41,6 +42,5 @@ HeaderView.defaultProps = {
   iconImage: null,
   opacity: null,
   navigation: {},
-  headerSize: '',
   backButtonColor: '',
 };

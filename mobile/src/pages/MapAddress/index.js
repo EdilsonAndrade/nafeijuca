@@ -29,8 +29,8 @@ export default function MapAddress({ navigation }) {
         const street = address_components.length > 5 ? address_components[1].short_name : address_components[0].short_name;
         const neiborhood = address_components.length > 5 ? address_components[2].short_name : address_components[1].short_name;
 
-        const myLocation = `${street} - ${neiborhood}`;
-        await AsyncStorage.setItem('myAddress', myLocation);
+        const myLocation = { address: { street, neighborhood: neiborhood } };
+        await AsyncStorage.setItem('myAddress', JSON.stringify(myLocation));
 
         dispatch(UserActions.setLocationSuccess({
           latitude,
