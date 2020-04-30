@@ -32,5 +32,5 @@ align-items:center;
 width:100%;
 `;
 export const ActivityIndicatorText = styled.Text`
-
+text-align:center;
 `;

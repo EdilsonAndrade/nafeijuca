@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -25,6 +25,9 @@ import * as UserActions from '~/store/modules/user/actions';
 
 export default function AddressConfirmation({ navigation }) {
   const dispatch = useDispatch();
+  const addressLineTwoRef = useRef();
+  const referencyRef = useRef();
+
 
   const user = useSelector((state) => state.user);
   const [addressNumber, setAddressNumber] = useState(user.address.number);
@@ -53,7 +56,6 @@ export default function AddressConfirmation({ navigation }) {
       },
     };
     await AsyncStorage.setItem('myAddress', JSON.stringify(myLocation));
-
     navigation.navigate('Dashboard');
   };
   return (
@@ -81,14 +83,14 @@ export default function AddressConfirmation({ navigation }) {
           {' '}
         </AddressInfo>
         <ContainerNumberNeiborhood>
-          <NumberInputText placeholder="Número" value={addressNumber} onChangeText={setAddressNumber} />
+          <NumberInputText returnKeyType="next" onSubmitEditing={() => addressLineTwoRef.current.focus()} placeholder="Número" autoFocus={!addressNumber} value={addressNumber} onChangeText={setAddressNumber} />
           <AddressLineTwoContainer>
-            <AddressLineTwoInputText placeholder="Complemento" value={addressLineTwo} onChangeText={setAddressLineTwo} />
+            <AddressLineTwoInputText returnKeyType="next" onSubmitEditing={() => referencyRef.current.focus()} ref={addressLineTwoRef} placeholder="Complemento" autoFocus={!!addressNumber} value={addressLineTwo} onChangeText={setAddressLineTwo} />
             <AddressInfo>Apto / Bloco / Casa </AddressInfo>
           </AddressLineTwoContainer>
 
         </ContainerNumberNeiborhood>
-        <ReferenceInputText placeholder="Ponto de referência" value={referency} onChangeText={setReferency} />
+        <ReferenceInputText ref={referencyRef} placeholder="Ponto de referência" value={referency} onChangeText={setReferency} />
         <FavorityLabel>Favoritar como</FavorityLabel>
         <FavorityButtonsContainer>
           <FavoriteButton active={favorite === 'HOME'} onPress={() => setFavorite('HOME')}>
@@ -113,7 +115,8 @@ export default function AddressConfirmation({ navigation }) {
 AddressConfirmation.propTypes = {
   navigation: PropTypes.shape({
     goBack: PropTypes.func,
-    navigation: PropTypes.func,
+    navigate: PropTypes.func,
+
   }),
 };
 AddressConfirmation.defaultProps = {

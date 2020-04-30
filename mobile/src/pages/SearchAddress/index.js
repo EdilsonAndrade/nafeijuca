@@ -21,19 +21,30 @@ export default function SearchAddress({ navigation }) {
   const handleSelectAddress = async (data, details) => {
     const { geometry } = details;
     const { location } = geometry;
-    const myLocation = data.description;
+
     const { address_components } = details;
-    dispatch(UserActions.setLocationSuccess({
+    const myLocation = {
       latitude: location.lat,
       longitude: location.lng,
       address: {
-        street: address_components.length > 5 ? address_components[1].short_name : address_components[0].short_name,
-        number: address_components.length > 5 ? address_components[0].short_name : 0,
-        neighborhood: address_components.length > 5 ? address_components[2].short_name : address_components[1].short_name,
-        city: address_components.length > 5 ? address_components[3].short_name : address_components[2].short_name,
-        state: address_components.length > 5 ? address_components[4].short_name : address_components[3].short_name,
+        street: address_components.length > 5
+          ? address_components[1].short_name
+          : address_components[0].short_name,
+        number: address_components.length > 5
+          ? address_components[0].short_name
+          : 0,
+        neighborhood: address_components.length > 5
+          ? address_components[2].short_name
+          : address_components[1].short_name,
+        city: address_components.length > 5
+          ? address_components[3].short_name
+          : address_components[2].short_name,
+        state: address_components.length > 5
+          ? address_components[4].short_name
+          : address_components[3].short_name,
       },
-    }));
+    };
+    dispatch(UserActions.setLocationSuccess(myLocation));
 
     await AsyncStorage.setItem('myAddress', JSON.stringify(myLocation));
 
