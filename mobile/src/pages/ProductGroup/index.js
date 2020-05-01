@@ -1,8 +1,10 @@
 import React, { useEffect } from 'react';
+import socketio from 'socket.io-client';
 import { useSelector, useDispatch } from 'react-redux';
-import { View, Text } from 'react-native';
 import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import { API_URL } from 'react-native-dotenv';
+import { YellowBox } from 'react-native';
 import HeaderTranslucent from '~/components/HeaderTranslucent';
 import HeaderBackProduct from '~/assets/capaproduct.jpg';
 import {
@@ -19,10 +21,23 @@ import * as ProductGroupActions from '~/store/modules/productGroup/actions';
 import Category from './Category';
 import Product from './Product';
 
+YellowBox.ignoreWarnings([
+  'Unrecognized WebSocket connection option(s) `agent`, `perMessageDeflate`, `pfx`, `key`, `passphrase`, `cert`, `ca`, `ciphers`, `rejectUnauthorized`. Did you mean to put these under `headers`?',
+]);
 export default function ProductGroup({ navigation }) {
   const store = useSelector((state) => state.store);
   const productGroups = useSelector((state) => state.productGroup.productGroups);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    const socket = socketio(API_URL, {
+      query: { storeId: store.id },
+    });
+
+    socket.on('product_change', (socketData) => {
+      dispatch(ProductGroupActions.loadSuccess(socketData));
+    });
+  }, []);
 
   useEffect(() => {
     dispatch(ProductGroupActions.loadRequest(store.id));

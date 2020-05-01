@@ -120,6 +120,7 @@ class ProductGroupController {
           ],
         },
       ],
+      order: ['name'],
     });
 
     return res.json(productsGoups);

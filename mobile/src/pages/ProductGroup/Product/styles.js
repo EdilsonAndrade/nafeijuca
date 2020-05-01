@@ -21,7 +21,7 @@ export const ProductDetailText = styled.Text`
 font-size:16px;
 `;
 export const TitleAndPriceContainer = styled.View`
-
+width:70%;
 `;
 
 export const PriceContainer = styled.View`

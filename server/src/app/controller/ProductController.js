@@ -31,6 +31,34 @@ class ProductController {
     }
     const product = await Product.create(req.body);
 
+    const storeIdSocket = req.connectedStores[storeId];
+    if (storeIdSocket) {
+      const productsGoups = await ProductGroup.findAll({
+        where: { storeId },
+        include: [
+          {
+            model: Store,
+          },
+          {
+            model: Product,
+            required: false,
+            include: [
+              {
+                model: Store,
+              },
+              {
+                model: SubItem,
+              },
+              {
+                model: File,
+              },
+            ],
+          },
+        ],
+        order: ['name'],
+      });
+      req.io.to(storeIdSocket).emit('product_change', productsGoups);
+    }
     return res.json(product);
   }
 
@@ -43,6 +71,42 @@ class ProductController {
     }
 
     const updatedProduct = await product.update(req.body);
+    const productWithStore = await Product.findOne({
+      where: { id: productId },
+      include: [
+        {
+          model: Store,
+        },
+      ],
+    });
+    const storeIdSocket = req.connectedStores[productWithStore.Store.id];
+    if (storeIdSocket) {
+      const productsGoups = await ProductGroup.findAll({
+        where: { storeId: productWithStore.Store.id },
+        include: [
+          {
+            model: Store,
+          },
+          {
+            model: Product,
+            required: false,
+            include: [
+              {
+                model: Store,
+              },
+              {
+                model: SubItem,
+              },
+              {
+                model: File,
+              },
+            ],
+          },
+        ],
+        order: ['name'],
+      });
+      req.io.to(storeIdSocket).emit('product_change', productsGoups);
+    }
 
     return res.json(updatedProduct);
   }
