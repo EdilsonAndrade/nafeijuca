@@ -26,7 +26,7 @@ export default function Store({ navigation }) {
 
         if (response.data.length === 1) {
           dispatch(selectStoreSuccess(response.data[0]));
-          navigation.navigate('Product');
+          navigation.navigate('ProductGroup');
         }
         setLoading(false);
       } catch (err) {
@@ -48,7 +48,7 @@ export default function Store({ navigation }) {
   const selectStore = (store) => {
     setStoreSelected(store.id);
     dispatch(selectStoreSuccess(store));
-    navigation.navigate('Product');
+    navigation.navigate('ProductGroup');
   };
 
   return (

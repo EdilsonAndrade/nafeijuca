@@ -24,6 +24,8 @@ routes.put('/confirmation', ConfirmationController.update);
 routes.get('/users/:userId/confirmation', ConfirmationController.index);
 routes.post('/sessions', SessionController.store);
 routes.get('/stores/', StoreController.index);
+routes.get('/stores/:storeId/productgroups', ProductGroupController.index);
+
 routes.use(authMiddleware, confirmedMiddleware);
 // users
 routes.put('/users/:userId', UserController.update);
@@ -59,7 +61,7 @@ routes.delete(
   isAdmin,
   ProductGroupController.delete
 );
-routes.get('/stores/:storeId/productgroups', ProductGroupController.index);
+
 // products routes
 routes.post('/products', isAdmin, ProductController.store);
 routes.put('/products/:productId', isAdmin, ProductController.update);

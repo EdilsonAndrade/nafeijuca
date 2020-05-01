@@ -1,7 +1,7 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import Dashboard from '~/pages/Dashboard';
-import Product from '~/pages/Product';
+import ProductGroup from '~/pages/ProductGroup';
 import LocationAddress from '~/pages/LocationAddress';
 import SearchAddress from '~/pages/SearchAddress';
 import MapAddress from '~/pages/MapAddress';
@@ -23,8 +23,9 @@ export default function DashboardNavigation() {
 
       />
       <Stack.Screen
-        name="Product"
-        component={Product}
+        name="ProductGroup"
+        component={ProductGroup}
+
 
       />
       <Stack.Screen

@@ -2,14 +2,17 @@ import styled from 'styled-components/native';
 import { TouchableOpacity } from 'react-native';
 
 export const Button = styled(TouchableOpacity)`
-  display:flex;
-  flex-direction:row;
-  align-items:center;
-  
   width:94%;
-
+  justify-content:center;
+  align-items:center;
 `;
 
+export const AddressContainer = styled.View`
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  
+`;
 
 export const AddressText = styled.Text`
   margin-left:5px;

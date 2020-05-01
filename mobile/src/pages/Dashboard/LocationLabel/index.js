@@ -9,7 +9,7 @@ import { GMAPS_KEY } from 'react-native-dotenv';
 import GeoCode from 'react-geocode';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {
-  Button, AddressText, CityAndInfosContainer, CityAndInfosText, ActivityIndicatorView, ActivityIndicatorText,
+  Button, AddressContainer, AddressText, CityAndInfosContainer, CityAndInfosText, ActivityIndicatorView, ActivityIndicatorText,
 } from './styles';
 import * as UserActions from '~/store/modules/user/actions';
 
@@ -98,28 +98,30 @@ export default function Location({ navigation }) {
     <>
       <Button onPress={() => navigation.navigate('LocationAddress')}>
         <>
-          <AddressText numberOfLines={3}>
+          <AddressContainer>
+            <AddressText numberOfLines={3}>
 
-            {location.address.street}
-            {location.address.number ? `, ${location.address.number}` : null}
-            {location.address.addressLineTwo ? ` - ${location.address.addressLineTwo}` : null}
+              {location.address.street}
+              {location.address.number ? `, ${location.address.number}` : null}
+              {location.address.addressLineTwo ? ` - ${location.address.addressLineTwo}` : null}
 
-          </AddressText>
+            </AddressText>
+          </AddressContainer>
           {renderSearchingAddress()}
 
 
+          <CityAndInfosContainer>
+            <CityAndInfosText>
+
+              {location.address.neighborhood}
+              {location.address.city ? ` - ${location.address.city}` : ''}
+              {location.address.state ? ` - ${location.address.state}` : ''}
+
+            </CityAndInfosText>
+          </CityAndInfosContainer>
         </>
 
       </Button>
-      <CityAndInfosContainer>
-        <CityAndInfosText>
-
-          {location.address.neighborhood}
-          {location.address.city ? ` - ${location.address.city}` : ''}
-          {location.address.state ? ` - ${location.address.state}` : ''}
-
-        </CityAndInfosText>
-      </CityAndInfosContainer>
     </>
   );
 }

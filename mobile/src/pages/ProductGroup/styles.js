@@ -2,8 +2,9 @@ import styled from 'styled-components/native';
 import { SafeAreaView } from 'react-native';
 
 export const MainSafeAreaView = styled(SafeAreaView)`
-margin:15px;
-
+flex:1;
+padding:15px;
+background:#fff;
 `;
 
 export const MainScrollViewVertical = styled.ScrollView.attrs({
