@@ -34,12 +34,13 @@ export const PriceText = styled.Text`
 color:#ffc700;
 font-size:18px;
 font-weight:bold;
+width:70%
 
 `;
 export const PromotionPrice = styled.Text`
 margin-left:10px;
 text-decoration:line-through;
-font-size:17px;
+font-size:15px;
 color:#696969;
 `;
 

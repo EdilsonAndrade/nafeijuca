@@ -54,7 +54,7 @@ export default function Product({ item }) {
         </TitleAndPriceContainer>
         {item.File
           ? <ImageProduct source={{ uri: item.File.url.replace('localhost', BACKENDIP) }} />
-          : <Icon name="broken-image" size={80} /> }
+          : <Icon name="broken-image" size={90} /> }
       </ProductViewContainer>
 
 

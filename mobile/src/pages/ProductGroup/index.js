@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { API_URL } from 'react-native-dotenv';
-import { YellowBox } from 'react-native';
+import { YellowBox, View } from 'react-native';
 import HeaderTranslucent from '~/components/HeaderTranslucent';
 import HeaderBackProduct from '~/assets/capaproduct.jpg';
 import {
@@ -44,15 +44,18 @@ export default function ProductGroup({ navigation }) {
   }, []);
 
   const storeSelected = useSelector((state) => state.store);
-
   const renderProductGroup = () => productGroups.map((productGroup) => (
-    <>
-      <Category key={productGroup.id} item={productGroup} />
+    <View key={productGroup.id}>
+      <Category item={productGroup} />
 
-      {productGroup.Products.map((product) => (
-        <Product key={product.id} item={product} />
-      ))}
-    </>
+      {productGroup.Products.map(((product) => {
+        if (product.active) {
+          return (
+            <Product key={product.id} item={product} />
+          );
+        }
+      }))}
+    </View>
 
   ));
   return (
