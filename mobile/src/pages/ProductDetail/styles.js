@@ -1,20 +1,26 @@
 import styled from 'styled-components/native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
-export const MainViewContainer = styled.View`
-  padding:10px 0;
+export const MainViewContainer = styled.ScrollView`
+  flex:1;
+  padding:10px;
 `;
 
-export const SeeDetailButton = styled(TouchableOpacity)``;
 export const ProductViewContainer = styled.View`
-display:flex;
-flex-direction:row;
-justify-content:space-between;
 width:100%;
-opacity:${(props) => (props.active ? 1 : 0.2)};
+justify-content:center;
+align-items:center;
 
 
 `;
+export const ImageProduct = styled.Image`
+width:100%;
+height:180PX;
+align-self:stretch;
+border-radius:8px;
+margin-bottom:10px;
+`;
+
 export const ProductTitleText = styled.Text`
 font-size:17px;
 font-weight:700;
@@ -45,19 +51,4 @@ margin-left:10px;
 text-decoration:line-through;
 font-size:15px;
 color:#696969;
-`;
-
-export const ImageProduct = styled.Image`
-width:80px;
-height:80px;
-border-radius:8px;
-`;
-
-export const DeactiveView = styled.View`
-display:flex;
-justify-content:center;
-`;
-export const DeactiveText = styled.Text`
-font-size:18px;
-color:#F02D2D;
 `;

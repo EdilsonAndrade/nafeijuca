@@ -1,85 +1,38 @@
 import React from 'react';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createStackNavigator } from '@react-navigation/stack';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import DashboardNavigation from './dashboard';
-import ProfileNavigation from './profile';
-import SearchNavigation from './search';
-import OrdersNavigation from './order';
+import MainTabNavigation from './maintab';
+import ProductDetail from '~/pages/ProductDetail';
 
-const Tab = createBottomTabNavigator();
+const Stack = createStackNavigator();
 
 export default function Route() {
-  const icons = {
-    Home: {
-      name: 'home',
-    },
-    Search: {
-      name: 'search',
-    },
-    Order: {
-      name: 'event-note',
-    },
-    Mail: {
-      name: 'mail-outline',
-    },
-    Profile: {
-      name: 'person-outline',
-    },
-  };
   return (
-    <Tab.Navigator
-      initialRouteName="home"
-      screenOptions={({ route }) => ({
-        tabBarIcon: ({ color, size }) => {
-          const { name } = icons[route.name];
-          return <Icon name={name} color={color} size={size} />;
-        },
-      })}
-      tabBarOptions={{
-        style: {
-          backgroundColor: '#fff',
-          borderTopColor: 'rgba(255, 255, 253, 0.2)',
-        },
-        activeTintColor: '#000',
-        inactiveTintColor: '#ddd',
+    <Stack.Navigator
+
+      screenOptions={{
+        headerShown: false,
       }}
     >
-      <Tab.Screen
-        name="Home"
-        component={DashboardNavigation}
-        options={{
-          title: 'Inicio',
+      <Stack.Screen
+        name="Main"
+        component={MainTabNavigation}
 
-        }}
       />
-      <Tab.Screen
-        name="Search"
-        component={SearchNavigation}
-        options={{
-          title: 'Pesquisar',
-        }}
+      <Stack.Screen
+        name="ProductDetail"
+        component={ProductDetail}
+        options={({ navigation }) => ({
+          headerShown: true,
+          headerTitle: 'DETALHES DO ITEM',
+          headerLeft: () => (
+            <Icon name="keyboard-arrow-left" onPress={() => navigation.goBack()} size={42} color="#ffc700" />
+          ),
+        })}
+
       />
-      <Tab.Screen
-        name="Order"
-        component={OrdersNavigation}
-        options={{
-          title: 'Pedidos',
-        }}
-      />
-      <Tab.Screen
-        name="Profile"
-        component={ProfileNavigation}
-        options={{
-          title: 'Perfil',
-        }}
-      />
-      <Tab.Screen
-        name="Mail"
-        component={ProfileNavigation}
-        options={{
-          title: 'Mensagens',
-        }}
-      />
-    </Tab.Navigator>
+
+
+    </Stack.Navigator>
   );
 }

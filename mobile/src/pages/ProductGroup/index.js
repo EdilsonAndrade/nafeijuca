@@ -48,13 +48,9 @@ export default function ProductGroup({ navigation }) {
     <View key={productGroup.id}>
       <Category item={productGroup} />
 
-      {productGroup.Products.map(((product) => {
-        if (product.active) {
-          return (
-            <Product key={product.id} item={product} />
-          );
-        }
-      }))}
+      {productGroup.Products.map(((product) => (
+        <Product key={product.id} item={product} navigation={navigation} />
+      )))}
     </View>
 
   ));
