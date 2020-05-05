@@ -6182,6 +6182,13 @@ react-native@0.62.2:
     use-subscription "^1.0.0"
     whatwg-fetch "^3.0.0"
 
+react-navigation-collapsible@^5.6.0:
+  version "5.6.0"
+  resolved "https://registry.yarnpkg.com/react-navigation-collapsible/-/react-navigation-collapsible-5.6.0.tgz#d5c935e375b341985b129b201c80fd3f770d0e49"
+  integrity sha512-/2Lk6PVTwNVDloHMe1pEW6x+x5fTtflABBgOcz2UuXOau4IHBhnieHcSGg9KE3+bBhrcA1gk2HqR5WW2AWgnyw==
+  dependencies:
+    react-native-iphone-x-helper "^1.2.1"
+
 react-redux-saga@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/react-redux-saga/-/react-redux-saga-1.0.2.tgz#5f13a657d1333f074c0a5ed893fcf936f4f2549c"

@@ -1,5 +1,4 @@
 import styled from 'styled-components/native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 
 export const MainViewContainer = styled.ScrollView`
   flex:1;
