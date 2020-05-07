@@ -6,21 +6,23 @@ import MiddleHeaderBar from '~/components/MiddleHeaderBar';
 import { AnimatedViewContainer, ImageContent } from './styles';
 
 export default function HeaderTranslucent({
-  showBack, showShare, headerBackImage, iconImage, opacity, navigation, size,
+  showBack, showShare, headerBackImage, iconImage, opacity, navigation, size, style, showMe,
 }) {
   return (
-    <AnimatedViewContainer size={size !== null ? size : ''}>
-      <StatusBar
-        barStyle="dark-content"
-        color="#fff"
-        translucent
-        backgroundColor="rgba(0, 0, 0, 0.0)"
-      />
-      <ImageContent source={headerBackImage} opacity={opacity} />
-      <MiddleHeaderBar showBack={showBack} showShare={showShare} iconImage={iconImage} navigation={navigation} />
+    <>
+      <AnimatedViewContainer size={size !== null ? size : ''} style={style}>
+        <StatusBar
+          barStyle="dark-content"
+          color="#fff"
+          translucent
+          backgroundColor="rgba(0, 0, 0, 0.0)"
+        />
+        <ImageContent source={headerBackImage} opacity={opacity} style={style} />
+        <MiddleHeaderBar showBack={showBack} showShare={showShare} iconImage={iconImage} navigation={navigation} />
 
 
-    </AnimatedViewContainer>
+      </AnimatedViewContainer>
+    </>
   );
 }
 
