@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { BACKENDIP } from 'react-native-dotenv';
+import SubItem from './SubItem';
 import {
   MainViewContainer, ProductViewContainer, ProductTitleText,
   ProductDetailText, TitleAndPriceContainer, PriceContainer, PriceText, PromotionPrice,
@@ -10,7 +11,9 @@ import {
 
 export default function ProductDetail({ route, navigation }) {
   const { product } = route.params;
-
+  useEffect(() => {
+    console.tron.warn(JSON.stringify(product));
+  }, []);
   return (
     <MainViewContainer>
       <ProductViewContainer>
@@ -21,7 +24,7 @@ export default function ProductDetail({ route, navigation }) {
           <ProductTitleText>
             {product.name}
           </ProductTitleText>
-          <ProductDetailText numberOfLines={2}>
+          <ProductDetailText>
             {product.description}
           </ProductDetailText>
           <PriceContainer>
@@ -54,7 +57,7 @@ export default function ProductDetail({ route, navigation }) {
               )}
 
           </PriceContainer>
-
+          <SubItem />
         </TitleAndPriceContainer>
 
       </ProductViewContainer>

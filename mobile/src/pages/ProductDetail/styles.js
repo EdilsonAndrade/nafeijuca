@@ -2,16 +2,22 @@ import styled from 'styled-components/native';
 
 export const MainViewContainer = styled.ScrollView`
   flex:1;
-  padding:10px;
 `;
 
 export const ProductViewContainer = styled.View`
+flex:1;
 width:100%;
 justify-content:center;
 align-items:center;
 
 
 `;
+export const TitleAndPriceContainer = styled.View`
+padding:10px;
+justify-content:center;
+
+`;
+
 export const ImageProduct = styled.Image`
 width:100%;
 height:180PX;
@@ -27,9 +33,6 @@ color:#696969;
 `;
 export const ProductDetailText = styled.Text`
 font-size:16px;
-`;
-export const TitleAndPriceContainer = styled.View`
-width:70%;
 `;
 
 export const PriceContainer = styled.View`
