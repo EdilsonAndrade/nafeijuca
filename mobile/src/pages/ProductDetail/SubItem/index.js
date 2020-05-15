@@ -4,35 +4,25 @@ import {
   SubItemHeaderContainer, InfoTitleView, TitleText, QuantityText, MandatoryView, MandatoryText, ItemView, ItemsContainer,
 } from './styles';
 
-const SubItem = () => {
-  const [subItems, setSubItems] = useState([]);
+const SubItem = ({ items }) => {
   const [checkedItem, setCheckedItem] = useState();
-  useEffect(() => {
-    setSubItems([{
-      name: 'Suco de melancia Garrafa 500ml',
-      price: 'R$ 5,09',
-    },
-    {
-      name: 'Suco de Limão Garrafa 500ml',
-      price: 'R$ 5,09',
-    }, {
-      name: 'Suco de Laranja Garrafa 500ml',
-      price: 'R$ 5,09',
-    }]);
-  }, []);
+
 
   return (
     <>
       <SubItemHeaderContainer>
         <InfoTitleView>
-          <TitleText>Escolha o item</TitleText>
+          <TitleText>
+            {items[0].ProductsItems.mandatory ? `Selecione até ${items[0].ProductsItems.max} ${items[0].ProductsItems.max > 1 ? 'items' : 'item'}` : 'Deseja adicionar mais items ?'}
+            {' '}
+          </TitleText>
           <QuantityText>0 de 1</QuantityText>
         </InfoTitleView>
         <MandatoryView>
           <MandatoryText>Obrigatório</MandatoryText>
         </MandatoryView>
       </SubItemHeaderContainer>
-      {subItems.map((item) => (
+      {items.map((item) => (
         <ItemsContainer key={item.name}>
           <InfoTitleView>
             <ItemView>

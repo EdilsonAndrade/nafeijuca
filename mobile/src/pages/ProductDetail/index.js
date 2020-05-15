@@ -11,6 +11,7 @@ import {
 
 export default function ProductDetail({ route, navigation }) {
   const { product } = route.params;
+  const { SubItems } = product;
   useEffect(() => {
     console.tron.warn(JSON.stringify(product));
   }, []);
@@ -57,7 +58,8 @@ export default function ProductDetail({ route, navigation }) {
               )}
 
           </PriceContainer>
-          <SubItem />
+          <SubItem items={SubItems} />
+
         </TitleAndPriceContainer>
 
       </ProductViewContainer>
