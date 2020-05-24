@@ -1,0 +1,892 @@
+*{
+    margin:0;
+    padding:0;
+    font-family: 'Rubik', sans-serif;
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    
+ }
+
+ .container{
+    width:84%;
+    margin:auto;
+}
+
+/* header */
+nav{
+    width:100%;
+    background-color: rgb(119, 66, 45,0.9);
+    Position: fixed;
+    height: auto;
+    z-index:40;
+    
+}
+
+.nav-wrapper{
+    color:white;
+    display: flex;
+    justify-content: space-between;
+
+}
+
+
+div.logo img{
+    position: absolute;
+    z-index: 110;
+    width:13%;
+    margin-left: -5%;
+    border-radius: 50%;
+    
+ }
+ div.menu{
+     width: 53%;
+ }
+ul.menu-desktop{
+    line-height: 60px;
+    display: flex;
+    justify-content: space-between;
+    list-style-type: none;
+    
+}
+
+ul.menu-desktop li{
+    line-height: 60px;
+    color:white;
+    flex:1;
+    text-align: center;
+    transition: 0.9s;
+
+}
+ul.menu-desktop li a{
+    line-height: 80px;
+
+
+}
+ul.menu-desktop li:hover{
+background-color: #ffc700;
+}
+
+ul.menu-desktop li#instagram{
+   text-align: center
+
+}
+ul.menu-desktop li#facebook{
+    text-align: left
+}
+
+ul.menu-desktop li#instagram:hover{
+    background-color: transparent
+ 
+ }
+ ul.menu-desktop li#facebook:hover{
+    background-color: transparent
+ }
+
+ul.menu-desktop li a img.instagram{
+    width:45%;
+    margin-top: 15px
+
+}
+ul.menu-desktop li a img.facebook{
+    width:55%;
+    margin-top: 9px;
+}
+
+
+ul.menu-desktop li a{
+   text-decoration: none;
+   color:white;
+    
+}
+
+.banner{
+    width: 100%;
+    height: auto;
+}
+.banner img{
+    width:100%;
+    height: auto;
+    opacity: .9;
+}
+div.banner div.img-menu{
+    position: absolute;
+    z-index: 20;
+    margin-top: -563px;
+    margin-left: 10%;
+    opacity: .9;
+     
+}
+div.banner.text{
+    position: absolute;
+    margin-top: -25%;
+    margin-left: 15%;
+    font-size: 38px;
+    text-align: center;
+    color: white;
+    width: 80%;
+}
+
+
+div.logo-mobile{
+    display:none;
+}
+
+span.destaque{
+    color:rgb(255, 165, 0,.8);
+}
+
+div.menu ul.menu-mobile{
+    display:none;
+    
+ }
+
+ /* fim header */
+
+ /* QUEM SOMOS */
+ section.quemSomos{
+    margin-top:20px;
+    margin-bottom: 20px;
+}
+section.quemSomos article{
+    
+    padding:20px;
+    width:30%;
+    margin: auto;
+    text-align: center;
+
+}
+section.quemSomos article h1{
+  font-size: 50px
+    
+}
+span.somos{
+    color:#ffc700;
+}
+/* FIM QUEM SOMOS */
+
+/* FOTOS */
+
+
+section.fotos{
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    align-items: flex-start;    
+    
+}
+section.cardapio div.texto p.destaque{
+    color:#ffc700
+}
+div.foto-principal {
+    position: relative;
+    width: 29%;
+    height: 100%;
+    text-align: center;
+    margin-top: 1%;
+    margin-bottom: 21%;
+    margin-left: 0%;
+   
+}
+div.imagem-texto {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    clip: rect(0 500px 249px 0);
+}
+
+div.description{
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 230px;
+    background-color: rgba(0, 0, 0,.5);
+    z-index: 2;
+    padding: 5px;
+    transition: .5s;
+    bottom: -450px;
+}
+
+div.imagem-texto:hover{
+    cursor: pointer; 
+    
+} 
+div.description:hover{
+    transition: .5s;
+    bottom: -400px;
+}
+section.fotos div.foto-principal div img{
+    width:100%;
+}
+div.texto-foto{
+    position: absolute;
+    left:50%;
+    transform: translateX(-50%);
+    width: 100%;
+}
+div.description p{
+    font-size: 21px;
+    color: white;
+}
+div.description p.cite{
+    text-align: center;
+    font-size: 17px;
+}
+
+
+
+/* FIM FOTOS */
+
+/* CARDAPIO */
+section.cardapio article{
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+ }
+ section.cardapio article h2{
+     background-color:  rgb(119, 66, 45);
+   color: white;
+ }
+ 
+ section.cardapio div.texto-cardapio-preco{
+     display: flex;
+     justify-content: space-between;
+     width: 48%;
+     margin: auto;
+     text-align: left;
+   color:  black;
+   padding-bottom: 30px;
+   padding-top:30px;
+   border-bottom: 2px solid rgb(128, 128, 128, .4)
+ }
+ 
+ 
+ section.cardapio div div{
+    width:60%;
+ }
+ section.cardapio div div.texto p{
+     
+     font-size:14px;
+     font-weight: bold;
+  }
+ section.cardapio div h2{
+    color:rgb(255, 165, 0,.7);
+ }
+
+ /* FIM CARDÁPIO */
+
+ /* FOOTER */
+ footer.rodape{
+    height: 80px;
+    background-color:  rgb(119, 66, 45,0.9);
+    color:white;
+    line-height: 80px;
+  
+}
+footer.rodape div {
+    text-align: center;
+    margin:auto;
+}
+
+footer div h2 a{
+text-decoration: none;
+color:white;
+}
+
+ 
+
+ /* FIM FOOTER */
+
+
+/*media queries */
+
+
+/* celular portrait */
+@media (min-width:320px) and (max-width:468px) {
+
+    nav{
+        display: none;
+    }
+    div.logo-mobile{
+        display:block;
+        position: absolute;
+        margin-left: 27%;
+        z-index: 110;
+    }
+    div.logo-mobile img{
+     width: 23%;
+     margin-left: -26%;
+    margin-top: 18px;
+     
+ }
+
+         
+     
+ div.banner.text{
+    position: absolute;
+    margin-top: -39%;
+    margin-left: 15%;
+    font-size: 12px;
+    text-align: center;
+    color: white;
+    width: 71%;
+}
+
+     div.menu ul.menu-desktop{
+        display:none;
+        
+     }
+ 
+  
+      div.menu ul.menu-mobile{
+         display: flex;
+         justify-content: space-between;
+         list-style-type: none;
+         text-align: center;
+     
+     }
+     div.menu ul.menu-mobile li{
+         width: 25%;
+         line-height: 50px;
+     }
+     
+     div.menu ul.menu-mobile li a img{
+         width: 53%;
+         
+     
+     }
+ 
+     section.quemSomos article {
+         padding: 0;
+         width: 100%;
+         margin: auto;
+         text-align: center;
+        
+     }
+     section.quemSomos article h1 p{
+       
+         font-size:29px;
+     }
+     section.quemSomos article p{
+       
+         font-size:12px;
+     }
+ 
+ 
+div.foto-principal{
+    width: 100%;
+    height: 100%;
+    margin-bottom: 74%;
+}
+     /* fotos */
+     div.imagem-texto{
+        clip: rect(0 500px 181px 0);
+     }
+ div.description{
+     bottom:-383px;
+ }
+ div.description div p{
+     font-size: 18px;
+ }
+
+ div.description p.cite{
+    font-size: 13px;
+}
+div.description:hover{
+    bottom: -337px;
+}
+
+section.cardapio div.texto-cardapio-preco{
+width: 97%;
+}
+section.cardapio div div.texto h3{
+    font-size: 10px
+}
+section.cardapio div h2{
+    font-size: 12px;
+    width:30%;
+}
+section.cardapio div div.texto p{
+font-size: 9px;
+line-break: loose;
+}
+
+section.cardapio div div.texto span{
+    font-size:10px;
+}
+
+section.cardapio div.texto-cardapio-preco{
+    
+    width: 90%;
+    
+padding-bottom: 10px;
+padding-top:10px;
+}
+
+
+
+section.cardapio div div{
+    width:100%;
+}
+ 
+      div.banner div.img-menu{
+        
+         margin-top: -563px;
+         margin-left: 10%;
+         opacity: .9;
+         width: 87%;
+          
+     }
+ 
+ 
+
+  
+ 
+     footer div h2 a{
+         font-size: 16px;
+         
+     }
+ 
+     
+ footer.rodape div{
+     text-align: center;
+     margin: auto;
+     width: 72%;
+ }
+ 
+ }
+@media (min-width:360px) and (max-width:500px) and (orientation:portrait){
+
+    nav{
+        display: none;
+    }
+    div.logo-mobile{
+        display:block;
+        position: absolute;
+        margin-left: 27%;
+        z-index: 110;
+    }
+    div.logo-mobile img{
+     width: 23%;
+     margin-left: -26%;
+    margin-top: 18px;
+     
+ }
+
+         
+     
+ div.banner.text{
+    position: absolute;
+    margin-top: -39%;
+    margin-left: 15%;
+    font-size: 12px;
+    text-align: center;
+    color: white;
+    width: 71%;
+}
+
+     div.menu ul.menu-desktop{
+        display:none;
+        
+     }
+ 
+  
+      div.menu ul.menu-mobile{
+         display: flex;
+         justify-content: space-between;
+         list-style-type: none;
+         text-align: center;
+     
+     }
+     div.menu ul.menu-mobile li{
+         width: 25%;
+         line-height: 50px;
+     }
+     
+     div.menu ul.menu-mobile li a img{
+         width: 53%;
+         
+     
+     }
+ 
+     section.quemSomos article {
+         padding: 0;
+         width: 100%;
+         margin: auto;
+         text-align: center;
+        
+     }
+     section.quemSomos article h1 p{
+       
+         font-size:29px;
+     }
+     section.quemSomos article p{
+       
+         font-size:12px;
+     }
+ 
+ 
+div.foto-principal{
+    width: 100%;
+    height: 100%;
+    margin-bottom: 74%;
+}
+     /* fotos */
+     div.imagem-texto{
+        clip: rect(0 500px 201px 0);
+     }
+ div.description{
+     bottom:-399px;
+ }
+ div.description div p{
+     font-size: 22px;
+ }
+
+ div.description p.cite{
+    font-size: 16px;
+}
+div.description:hover{
+    bottom: -360px;
+}
+
+section.cardapio div.texto-cardapio-preco{
+width: 97%;
+}
+section.cardapio div div.texto h3{
+    font-size: 10px
+}
+section.cardapio div h2{
+    font-size: 12px;
+    width:30%;
+}
+section.cardapio div div.texto p{
+font-size: 9px;
+line-break: loose;
+}
+
+section.cardapio div div.texto span{
+    font-size:10px;
+}
+
+section.cardapio div.texto-cardapio-preco{
+    
+    width: 90%;
+    
+padding-bottom: 10px;
+padding-top:10px;
+}
+
+
+
+section.cardapio div div{
+    width:100%;
+}
+ 
+      div.banner div.img-menu{
+        
+         margin-top: -563px;
+         margin-left: 10%;
+         opacity: .9;
+         width: 87%;
+          
+     }
+ 
+ 
+
+  
+ 
+     footer div h2 a{
+         font-size: 16px;
+         
+     }
+ 
+     
+ footer.rodape div{
+     text-align: center;
+     margin: auto;
+     width: 72%;
+ }
+ 
+ }
+ 
+ 
+ 
+ /* celular landscape */
+ @media only screen and (max-width:640px) and (orientation:landscape){
+ 
+     nav{
+         display: none;
+     }
+     div.banner.text{
+        margin-top: -26%;
+        margin-left: 50%;
+        font-size: 23px;
+        transform: translateX(-50%);
+    }
+     div.logo-mobile{
+         display:block;
+         position: absolute;
+         margin-left: 27%;
+         z-index: 110;
+     }
+     div.logo-mobile img{
+      width: 23%;
+      margin-left: -26%;
+     margin-top: 18px;
+      
+  }
+      div.menu ul.menu-desktop{
+         display:none;
+         
+      }
+  
+   
+       div.menu ul.menu-mobile{
+          display: flex;
+          justify-content: space-between;
+          list-style-type: none;
+          text-align: center;
+      
+      }
+      div.menu ul.menu-mobile li{
+          width: 25%;
+          line-height: 50px;
+      }
+      
+      div.menu ul.menu-mobile li a img{
+          width: 53%;
+          
+      
+      }
+  
+      section.quemSomos article {
+          padding: 0;
+          width: 100%;
+          margin: auto;
+          text-align: center;
+         
+      }
+      section.quemSomos article h1 p{
+        
+          font-size:39px;
+      }
+      section.quemSomos article p{
+        
+          font-size:16px;
+      }
+  
+          /* fotos */
+          div.imagem-texto{
+            clip: rect(0 500px 102px 0);
+         }
+ div.description{
+    bottom:-315px;
+}
+div.description div p{
+    font-size: 11px;
+}
+
+div.description p.cite{
+   font-size: 9px;
+}
+div.description:hover{
+   bottom: -291px;
+}
+  
+      section.cardapio div div.texto h3{
+          font-size: 12px
+       }
+       section.cardapio div h2{
+          font-size: 12px;
+          width:30%;
+       }
+  
+       section.cardapio div div.texto span{
+          font-size:10px;
+       }
+       
+       section.cardapio div.texto-cardapio-preco{
+          
+           width: 90%;
+          
+         padding-bottom: 10px;
+         padding-top:10px;
+       }
+       
+       
+       section.cardapio div div{
+          width:100%;
+       }
+  
+       div.banner div.img-menu{
+         
+          margin-top: -563px;
+          margin-left: 10%;
+          opacity: .9;
+          width: 87%;
+           
+      }
+  
+  
+      section.fotos article {
+         
+          width: 100%;
+          margin-bottom: 10px;
+          margin-top: 10px;
+  
+      }
+      section.fotos article div.price{
+          width: 64%;
+          margin-left: 41px;
+          margin-top: -13%;
+          font-size: 9px;
+          color:white;
+          font-size: 16px;
+          border-bottom: 10px solid rgb(119, 66, 45,0.3);
+          opacity: 10;
+      }
+    
+    
+       
+  }
+
+
+
+  /* FIM MOBILE */
+
+/* TABLET */
+
+
+@media (min-width: 768px) and (max-width: 1024px) and (orientation:portrait){
+    
+    div.menu{
+        width: 83%;
+        font-size: 12px;
+    }
+
+    div.banner.text{
+        margin-left: 50%;
+        font-size: 23px;
+        transform: translateX(-50%);
+    }
+
+    div.banner picture img{
+        opacity: 0.8;
+    }
+
+
+    div#quemsomos section.quemSomos article {
+        width:64%;
+    }
+    section.quemSomos article {
+        padding: 0;
+        width: 100%;
+        margin: auto;
+        text-align: center;
+       
+    }
+    section.quemSomos article h1 p{
+      
+        font-size:49px;
+    }
+    section.quemSomos article p{
+      
+        font-size:26px;
+    }
+    section.cardapio div div{
+        width:65%;
+     }
+     section.cardapio div.texto-cardapio-preco{
+         width: 80%
+     } 
+     
+/* fotos */
+div.imagem-texto{
+clip: rect(0 500px 124px 0);
+}
+div.description{
+bottom:-330px;
+}
+div.description div p{
+font-size: 15px;
+}
+
+div.description p.cite{
+font-size:12px;
+}
+div.description:hover{
+bottom: -291px;
+}
+    
+
+}
+
+
+@media (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
+    div.menu{
+        width: 81%;
+    }
+    div.banner.text{
+        margin-left: 50%;
+        font-size: 33px;
+        transform: translateX(-50%);
+    }
+
+    div.banner picture img{
+        opacity: 0.8;
+    }
+
+
+    div#quemsomos section.quemSomos article {
+        width:64%;
+    }
+    section.quemSomos article {
+        padding: 0;
+        width: 100%;
+        margin: auto;
+        text-align: center;
+       
+    }
+    section.quemSomos article h1 p{
+      
+        font-size:49px;
+    }
+    section.quemSomos article p{
+      
+        font-size:26px;
+    }
+    section.cardapio div div{
+        width:65%;
+     }
+     section.cardapio div.texto-cardapio-preco{
+         width: 80%
+     } 
+     
+/* fotos */
+div.imagem-texto{
+clip: rect(0 500px 124px 0);
+}
+div.description{
+bottom:-330px;
+}
+div.description div p{
+font-size: 15px;
+}
+
+div.description p.cite{
+font-size:12px;
+}
+div.description:hover{
+bottom: -291px;
+}
+    
+
+}
+
+
+
+/* FIM TABLET */
+

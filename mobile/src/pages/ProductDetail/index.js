@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { BACKENDIP } from 'react-native-dotenv';
@@ -12,8 +12,14 @@ import {
 export default function ProductDetail({ route, navigation }) {
   const { product } = route.params;
   const { SubItems } = product;
+  const [mandatoryItems, setMandatoryItems] = useState([]);
+  const [nonMandatoryItems, setNonMandatoryItems] = useState([]);
+
   useEffect(() => {
-    console.tron.warn(JSON.stringify(product));
+    const mandatory = SubItems.filter((subItem) => subItem.ProductsItems.mandatory === true);
+    const nonMandatory = SubItems.filter((subItem) => subItem.ProductsItems.mandatory === false);
+    setMandatoryItems(mandatory);
+    setNonMandatoryItems(nonMandatory);
   }, []);
   return (
     <MainViewContainer>
@@ -58,7 +64,9 @@ export default function ProductDetail({ route, navigation }) {
               )}
 
           </PriceContainer>
-          <SubItem items={SubItems} />
+          {nonMandatoryItems.length > 0 ? <SubItem items={nonMandatoryItems} /> : null}
+          {mandatoryItems.length > 0 ? <SubItem items={mandatoryItems} mandatory /> : null}
+
 
         </TitleAndPriceContainer>
 
