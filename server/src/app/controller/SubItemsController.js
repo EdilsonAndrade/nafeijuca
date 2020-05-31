@@ -30,21 +30,19 @@ class SubItemsController {
       return res.json({ error: 'Sub item not found' });
     }
     const subItemToUpdate = req.body.SubItem;
+    const productItems = await ProductsItems.findOne({
+      where: { SubItemId: subItemId },
+    });
     const { min, max, mandatory } = subItemToUpdate.ProductsItems;
     const updatedSubItem = await subItem.update(subItemToUpdate);
 
     if (min || max || mandatory) {
-      const { id } = req.body;
-      const product = await Product.findByPk(id);
+      const product = await Product.findByPk(productItems.ProductId);
 
       if (!product) {
         return res.status(401).json('Product not found');
       }
 
-      const productItems = await ProductsItems.findOne({
-        productId: id,
-        subItemId: updatedSubItem.id,
-      });
       await productItems.update({ min, max, mandatory });
     }
     return res.json(updatedSubItem);

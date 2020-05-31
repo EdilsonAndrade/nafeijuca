@@ -14,8 +14,13 @@ export default function Input({ name, label, ...rest }) {
         ref.value = null;
       },
       setValue: (ref, value) => {
+        console.log(ref);
         if (value && ref) {
           ref.value = value;
+        } else if (ref.type && ref.type === 'number') {
+          ref.value = 0;
+        } else {
+          ref.value = '';
         }
       },
     });

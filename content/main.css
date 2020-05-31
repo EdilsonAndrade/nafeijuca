@@ -315,11 +315,13 @@ color:white;
         position: absolute;
         margin-left: 27%;
         z-index: 110;
+        border-radius:50%;
     }
     div.logo-mobile img{
      width: 23%;
      margin-left: -26%;
     margin-top: 18px;
+    border-radius:50%;
      
  }
 
@@ -631,11 +633,13 @@ section.cardapio div div{
          position: absolute;
          margin-left: 27%;
          z-index: 110;
+         border-radius:50%;
      }
      div.logo-mobile img{
       width: 23%;
       margin-left: -26%;
      margin-top: 18px;
+     border-radius:50%;
       
   }
       div.menu ul.menu-desktop{

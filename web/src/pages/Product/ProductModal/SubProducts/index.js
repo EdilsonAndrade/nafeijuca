@@ -63,6 +63,7 @@ export default function SubProducts() {
       if (data.SubItem.name === '') {
         toast.error('Nome do sub item obrigatório!');
       } else {
+        console.log(data);
         dispatch(saveRequest({ ...data, productId: data.id }));
       }
     } catch (err) {

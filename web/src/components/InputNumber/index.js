@@ -11,21 +11,27 @@ export default function InputNumber({ name, label, ...rest }) {
       name: fieldName,
       ref: inputRef.current,
       path: 'state',
-      getValue: (ref, value) => {
-        if (ref.state.numAsString === '') {
-          return null;
+      getValue: (ref, newValue) => {
+        if (ref.state === null || ref.state.numAsString === '') {
+          return 0;
         }
         return ref.state.numAsString;
       },
-      setValue: (ref, value) => {
-        if (value && ref.state !== null) {
-          ref.state.numAsString = value;
-          ref.state.value = value;
-          setValue(value);
+      setValue: (ref, newValue) => {
+        if (
+          newValue &&
+          ref.state !== null &&
+          ref.state.numAsString !== undefined
+        ) {
+          ref.state.numAsString = newValue;
+          ref.state.value = newValue;
+          setValue(newValue);
+        } else {
+          setValue(0);
         }
       },
-      clearValue: (ref, value) => {
-        ref.state = null;
+      clearValue: (ref, _) => {
+        ref.state = 0;
       },
     });
   }, [fieldName, registerField]);

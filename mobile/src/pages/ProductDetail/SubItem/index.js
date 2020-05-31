@@ -1,25 +1,59 @@
 import React, { useEffect, useState } from 'react';
 import CheckBox from '@react-native-community/checkbox';
+import PropTypes from 'prop-types';
 import {
   SubItemHeaderContainer, InfoTitleView, TitleText, QuantityText, MandatoryView, MandatoryText, ItemView, ItemsContainer,
 } from './styles';
 
 const SubItem = ({ items, mandatory }) => {
-  const [checkedItem, setCheckedItem] = useState();
-  const [countSelected, setCountSelected] = useState(0);
-  const handleCheckItem = (min, max, itemName) => {
-    console.log(mandatory);
-    console.log(max);
-    console.log(countSelected);
-    console.log(itemName);
-    if (mandatory) {
-      if (countSelected < max) {
-        setCountSelected(countSelected + 1);
-      } else {
-        setCheckedItem(itemName);
-      }
+  const [checkBoxs, setCheckbox] = useState([]);
+  const [min, setMin] = useState(items[0].ProductsItems.min);
+  const { max } = items[0].ProductsItems;
+
+  useEffect(() => {
+    const itemsChks = [];
+    items.forEach((element) => {
+      itemsChks.push({
+        id: element.id,
+        checked: false,
+      });
+    });
+
+    setCheckbox(itemsChks);
+  }, []);
+
+
+  const handleGetValue = (id) => {
+    if (checkBoxs !== undefined && checkBoxs.find((x) => x.id === id)) {
+      const item = checkBoxs.find((x) => x.id === id);
+      console.log('entrei aqui');
+      return item.checked;
     }
+    console.log('entrei aqui 2');
+    return false;
   };
+  const handleSubjectSelect = (id) => {
+    setCheckbox(() => {
+      const newCheckbox = [...checkBoxs];
+      newCheckbox.forEach((subject) => {
+        if (subject.id === id) {
+          subject.checked = !subject.checked;
+          const item = items.filter((x) => x.id === id);
+          if (item) {
+            if (subject.checked) {
+              setMin(min + 1);
+            } else {
+              setMin(min - 1);
+            }
+          }
+        }
+      });
+
+      return newCheckbox;
+    });
+  };
+
+
   return (
     <>
       <SubItemHeaderContainer>
@@ -30,12 +64,12 @@ const SubItem = ({ items, mandatory }) => {
           </TitleText>
           <QuantityText>
 
-            {items[0].ProductsItems.min}
+            {min}
             {' '}
             de
             {' '}
             {' '}
-            {items[0].ProductsItems.max}
+            {max}
             {' '}
           </QuantityText>
         </InfoTitleView>
@@ -58,16 +92,29 @@ const SubItem = ({ items, mandatory }) => {
               </QuantityText>
             </ItemView>
           </InfoTitleView>
+          {checkBoxs && checkBoxs.filter((x) => x.id === item.id).map((cb) => (
+            <CheckBox
+              key={cb.id}
+              value={cb.checked}
+              onValueChange={() => {
+                handleSubjectSelect(cb.id);
+              }}
+              tintColors={{ true: '#36b254', false: '#36b254' }}
+            />
 
-          <CheckBox
-            value={checkedItem === item.name}
-            disabled={false}
-            onValueChange={() => handleCheckItem(item.ProductsItems.min, item.ProductsItems.max, item.name)}
-          />
+          ))}
+
+
         </ItemsContainer>
+
       ))}
+
     </>
   );
 };
 
 export default SubItem;
+
+SubItem.propTypes = {
+  items: PropTypes.arrayOf(PropTypes.object).isRequired,
+};
