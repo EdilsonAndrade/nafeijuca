@@ -7,8 +7,8 @@ import {
 
 const SubItem = ({ items, mandatory }) => {
   const [checkBoxs, setCheckbox] = useState([]);
-  const [min, setMin] = useState(items[0].ProductsItems.min);
-  const { max } = items[0].ProductsItems;
+  const [minSelect, setMinSelect] = useState(items[0].ProductsItems.min);
+
 
   useEffect(() => {
     const itemsChks = [];
@@ -16,6 +16,9 @@ const SubItem = ({ items, mandatory }) => {
       itemsChks.push({
         id: element.id,
         checked: false,
+        mandatory: element.ProductsItems.mandatory,
+        min: element.ProductsItems.min,
+        max: element.ProductsItems.max,
       });
     });
 
@@ -23,27 +26,37 @@ const SubItem = ({ items, mandatory }) => {
   }, []);
 
 
-  const handleGetValue = (id) => {
-    if (checkBoxs !== undefined && checkBoxs.find((x) => x.id === id)) {
-      const item = checkBoxs.find((x) => x.id === id);
-      console.log('entrei aqui');
-      return item.checked;
-    }
-    console.log('entrei aqui 2');
-    return false;
-  };
-  const handleSubjectSelect = (id) => {
+  const handleSubItemSelect = (id, needed, max) => {
     setCheckbox(() => {
       const newCheckbox = [...checkBoxs];
-      newCheckbox.forEach((subject) => {
-        if (subject.id === id) {
-          subject.checked = !subject.checked;
+      let neededSelected = 0;
+      newCheckbox.forEach((subItem) => {
+        if (subItem.id === id) {
+          if (needed && !subItem.checked) {
+            const checkboxMandatory = [...checkBoxs].filter((x) => x.checked === true);
+            neededSelected = checkboxMandatory.length;
+            if (checkboxMandatory !== undefined && checkboxMandatory.length === max) {
+              newCheckbox.forEach((subItemMandatory) => {
+                subItemMandatory.checked = false;
+                setMinSelect(1);
+              });
+            }
+          }
+          subItem.checked = !subItem.checked;
+
           const item = items.filter((x) => x.id === id);
+
           if (item) {
-            if (subject.checked) {
-              setMin(min + 1);
+            if (subItem.checked) {
+              if (needed) {
+                if (neededSelected < max) {
+                  setMinSelect(minSelect + 1);
+                }
+              } else {
+                setMinSelect(minSelect + 1);
+              }
             } else {
-              setMin(min - 1);
+              setMinSelect(minSelect - 1);
             }
           }
         }
@@ -64,12 +77,12 @@ const SubItem = ({ items, mandatory }) => {
           </TitleText>
           <QuantityText>
 
-            {min}
+            {minSelect}
             {' '}
             de
             {' '}
             {' '}
-            {max}
+            {items[0].ProductsItems.max}
             {' '}
           </QuantityText>
         </InfoTitleView>
@@ -97,7 +110,7 @@ const SubItem = ({ items, mandatory }) => {
               key={cb.id}
               value={cb.checked}
               onValueChange={() => {
-                handleSubjectSelect(cb.id);
+                handleSubItemSelect(cb.id, cb.mandatory, cb.max);
               }}
               tintColors={{ true: '#36b254', false: '#36b254' }}
             />
