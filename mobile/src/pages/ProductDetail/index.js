@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
+import { TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { BACKENDIP } from 'react-native-dotenv';
 import SubItem from './SubItem';
 import {
   MainViewContainer, ProductViewContainer, ProductTitleText,
   ProductDetailText, TitleAndPriceContainer, PriceContainer, PriceText, PromotionPrice,
-  ImageProduct,
+  ImageProduct, ViewMainBottom, ViewButtonsPlusMinus, TotalText, ButtonAdd, ButtonAddText,
 } from './styles';
 
 export default function ProductDetail({ route, navigation }) {
@@ -22,58 +23,81 @@ export default function ProductDetail({ route, navigation }) {
     setNonMandatoryItems(nonMandatory);
   }, []);
   return (
-    <MainViewContainer>
-      <ProductViewContainer>
-        {product.File
-          ? <ImageProduct source={{ uri: product.File.url.replace('localhost', BACKENDIP) }} />
-          : <Icon name="broken-image" size={90} /> }
-        <TitleAndPriceContainer>
-          <ProductTitleText>
-            {product.name}
-          </ProductTitleText>
-          <ProductDetailText>
-            {product.description}
-          </ProductDetailText>
-          <PriceContainer>
-            {product.promotionPrice
+    <>
+      <MainViewContainer>
+        <ProductViewContainer>
+          {product.File
+            ? <ImageProduct source={{ uri: product.File.url.replace('localhost', BACKENDIP) }} />
+            : <Icon name="broken-image" size={90} /> }
+          <TitleAndPriceContainer>
+            <ProductTitleText>
+              {product.name}
+            </ProductTitleText>
+            <ProductDetailText>
+              {product.description}
+            </ProductDetailText>
+            <PriceContainer>
+              {product.promotionPrice
 
-              ? (
-                <>
-                  <PriceText>
-                    A partir de R$
-                    {Math.round(product.promotionPrice).toFixed(2)}
-                  </PriceText>
-                  <PromotionPrice>
-                    R$
-                    {' '}
-                    {Math.round(product.price).toFixed(2)}
-                  </PromotionPrice>
-                </>
-              )
-              : (
-                <>
-                  <PriceText>
-                    A partir de R$
-                    {' '}
-                    {Math.round(product.price).toFixed(2)}
-                  </PriceText>
-                  <PromotionPrice>
-                    {product.promotionPrice ? Math.round(product.promotionPrice).toFixed(2) : null}
-                  </PromotionPrice>
-                </>
-              )}
+                ? (
+                  <>
+                    <PriceText>
+                      A partir de R$
+                      {Math.round(product.promotionPrice).toFixed(2)}
+                    </PriceText>
+                    <PromotionPrice>
+                      R$
+                      {' '}
+                      {Math.round(product.price).toFixed(2)}
+                    </PromotionPrice>
+                  </>
+                )
+                : (
+                  <>
+                    <PriceText>
+                      A partir de R$
+                      {' '}
+                      {Math.round(product.price).toFixed(2)}
+                    </PriceText>
+                    <PromotionPrice>
+                      {product.promotionPrice ? Math.round(product.promotionPrice).toFixed(2) : null}
+                    </PromotionPrice>
+                  </>
+                )}
 
-          </PriceContainer>
-          {nonMandatoryItems.length > 0 ? <SubItem items={nonMandatoryItems} /> : null}
-          {mandatoryItems.length > 0 ? <SubItem items={mandatoryItems} mandatory /> : null}
-
-
-        </TitleAndPriceContainer>
-
-      </ProductViewContainer>
+            </PriceContainer>
+            {nonMandatoryItems.length > 0 ? <SubItem items={nonMandatoryItems} /> : null}
+            {mandatoryItems.length > 0 ? <SubItem items={mandatoryItems} mandatory /> : null}
 
 
-    </MainViewContainer>
+          </TitleAndPriceContainer>
+
+        </ProductViewContainer>
+
+
+      </MainViewContainer>
+      <ViewMainBottom>
+        <ViewButtonsPlusMinus>
+          <TouchableOpacity>
+            <Icon name="remove" size={22} color="#ffc700" />
+          </TouchableOpacity>
+          <TotalText>1</TotalText>
+          <TouchableOpacity>
+            <Icon name="add" size={22} color="#ffc700" />
+          </TouchableOpacity>
+        </ViewButtonsPlusMinus>
+        <TouchableOpacity>
+          <ButtonAdd>
+            <ButtonAddText>
+              Adicionar
+            </ButtonAddText>
+            <ButtonAddText>
+              R$ 19,90
+            </ButtonAddText>
+          </ButtonAdd>
+        </TouchableOpacity>
+      </ViewMainBottom>
+    </>
   );
 }
 

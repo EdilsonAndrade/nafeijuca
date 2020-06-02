@@ -1,4 +1,5 @@
 import styled from 'styled-components/native';
+import { RectButton } from 'react-native-gesture-handler';
 
 export const MainViewContainer = styled.ScrollView`
   flex:1;
@@ -53,4 +54,37 @@ margin-left:10px;
 text-decoration:line-through;
 font-size:15px;
 color:#696969;
+`;
+export const ViewMainBottom = styled.View`
+flex-direction:row;
+justify-content:space-between;
+width:100%;
+padding:10px;
+`;
+
+export const ViewButtonsPlusMinus = styled.View`
+flex-direction:row;
+justify-content:space-between;
+width:25%;
+align-items:center;
+
+`;
+export const TotalText = styled.Text``;
+
+export const ButtonAdd = styled.View`
+margin-left:25px;
+width:75%;
+height:50px;
+border-radius:6px;
+display:flex;
+flex-direction:row;
+align-items:center;
+justify-content:space-around;
+background: #ffc700;
+padding:5px;
+`;
+export const ButtonAddText = styled.Text`
+color: #fff;
+font-size:18px;
+
 `;
