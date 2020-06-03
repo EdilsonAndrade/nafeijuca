@@ -19,6 +19,7 @@ export default function ProductDetail({ route, navigation }) {
   const [nonMandatoryItems, setNonMandatoryItems] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
   const [countProducts, setCountProducts] = useState(0);
+  const [totalSubItem, setTotalSubItem] = useState(0);
 
   useEffect(() => {
     const mandatory = SubItems.filter((subItem) => subItem.ProductsItems.mandatory === true);
@@ -33,20 +34,23 @@ export default function ProductDetail({ route, navigation }) {
     const count = countProducts + 1;
     console.log(count);
     setCountProducts(count);
-    setTotalPrice(count * totalPrice);
+    setTotalPrice((count * product.promotionPrice || product.price) + (count * totalSubItem));
   };
 
   const handleRemoveItem = () => {
     if (countProducts > 1) {
       const count = countProducts - 1;
       setCountProducts(count);
-      setTotalPrice(count * product.promotionPrice || product.price);
+
+      setTotalPrice((count * product.promotionPrice || product.price) + (count * totalSubItem));
     }
   };
   const handleOnUncheckSubItem = (price) => {
+    setTotalSubItem(Number(totalSubItem) - Number(price));
     setTotalPrice(Number(totalPrice) - (Number(price) * countProducts));
   };
   const handleOnCheckSubItem = (price) => {
+    setTotalSubItem(Number(totalSubItem) + Number(price));
     setTotalPrice(Number(totalPrice) + (Number(price) * countProducts));
   };
   return (
