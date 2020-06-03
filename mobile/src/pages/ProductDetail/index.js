@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { TouchableOpacity } from 'react-native';
+import currencyformatter from 'currency-formatter';
+
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { BACKENDIP } from 'react-native-dotenv';
 import SubItem from './SubItem';
 import {
   MainViewContainer, ProductViewContainer, ProductTitleText,
   ProductDetailText, TitleAndPriceContainer, PriceContainer, PriceText, PromotionPrice,
-  ImageProduct, ViewMainBottom, ViewButtonsPlusMinus, TotalText, ButtonAdd, ButtonAddText,
+  ImageProduct, ViewMainBottom, ViewButtonsPlusMinus, TotalText, ButtonAdd, ButtonAddText, Plus, Minus,
 } from './styles';
 
 export default function ProductDetail({ route, navigation }) {
@@ -15,13 +17,38 @@ export default function ProductDetail({ route, navigation }) {
   const { SubItems } = product;
   const [mandatoryItems, setMandatoryItems] = useState([]);
   const [nonMandatoryItems, setNonMandatoryItems] = useState([]);
+  const [totalPrice, setTotalPrice] = useState(0);
+  const [countProducts, setCountProducts] = useState(0);
 
   useEffect(() => {
     const mandatory = SubItems.filter((subItem) => subItem.ProductsItems.mandatory === true);
     const nonMandatory = SubItems.filter((subItem) => subItem.ProductsItems.mandatory === false);
     setMandatoryItems(mandatory);
     setNonMandatoryItems(nonMandatory);
+    setCountProducts(1);
+    setTotalPrice(1 * product.promotionPrice || product.price);
   }, []);
+
+  const handleAddMoreItem = () => {
+    const count = countProducts + 1;
+    console.log(count);
+    setCountProducts(count);
+    setTotalPrice(count * totalPrice);
+  };
+
+  const handleRemoveItem = () => {
+    if (countProducts > 1) {
+      const count = countProducts - 1;
+      setCountProducts(count);
+      setTotalPrice(count * product.promotionPrice || product.price);
+    }
+  };
+  const handleOnUncheckSubItem = (price) => {
+    setTotalPrice(Number(totalPrice) - (Number(price) * countProducts));
+  };
+  const handleOnCheckSubItem = (price) => {
+    setTotalPrice(Number(totalPrice) + (Number(price) * countProducts));
+  };
   return (
     <>
       <MainViewContainer>
@@ -66,8 +93,8 @@ export default function ProductDetail({ route, navigation }) {
                 )}
 
             </PriceContainer>
-            {nonMandatoryItems.length > 0 ? <SubItem items={nonMandatoryItems} /> : null}
-            {mandatoryItems.length > 0 ? <SubItem items={mandatoryItems} mandatory /> : null}
+            {nonMandatoryItems.length > 0 ? <SubItem items={nonMandatoryItems} onUnCheck={((price) => handleOnUncheckSubItem(price))} onCheck={(price) => handleOnCheckSubItem(price)} /> : null}
+            {mandatoryItems.length > 0 ? <SubItem items={mandatoryItems} onUnCheck={((price) => handleOnUncheckSubItem(price))} onCheck={(price) => handleOnCheckSubItem(price)} mandatory /> : null}
 
 
           </TitleAndPriceContainer>
@@ -78,12 +105,12 @@ export default function ProductDetail({ route, navigation }) {
       </MainViewContainer>
       <ViewMainBottom>
         <ViewButtonsPlusMinus>
-          <TouchableOpacity>
-            <Icon name="remove" size={22} color="#ffc700" />
+          <TouchableOpacity onPress={handleRemoveItem}>
+            <Minus name="remove" count={countProducts} />
           </TouchableOpacity>
-          <TotalText>1</TotalText>
-          <TouchableOpacity>
-            <Icon name="add" size={22} color="#ffc700" />
+          <TotalText>{countProducts}</TotalText>
+          <TouchableOpacity onPress={handleAddMoreItem}>
+            <Plus name="add" />
           </TouchableOpacity>
         </ViewButtonsPlusMinus>
         <TouchableOpacity>
@@ -92,7 +119,7 @@ export default function ProductDetail({ route, navigation }) {
               Adicionar
             </ButtonAddText>
             <ButtonAddText>
-              R$ 19,90
+              {currencyformatter.format(totalPrice, { code: 'BRL' })}
             </ButtonAddText>
           </ButtonAdd>
         </TouchableOpacity>

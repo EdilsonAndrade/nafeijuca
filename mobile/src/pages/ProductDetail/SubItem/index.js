@@ -5,7 +5,9 @@ import {
   SubItemHeaderContainer, InfoTitleView, TitleText, QuantityText, MandatoryView, MandatoryText, ItemView, ItemsContainer,
 } from './styles';
 
-const SubItem = ({ items, mandatory }) => {
+const SubItem = ({
+  items, mandatory, onUnCheck, onCheck,
+}) => {
   const [checkBoxs, setCheckbox] = useState([]);
   const [minSelect, setMinSelect] = useState(items[0].ProductsItems.min);
 
@@ -19,6 +21,7 @@ const SubItem = ({ items, mandatory }) => {
         mandatory: element.ProductsItems.mandatory,
         min: element.ProductsItems.min,
         max: element.ProductsItems.max,
+        price: element.price,
       });
     });
 
@@ -54,9 +57,11 @@ const SubItem = ({ items, mandatory }) => {
                 }
               } else {
                 setMinSelect(minSelect + 1);
+                onCheck(subItem.price);
               }
             } else {
               setMinSelect(minSelect - 1);
+              onUnCheck(subItem.price);
             }
           }
         }
@@ -130,4 +135,6 @@ export default SubItem;
 
 SubItem.propTypes = {
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
+  onUnCheck: PropTypes.func.isRequired,
+  onCheck: PropTypes.func.isRequired,
 };

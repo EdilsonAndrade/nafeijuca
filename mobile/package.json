@@ -18,6 +18,7 @@
     "@react-navigation/native": "^5.1.6",
     "@react-navigation/stack": "^5.2.11",
     "axios": "^0.19.2",
+    "currency-formatter": "^1.5.5",
     "immer": "^6.0.3",
     "prop-types": "^15.7.2",
     "react": "16.11.0",

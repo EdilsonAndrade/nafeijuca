@@ -1,5 +1,6 @@
 import styled from 'styled-components/native';
-import { RectButton } from 'react-native-gesture-handler';
+import { RectButton, TouchableOpacity } from 'react-native-gesture-handler';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 export const MainViewContainer = styled.ScrollView`
   flex:1;
@@ -87,4 +88,13 @@ export const ButtonAddText = styled.Text`
 color: #fff;
 font-size:18px;
 
+`;
+
+export const Plus = styled(Icon)`
+font-size:25px;
+color:#ffc700;
+`;
+export const Minus = styled(Icon)`
+font-size:25px;
+color:${(props) => (props.count && props.count === 1 ? '#ddd' : '#ffc700')};
 `;
