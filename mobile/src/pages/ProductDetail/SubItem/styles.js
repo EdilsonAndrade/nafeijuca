@@ -1,4 +1,5 @@
 import styled from 'styled-components/native';
+import CheckBox from '@react-native-community/checkbox';
 
 export const SubItemHeaderContainer = styled.View`
   flex-direction:row;
@@ -36,4 +37,9 @@ export const ItemsContainer = styled.View`
   padding:10px;
   border-bottom-width: 1px;
   border-color:#ddd;
+`;
+
+export const CheckBoxItem = styled(CheckBox)`
+color: #ffc700;
+opacity: ${(props) => (props.disabled ? '0.2' : '1')}
 `;

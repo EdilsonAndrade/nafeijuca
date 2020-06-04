@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import CheckBox from '@react-native-community/checkbox';
+
 import PropTypes from 'prop-types';
 import {
-  SubItemHeaderContainer, InfoTitleView, TitleText, QuantityText, MandatoryView, MandatoryText, ItemView, ItemsContainer,
+  SubItemHeaderContainer, InfoTitleView, TitleText, QuantityText, MandatoryView, MandatoryText, ItemView, ItemsContainer, CheckBoxItem,
 } from './styles';
 
 const SubItem = ({
@@ -130,7 +130,7 @@ const SubItem = ({
             </ItemView>
           </InfoTitleView>
           {checkBoxs && checkBoxs.filter((x) => x.id === item.id).map((cb) => (
-            <CheckBox
+            <CheckBoxItem
               key={cb.id}
               value={cb.checked}
               onValueChange={() => {
