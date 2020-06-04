@@ -6,7 +6,7 @@ import {
 } from './styles';
 
 const SubItem = ({
-  items, mandatory, onUnCheck, onCheck,
+  items, mandatory, onUnCheck, onCheck, clearMandatory,
 }) => {
   const [checkBoxs, setCheckbox] = useState([]);
   const [minSelect, setMinSelect] = useState(items[0].ProductsItems.min);
@@ -22,6 +22,7 @@ const SubItem = ({
         min: element.ProductsItems.min,
         max: element.ProductsItems.max,
         price: element.price,
+        disabled: false,
       });
     });
 
@@ -29,47 +30,64 @@ const SubItem = ({
   }, []);
 
 
-  const handleSubItemSelect = (id, needed, max) => {
-    setCheckbox(() => {
-      const newCheckbox = [...checkBoxs];
-      let neededSelected = 0;
-      newCheckbox.forEach((subItem) => {
-        if (subItem.id === id) {
-          if (needed && !subItem.checked) {
-            const checkboxMandatory = [...checkBoxs].filter((x) => x.checked === true);
-            neededSelected = checkboxMandatory.length;
-            if (checkboxMandatory !== undefined && checkboxMandatory.length === max) {
-              newCheckbox.forEach((subItemMandatory) => {
-                subItemMandatory.checked = false;
-                setMinSelect(1);
-              });
-            }
-          }
-          subItem.checked = !subItem.checked;
+  const handleSubItemSelect = (id, needed, max, checking) => {
+    let neededSelected = 0;
+    let newCheckbox = [];
+    newCheckbox = [...checkBoxs];
 
-          const item = items.filter((x) => x.id === id);
+    newCheckbox.forEach((subItem) => {
+      if (checking) {
+        subItem.disabled = false;
+        setMinSelect(minSelect - 1);
+      } else {
+        setMinSelect(minSelect + 1);
+      }
+      if (subItem.id === id) {
+        if (needed && !subItem.checked) {
+          const checkboxMandatory = [...checkBoxs].filter((x) => x.checked === true);
 
-          if (item) {
-            if (subItem.checked) {
-              if (needed) {
-                if (neededSelected < max) {
-                  setMinSelect(minSelect + 1);
-                  onCheck(subItem);
-                }
-              } else {
-                setMinSelect(minSelect + 1);
+          neededSelected = checkboxMandatory.length;
+        }
+
+        subItem.checked = !subItem.checked;
+
+        const item = items.filter((x) => x.id === id);
+
+        if (item) {
+          if (subItem.checked) {
+            if (needed) {
+              if (neededSelected < max) {
                 onCheck(subItem);
               }
             } else {
-              setMinSelect(minSelect - 1);
-              onUnCheck(subItem);
+              onCheck(subItem);
             }
+          } else {
+            onUnCheck(subItem);
           }
         }
-      });
-
-      return newCheckbox;
+      }
     });
+
+    if (neededSelected + 1 >= max) {
+      newCheckbox = newCheckbox.map((cb) => {
+        if (cb.mandatory) {
+          if (!cb.checked) {
+            cb.disabled = true;
+          } else {
+            cb.disabled = false;
+          }
+        }
+
+        return cb;
+      });
+    } else {
+      newCheckbox = newCheckbox.map((cb) => {
+        cb.disabled = false;
+        return cb;
+      });
+    }
+    setCheckbox(newCheckbox);
   };
 
 
@@ -116,9 +134,10 @@ const SubItem = ({
               key={cb.id}
               value={cb.checked}
               onValueChange={() => {
-                handleSubItemSelect(cb.id, cb.mandatory, cb.max);
+                handleSubItemSelect(cb.id, cb.mandatory, cb.max, cb.checked);
               }}
               tintColors={{ true: '#36b254', false: '#36b254' }}
+              disabled={cb.disabled}
             />
 
           ))}

@@ -33,7 +33,6 @@ export default function ProductDetail({ route, navigation }) {
 
   const handleAddMoreItem = () => {
     const count = countProducts + 1;
-    console.log(count);
     setCountProducts(count);
     setTotalPrice((count * product.promotionPrice || product.price) + (count * totalSubItem));
   };
@@ -42,7 +41,6 @@ export default function ProductDetail({ route, navigation }) {
     if (countProducts > 1) {
       const count = countProducts - 1;
       setCountProducts(count);
-
       setTotalPrice((count * product.promotionPrice || product.price) + (count * totalSubItem));
     }
   };
@@ -50,19 +48,18 @@ export default function ProductDetail({ route, navigation }) {
     setTotalSubItem(Number(totalSubItem) - Number(subItem.price));
     setTotalPrice(Number(totalPrice) - (Number(subItem.price) * countProducts));
     const itemRemoved = selectedSubItems.filter((x) => x.id !== subItem.id);
-    setSelectedSubItems(itemRemoved);
+    setSelectedSubItems(itemRemoved || []);
   };
 
   const handleOnCheckSubItem = (subItem) => {
     setTotalSubItem(Number(totalSubItem) + Number(subItem.price));
     setTotalPrice(Number(totalPrice) + (Number(subItem.price) * countProducts));
-    console.log(subItem);
     setSelectedSubItems([...selectedSubItems, subItem]);
   };
 
   const handleAddToCart = () => {
     const totalMandatory = selectedSubItems.filter((x) => x.mandatory === true);
-    console.log(mandatoryItems);
+
     if (mandatoryItems && mandatoryItems.length > 0 && totalMandatory.length < mandatoryItems[0].ProductsItems.max) {
       setShowAlert(true);
     }
