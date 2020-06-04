@@ -54,14 +54,15 @@ const SubItem = ({
               if (needed) {
                 if (neededSelected < max) {
                   setMinSelect(minSelect + 1);
+                  onCheck(subItem);
                 }
               } else {
                 setMinSelect(minSelect + 1);
-                onCheck(subItem.price);
+                onCheck(subItem);
               }
             } else {
               setMinSelect(minSelect - 1);
-              onUnCheck(subItem.price);
+              onUnCheck(subItem);
             }
           }
         }

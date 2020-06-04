@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { TouchableOpacity } from 'react-native';
 import currencyformatter from 'currency-formatter';
-
+import AwesomeAlert from 'react-native-awesome-alerts';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { BACKENDIP } from 'react-native-dotenv';
 import SubItem from './SubItem';
@@ -20,7 +20,8 @@ export default function ProductDetail({ route, navigation }) {
   const [totalPrice, setTotalPrice] = useState(0);
   const [countProducts, setCountProducts] = useState(0);
   const [totalSubItem, setTotalSubItem] = useState(0);
-
+  const [showAlert, setShowAlert] = useState(false);
+  const [selectedSubItems, setSelectedSubItems] = useState([]);
   useEffect(() => {
     const mandatory = SubItems.filter((subItem) => subItem.ProductsItems.mandatory === true);
     const nonMandatory = SubItems.filter((subItem) => subItem.ProductsItems.mandatory === false);
@@ -45,13 +46,26 @@ export default function ProductDetail({ route, navigation }) {
       setTotalPrice((count * product.promotionPrice || product.price) + (count * totalSubItem));
     }
   };
-  const handleOnUncheckSubItem = (price) => {
-    setTotalSubItem(Number(totalSubItem) - Number(price));
-    setTotalPrice(Number(totalPrice) - (Number(price) * countProducts));
+  const handleOnUncheckSubItem = (subItem) => {
+    setTotalSubItem(Number(totalSubItem) - Number(subItem.price));
+    setTotalPrice(Number(totalPrice) - (Number(subItem.price) * countProducts));
+    const itemRemoved = selectedSubItems.filter((x) => x.id !== subItem.id);
+    setSelectedSubItems(itemRemoved);
   };
-  const handleOnCheckSubItem = (price) => {
-    setTotalSubItem(Number(totalSubItem) + Number(price));
-    setTotalPrice(Number(totalPrice) + (Number(price) * countProducts));
+
+  const handleOnCheckSubItem = (subItem) => {
+    setTotalSubItem(Number(totalSubItem) + Number(subItem.price));
+    setTotalPrice(Number(totalPrice) + (Number(subItem.price) * countProducts));
+    console.log(subItem);
+    setSelectedSubItems([...selectedSubItems, subItem]);
+  };
+
+  const handleAddToCart = () => {
+    const totalMandatory = selectedSubItems.filter((x) => x.mandatory === true);
+    console.log(mandatoryItems);
+    if (mandatoryItems && mandatoryItems.length > 0 && totalMandatory.length < mandatoryItems[0].ProductsItems.max) {
+      setShowAlert(true);
+    }
   };
   return (
     <>
@@ -97,8 +111,8 @@ export default function ProductDetail({ route, navigation }) {
                 )}
 
             </PriceContainer>
-            {nonMandatoryItems.length > 0 ? <SubItem items={nonMandatoryItems} onUnCheck={((price) => handleOnUncheckSubItem(price))} onCheck={(price) => handleOnCheckSubItem(price)} /> : null}
-            {mandatoryItems.length > 0 ? <SubItem items={mandatoryItems} onUnCheck={((price) => handleOnUncheckSubItem(price))} onCheck={(price) => handleOnCheckSubItem(price)} mandatory /> : null}
+            {nonMandatoryItems.length > 0 ? <SubItem items={nonMandatoryItems} onUnCheck={((subItem) => handleOnUncheckSubItem(subItem))} onCheck={(subItem) => handleOnCheckSubItem(subItem)} /> : null}
+            {mandatoryItems.length > 0 ? <SubItem items={mandatoryItems} onUnCheck={((subItem) => handleOnUncheckSubItem(subItem))} onCheck={(subItem) => handleOnCheckSubItem(subItem)} mandatory /> : null}
 
 
           </TitleAndPriceContainer>
@@ -117,7 +131,7 @@ export default function ProductDetail({ route, navigation }) {
             <Plus name="add" />
           </TouchableOpacity>
         </ViewButtonsPlusMinus>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={handleAddToCart}>
           <ButtonAdd>
             <ButtonAddText>
               Adicionar
@@ -128,6 +142,15 @@ export default function ProductDetail({ route, navigation }) {
           </ButtonAdd>
         </TouchableOpacity>
       </ViewMainBottom>
+      <AwesomeAlert
+        show={showAlert}
+        title="Selecione os itens que são obrigatórios"
+        closeOnTouchOutside
+        showConfirmButton
+        onConfirmPressed={() => setShowAlert(false)}
+        confirmText="Farei isto"
+        confirmButtonColor="rgba(247, 56, 35, 1)"
+      />
     </>
   );
 }
