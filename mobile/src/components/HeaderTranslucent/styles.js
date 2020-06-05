@@ -1,10 +1,9 @@
-import styled, { css } from 'styled-components/native';
+import styled from 'styled-components/native';
 import { Animated } from 'react-native';
 
 export const AnimatedViewContainer = styled(Animated.View)`
   width: 100%;
   justify-content: center;
-  
   
 
 `;

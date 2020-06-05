@@ -1,12 +1,26 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import PropTypes from 'prop-types';
 import { TouchableWithoutFeedback } from 'react-native';
-import { MiddleHeaderBarContent, ImageFeijucaContent } from './styles';
+import { useSelector } from 'react-redux';
+import {
+  MiddleHeaderBarContent, ImageFeijucaContent, LogoContainer, IconContainer,
+} from './styles';
+import Cart from '~/components/Cart';
 
 export default function MiddleHeaderBar({
   showBack, showShare, iconImage, navigation, backButtonColor,
 }) {
+  const cart = useSelector((state) => state.cart);
+
+  const returnShareOrCart = useMemo(() => {
+    if (cart.totalItems > 0) {
+      return <Cart color="#fff" />;
+    } if (showShare) {
+      return <Icon name="share" size={32} color="#fff" />;
+    }
+    return null;
+  });
   return (
     <MiddleHeaderBarContent showButtons={showBack}>
       {showBack ? (
@@ -14,8 +28,13 @@ export default function MiddleHeaderBar({
           <Icon name="keyboard-arrow-left" size={42} color={backButtonColor || '#fff'} />
         </TouchableWithoutFeedback>
       ) : null}
-      <ImageFeijucaContent source={iconImage} />
-      {showShare ? <Icon name="share" size={32} color="#fff" /> : null}
+      <LogoContainer>
+        <ImageFeijucaContent source={iconImage} />
+      </LogoContainer>
+      <IconContainer>
+        {returnShareOrCart}
+      </IconContainer>
+
     </MiddleHeaderBarContent>
   );
 }

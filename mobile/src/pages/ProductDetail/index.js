@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import { TouchableOpacity } from 'react-native';
 import currencyformatter from 'currency-formatter';
@@ -6,6 +7,7 @@ import AwesomeAlert from 'react-native-awesome-alerts';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { BACKENDIP } from 'react-native-dotenv';
 import SubItem from './SubItem';
+import * as CartActions from '~/store/modules/cart/action';
 import {
   MainViewContainer, ProductViewContainer, ProductTitleText,
   ProductDetailText, TitleAndPriceContainer, PriceContainer, PriceText, PromotionPrice,
@@ -13,6 +15,8 @@ import {
 } from './styles';
 
 export default function ProductDetail({ route, navigation }) {
+  const dispatch = useDispatch();
+  const cart = useSelector((state) => state.cart);
   const { product } = route.params;
   const { SubItems } = product;
   const [mandatoryItems, setMandatoryItems] = useState([]);
@@ -22,6 +26,7 @@ export default function ProductDetail({ route, navigation }) {
   const [totalSubItem, setTotalSubItem] = useState(0);
   const [showAlert, setShowAlert] = useState(false);
   const [selectedSubItems, setSelectedSubItems] = useState([]);
+
   useEffect(() => {
     const mandatory = SubItems.filter((subItem) => subItem.ProductsItems.mandatory === true);
     const nonMandatory = SubItems.filter((subItem) => subItem.ProductsItems.mandatory === false);
@@ -62,6 +67,8 @@ export default function ProductDetail({ route, navigation }) {
 
     if (mandatoryItems && mandatoryItems.length > 0 && totalMandatory.length < mandatoryItems[0].ProductsItems.max) {
       setShowAlert(true);
+    } else {
+      dispatch(CartActions.addToCartSuccess({ totalItems: cart.totalItems + countProducts, totalPrice: cart.totalPrice + totalPrice }));
     }
   };
   return (
