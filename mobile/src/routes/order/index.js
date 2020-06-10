@@ -10,8 +10,8 @@ export default function OrderNavigation() {
         name="Order"
         component={Order}
         options={{
-          title: 'CESTA DE PRODUTOS',
-
+          title: 'PRODUTOS SELECIONADOS',
+          headerShown: false,
         }}
       />
     </Stack.Navigator>

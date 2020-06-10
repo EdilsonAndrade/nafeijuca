@@ -69,6 +69,7 @@ export default function MainTab() {
           component={OrdersNavigation}
           options={{
             title: 'Pedidos',
+
           }}
         />
         <Tab.Screen

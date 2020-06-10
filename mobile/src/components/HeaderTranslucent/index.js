@@ -6,7 +6,7 @@ import MiddleHeaderBar from '~/components/MiddleHeaderBar';
 import { AnimatedViewContainer, ImageContent } from './styles';
 
 export default function HeaderTranslucent({
-  showBack, showShare, headerBackImage, iconImage, opacity, navigation, size, style, showMe,
+  showBack, showShare, headerBackImage, iconImage, opacity, navigation, size, style, showMe, text,
 }) {
   return (
     <>
@@ -18,7 +18,8 @@ export default function HeaderTranslucent({
           backgroundColor="rgba(0, 0, 0, 0.0)"
         />
         <ImageContent source={headerBackImage} opacity={opacity} style={style} />
-        <MiddleHeaderBar showBack={showBack} showShare={showShare} iconImage={iconImage} navigation={navigation} />
+
+        <MiddleHeaderBar text={text} showBack={showBack} showShare={showShare} iconImage={iconImage} navigation={navigation} />
 
 
       </AnimatedViewContainer>
@@ -36,6 +37,7 @@ HeaderTranslucent.propTypes = {
     goBack: PropTypes.func,
   }),
   size: PropTypes.string,
+  text: PropTypes.string,
 };
 HeaderTranslucent.defaultProps = {
   showShare: false,
@@ -45,4 +47,5 @@ HeaderTranslucent.defaultProps = {
   opacity: null,
   navigation: {},
   size: '',
+  text: '',
 };

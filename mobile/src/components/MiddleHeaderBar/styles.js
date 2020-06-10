@@ -6,12 +6,18 @@ export const MiddleHeaderBarContent = styled.View`
   display: flex;
   flex-direction: row;
   align-items: center; 
-  
-  ${(props) => (props.showButtons === true ? css`justify-content:space-between` : css`justify-content:center`)};
-  ${(props) => (props.showButtons === true ? css`top:25px` : css`top:1px`)};
+  justify-content:space-between;
+  ${(props) => (props.showButtons === true ? css`justify-content:space-between` : css`justify-content:center`)}
+  ${(props) => (props.showButtons === true ? css`top:25px` : css`top:1px`)}
   
 
 `;
+export const TextContent = styled.Text`
+font-size:18px;
+font-weight:bold;
+color:#fff
+`;
+
 export const ImageFeijucaContent = styled.Image`
   width: 90px;
   height:90px;
@@ -20,14 +26,13 @@ export const ImageFeijucaContent = styled.Image`
 `;
 
 export const LogoContainer = styled.View`
-width:60%;
 align-items:flex-end;
 top:15px;
+
 `;
 export const IconContainer = styled.View`
   justify-content:center;
   align-items:flex-end;
-  width:30%;
   
   
   `;

@@ -3,18 +3,19 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import PropTypes from 'prop-types';
 import { TouchableWithoutFeedback } from 'react-native';
 import { useSelector } from 'react-redux';
+import * as navigation from '~/services/rootNavigation';
 import {
-  MiddleHeaderBarContent, ImageFeijucaContent, LogoContainer, IconContainer,
+  MiddleHeaderBarContent, ImageFeijucaContent, LogoContainer, TextContent, IconContainer,
 } from './styles';
 import Cart from '~/components/Cart';
 
 export default function MiddleHeaderBar({
-  showBack, showShare, iconImage, navigation, backButtonColor,
+  showBack, showShare, iconImage, backButtonColor, text,
 }) {
   const cart = useSelector((state) => state.cart);
 
   const returnShareOrCart = useMemo(() => {
-    if (cart.totalItems > 0) {
+    if (cart.totalItems > 0 && !iconImage) {
       return <Cart color="#fff" />;
     } if (showShare) {
       return <Icon name="share" size={32} />;
@@ -28,9 +29,17 @@ export default function MiddleHeaderBar({
           <Icon name="keyboard-arrow-left" size={42} color={backButtonColor || '#fff'} />
         </TouchableWithoutFeedback>
       ) : null}
-      <LogoContainer>
-        <ImageFeijucaContent source={iconImage} />
-      </LogoContainer>
+
+
+      {iconImage
+        ? (
+          <LogoContainer>
+            <ImageFeijucaContent source={iconImage} />
+          </LogoContainer>
+        )
+        : null}
+
+
       <IconContainer>
         {returnShareOrCart}
       </IconContainer>
@@ -42,15 +51,13 @@ MiddleHeaderBar.propTypes = {
   showBack: PropTypes.bool,
   showShare: PropTypes.bool,
   iconImage: PropTypes.number,
-  navigation: PropTypes.shape({
-    goBack: PropTypes.func,
-  }),
   backButtonColor: PropTypes.string,
+  text: PropTypes.string,
 };
 MiddleHeaderBar.defaultProps = {
   showBack: false,
   showShare: false,
   iconImage: null,
-  navigation: {},
   backButtonColor: '',
+  text: '',
 };

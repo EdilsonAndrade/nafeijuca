@@ -19,8 +19,8 @@ export const CartTotalItemsContainer = styled.View`
   justify-content:center;
   align-items:center;
   position:relative;
-  left:-10px;
-  top:-5px;
+  left:20px;
+  top:-35px;
 `;
 export const CartTotalItems = styled.Text`
 font-size: 12px;

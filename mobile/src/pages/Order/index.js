@@ -1,12 +1,26 @@
 import React from 'react';
-import { View } from 'react-native';
 
 import { Container, TitleText } from './styles';
+import HeaderTranslucent from '~/components/HeaderTranslucent';
+
+import HeaderBackImage from '~/assets/capa.png';
+
 
 const Order = () => (
-  <Container>
-    <TitleText>Aqui ficarão os pedidos</TitleText>
-  </Container>
+  <>
+    <HeaderTranslucent
+      showBack
+      showShare={false}
+      headerBackImage={HeaderBackImage}
+      opacity=".6"
+      text="CESTA DE PRODUTOS"
+    />
+
+    <Container>
+      <TitleText>Aqui ficarão os pedidos</TitleText>
+    </Container>
+  </>
+
 );
 
 export default Order;

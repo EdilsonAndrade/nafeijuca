@@ -13,6 +13,4 @@ export const ImageContent = styled(Animated.Image)`
   width: 100%;
   height: 100%;
   opacity:${(props) => (props.opacity ? props.opacity : '0.5')};
-
-  
 `;
