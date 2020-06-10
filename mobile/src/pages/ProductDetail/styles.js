@@ -2,8 +2,12 @@ import styled from 'styled-components/native';
 import { RectButton, TouchableOpacity } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
+export const Container = styled.View`
+flex:1;
+`;
+
 export const MainViewContainer = styled.ScrollView`
-  flex:1;
+  height:5%;
 `;
 
 export const ProductViewContainer = styled.View`
@@ -55,6 +59,10 @@ margin-left:10px;
 text-decoration:line-through;
 font-size:15px;
 color:#696969;
+`;
+
+export const ViewBottomButtons = styled.View`
+
 `;
 export const ViewMainBottom = styled.View`
 flex-direction:row;

@@ -10,6 +10,7 @@ import Store from './Store';
 import HeaderTranslucent from '~/components/HeaderTranslucent';
 import LocationLabel from './LocationLabel';
 
+
 export default function Dashboard({ navigation }) {
   return (
     <>
@@ -33,6 +34,7 @@ export default function Dashboard({ navigation }) {
           <Store navigation={navigation} />
         </MainScrollViewVertical>
       </MainSafeAreaView>
+
     </>
   );
 }

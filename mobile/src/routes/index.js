@@ -9,34 +9,34 @@ const Stack = createStackNavigator();
 
 export default function Route() {
   return (
-    <Stack.Navigator
+    <>
+      <Stack.Navigator
 
-      screenOptions={{
-        headerShown: false,
-      }}
-    >
-      <Stack.Screen
-        name="Main"
-        component={MainTabNavigation}
-
-      />
-      <Stack.Screen
-        name="ProductDetail"
-        component={ProductDetail}
-        options={({ navigation }) => ({
-          headerShown: true,
-          headerTitle: 'DETALHES DO ITEM',
-          headerLeft: () => (
-            <Icon name="keyboard-arrow-left" onPress={() => navigation.goBack()} size={42} color="#ffc700" />
-          ),
-          headerRight: () => (
-            <Cart />
-          ),
-        })}
-
-      />
+        screenOptions={{
+          headerShown: false,
+        }}
+      >
+        <Stack.Screen
+          name="Main"
+          component={MainTabNavigation}
+        />
+        <Stack.Screen
+          name="ProductDetail"
+          component={ProductDetail}
+          options={({ navigation }) => ({
+            headerShown: true,
+            headerTitle: 'DETALHES DO ITEM',
+            headerLeft: () => (
+              <Icon name="keyboard-arrow-left" onPress={() => navigation.goBack()} size={42} color="#ffc700" />
+            ),
+            headerRight: () => (
+              <Cart />
+            ),
+          })}
+        />
 
 
-    </Stack.Navigator>
+      </Stack.Navigator>
+    </>
   );
 }

@@ -7,6 +7,7 @@ import SearchAddress from '~/pages/SearchAddress';
 import MapAddress from '~/pages/MapAddress';
 import AddressConfirmation from '~/pages/AddressConfirmation';
 
+
 const Stack = createStackNavigator();
 
 export default function DashboardNavigation() {
@@ -15,28 +16,24 @@ export default function DashboardNavigation() {
 
       screenOptions={{
         headerShown: false,
+
       }}
     >
       <Stack.Screen
         name="Dashboard"
         component={Dashboard}
-
       />
       <Stack.Screen
         name="ProductGroup"
         component={ProductGroup}
-
-
       />
       <Stack.Screen
         name="LocationAddress"
         component={LocationAddress}
-
       />
       <Stack.Screen
         name="SearchAddress"
         component={SearchAddress}
-
       />
       <Stack.Screen
         name="MapAddress"
@@ -45,9 +42,9 @@ export default function DashboardNavigation() {
       <Stack.Screen
         name="AddressConfirmation"
         component={AddressConfirmation}
-
       />
 
     </Stack.Navigator>
+
   );
 }

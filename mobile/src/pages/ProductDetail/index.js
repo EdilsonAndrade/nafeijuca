@@ -9,10 +9,11 @@ import { BACKENDIP } from 'react-native-dotenv';
 import SubItem from './SubItem';
 import * as CartActions from '~/store/modules/cart/action';
 import {
-  MainViewContainer, ProductViewContainer, ProductTitleText,
+  Container, MainViewContainer, ProductViewContainer, ProductTitleText,
   ProductDetailText, TitleAndPriceContainer, PriceContainer, PriceText, PromotionPrice,
-  ImageProduct, ViewMainBottom, ViewButtonsPlusMinus, TotalText, ButtonAdd, ButtonAddText, Plus, Minus,
+  ImageProduct, ViewBottomButtons, ViewMainBottom, ViewButtonsPlusMinus, TotalText, ButtonAdd, ButtonAddText, Plus, Minus,
 } from './styles';
+
 
 export default function ProductDetail({ route, navigation }) {
   const dispatch = useDispatch();
@@ -69,92 +70,105 @@ export default function ProductDetail({ route, navigation }) {
       setShowAlert(true);
     } else {
       dispatch(CartActions.addToCartSuccess({ totalItems: cart.totalItems + countProducts, totalPrice: cart.totalPrice + totalPrice }));
+      navigation.navigate('Order');
     }
   };
   return (
     <>
-      <MainViewContainer>
-        <ProductViewContainer>
-          {product.File
-            ? <ImageProduct source={{ uri: product.File.url.replace('localhost', BACKENDIP) }} />
-            : <Icon name="broken-image" size={90} /> }
-          <TitleAndPriceContainer>
-            <ProductTitleText>
-              {product.name}
-            </ProductTitleText>
-            <ProductDetailText>
-              {product.description}
-            </ProductDetailText>
-            <PriceContainer>
-              {product.promotionPrice
 
-                ? (
-                  <>
-                    <PriceText>
-                      A partir de R$
-                      {Math.round(product.promotionPrice).toFixed(2)}
-                    </PriceText>
-                    <PromotionPrice>
-                      R$
-                      {' '}
-                      {Math.round(product.price).toFixed(2)}
-                    </PromotionPrice>
-                  </>
-                )
-                : (
-                  <>
-                    <PriceText>
-                      A partir de R$
-                      {' '}
-                      {Math.round(product.price).toFixed(2)}
-                    </PriceText>
-                    <PromotionPrice>
-                      {product.promotionPrice ? Math.round(product.promotionPrice).toFixed(2) : null}
-                    </PromotionPrice>
-                  </>
-                )}
+      <Container>
 
-            </PriceContainer>
-            {nonMandatoryItems.length > 0 ? <SubItem items={nonMandatoryItems} onUnCheck={((subItem) => handleOnUncheckSubItem(subItem))} onCheck={(subItem) => handleOnCheckSubItem(subItem)} /> : null}
-            {mandatoryItems.length > 0 ? <SubItem items={mandatoryItems} onUnCheck={((subItem) => handleOnUncheckSubItem(subItem))} onCheck={(subItem) => handleOnCheckSubItem(subItem)} mandatory /> : null}
+        <MainViewContainer>
+          <ProductViewContainer>
+            {product.File
+              ? <ImageProduct source={{ uri: product.File.url.replace('localhost', BACKENDIP) }} />
+              : <Icon name="broken-image" size={90} /> }
+            <TitleAndPriceContainer>
+              <ProductTitleText>
+                {product.name}
+              </ProductTitleText>
+              <ProductDetailText>
+                {product.description}
+              </ProductDetailText>
+              <PriceContainer>
+                {product.promotionPrice
 
+                  ? (
+                    <>
+                      <PriceText>
+                        A partir de R$
+                        {Math.round(product.promotionPrice).toFixed(2)}
+                      </PriceText>
+                      <PromotionPrice>
+                        R$
+                        {' '}
+                        {Math.round(product.price).toFixed(2)}
+                      </PromotionPrice>
+                    </>
+                  )
+                  : (
+                    <>
+                      <PriceText>
+                        A partir de R$
+                        {' '}
+                        {Math.round(product.price).toFixed(2)}
+                      </PriceText>
+                      <PromotionPrice>
+                        {product.promotionPrice ? Math.round(product.promotionPrice).toFixed(2) : null}
+                      </PromotionPrice>
+                    </>
+                  )}
 
-          </TitleAndPriceContainer>
-
-        </ProductViewContainer>
+              </PriceContainer>
+              {nonMandatoryItems.length > 0 ? <SubItem items={nonMandatoryItems} onUnCheck={((subItem) => handleOnUncheckSubItem(subItem))} onCheck={(subItem) => handleOnCheckSubItem(subItem)} /> : null}
+              {mandatoryItems.length > 0 ? <SubItem items={mandatoryItems} onUnCheck={((subItem) => handleOnUncheckSubItem(subItem))} onCheck={(subItem) => handleOnCheckSubItem(subItem)} mandatory /> : null}
 
 
-      </MainViewContainer>
-      <ViewMainBottom>
-        <ViewButtonsPlusMinus>
-          <TouchableOpacity onPress={handleRemoveItem}>
-            <Minus name="remove" count={countProducts} />
-          </TouchableOpacity>
-          <TotalText>{countProducts}</TotalText>
-          <TouchableOpacity onPress={handleAddMoreItem}>
-            <Plus name="add" />
-          </TouchableOpacity>
-        </ViewButtonsPlusMinus>
-        <TouchableOpacity onPress={handleAddToCart}>
-          <ButtonAdd>
-            <ButtonAddText>
-              Adicionar
-            </ButtonAddText>
-            <ButtonAddText>
-              {currencyformatter.format(totalPrice, { code: 'BRL' })}
-            </ButtonAddText>
-          </ButtonAdd>
-        </TouchableOpacity>
-      </ViewMainBottom>
-      <AwesomeAlert
-        show={showAlert}
-        title="Selecione os itens que são obrigatórios"
-        closeOnTouchOutside
-        showConfirmButton
-        onConfirmPressed={() => setShowAlert(false)}
-        confirmText="Farei isto"
-        confirmButtonColor="rgba(247, 56, 35, 1)"
-      />
+            </TitleAndPriceContainer>
+
+          </ProductViewContainer>
+
+
+        </MainViewContainer>
+        <ViewBottomButtons>
+
+          <ViewMainBottom>
+
+            <ViewButtonsPlusMinus>
+              <TouchableOpacity onPress={handleRemoveItem}>
+                <Minus name="remove" count={countProducts} />
+              </TouchableOpacity>
+              <TotalText>{countProducts}</TotalText>
+              <TouchableOpacity onPress={handleAddMoreItem}>
+                <Plus name="add" />
+              </TouchableOpacity>
+            </ViewButtonsPlusMinus>
+            <TouchableOpacity onPress={handleAddToCart}>
+              <ButtonAdd>
+                <ButtonAddText>
+                  Adicionar
+                </ButtonAddText>
+                <ButtonAddText>
+                  {currencyformatter.format(totalPrice, { code: 'BRL' })}
+                </ButtonAddText>
+              </ButtonAdd>
+            </TouchableOpacity>
+          </ViewMainBottom>
+
+        </ViewBottomButtons>
+
+        <AwesomeAlert
+          show={showAlert}
+          title="Selecione os itens que são obrigatórios"
+          closeOnTouchOutside
+          showConfirmButton
+          onConfirmPressed={() => setShowAlert(false)}
+          confirmText="Farei isto"
+          confirmButtonColor="rgba(247, 56, 35, 1)"
+        />
+
+      </Container>
+
     </>
   );
 }

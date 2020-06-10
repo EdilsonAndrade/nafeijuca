@@ -17,7 +17,7 @@ export default function MiddleHeaderBar({
     if (cart.totalItems > 0) {
       return <Cart color="#fff" />;
     } if (showShare) {
-      return <Icon name="share" size={32} color="#fff" />;
+      return <Icon name="share" size={32} />;
     }
     return null;
   });

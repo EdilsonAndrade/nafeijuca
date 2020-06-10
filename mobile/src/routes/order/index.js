@@ -1,12 +1,19 @@
 import React from 'react';
-import {View, Text} from 'react-native';
+import { createStackNavigator } from '@react-navigation/stack';
+import Order from '~/pages/Order';
 
-// import { Container } from './styles';
-
+const Stack = createStackNavigator();
 export default function OrderNavigation() {
   return (
-    <View>
-      <Text>Aqui é a area de pedidos</Text>
-    </View>
+    <Stack.Navigator initialRouteName="Order">
+      <Stack.Screen
+        name="Order"
+        component={Order}
+        options={{
+          title: 'CESTA DE PRODUTOS',
+
+        }}
+      />
+    </Stack.Navigator>
   );
 }

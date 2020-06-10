@@ -25,6 +25,7 @@ import DeliveryInfoView from '~/components/DeliveryInfo';
 import * as ProductGroupActions from '~/store/modules/productGroup/actions';
 import Category from './Category';
 import Product from './Product';
+import OrderAdvice from '~/components/OrderBottomAdvice';
 
 YellowBox.ignoreWarnings([
   'Unrecognized WebSocket connection option(s) `agent`, `perMessageDeflate`, `pfx`, `key`, `passphrase`, `cert`, `ca`, `ciphers`, `rejectUnauthorized`. Did you mean to put these under `headers`?',
@@ -173,7 +174,9 @@ export default function ProductGroup({ navigation }) {
           </MinimunOrderContainer>
           {renderProductGroup()}
         </MainScrollViewVertical>
+
       </MainSafeAreaView>
+      <OrderAdvice bottomPosition={5} />
     </>
   );
 }

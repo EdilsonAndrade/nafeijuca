@@ -3,16 +3,16 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 
 export const CartContainer = styled.View`
 display: ${(props) => (props.show ? 'flex' : 'none')};
-flex-direction:row;
 
 `;
 export const CartContent = styled(Icon)`
 font-size:32px;
-color: ${(props) => (props.color ? props.color : '#f40')};
+color:${(props) => (props.color ? props.color : '#ffc700')};
+
 
 `;
 export const CartTotalItemsContainer = styled.View`
-  background:#ffc700;
+  background:#333;
   height:15px;
   width:15px;
   border-radius:50px;
