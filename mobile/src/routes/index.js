@@ -30,7 +30,7 @@ export default function Route() {
               <Icon name="keyboard-arrow-left" onPress={() => navigation.goBack()} size={42} color="#ffc700" />
             ),
             headerRight: () => (
-              <Cart />
+              <Cart color="#fff" />
             ),
           })}
         />

@@ -6,7 +6,7 @@ import MiddleHeaderBar from '~/components/MiddleHeaderBar';
 import { AnimatedViewContainer, ImageContent } from './styles';
 
 export default function HeaderTranslucent({
-  showBack, showShare, headerBackImage, iconImage, opacity, navigation, size, style, showMe, text,
+  showBack, showShare, headerBackImage, iconImage, opacity, navigation, size, style, showMe, text, backButtonColor,
 }) {
   return (
     <>
@@ -19,7 +19,7 @@ export default function HeaderTranslucent({
         />
         <ImageContent source={headerBackImage} opacity={opacity} style={style} />
 
-        <MiddleHeaderBar text={text} showBack={showBack} showShare={showShare} iconImage={iconImage} navigation={navigation} />
+        <MiddleHeaderBar backButtonColor={backButtonColor} text={text} showBack={showBack} showShare={showShare} iconImage={iconImage} navigation={navigation} />
 
 
       </AnimatedViewContainer>

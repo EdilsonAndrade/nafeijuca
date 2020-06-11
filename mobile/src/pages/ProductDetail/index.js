@@ -28,6 +28,7 @@ export default function ProductDetail({ route, navigation }) {
   const [showAlert, setShowAlert] = useState(false);
   const [selectedSubItems, setSelectedSubItems] = useState([]);
 
+
   useEffect(() => {
     const mandatory = SubItems.filter((subItem) => subItem.ProductsItems.mandatory === true);
     const nonMandatory = SubItems.filter((subItem) => subItem.ProductsItems.mandatory === false);
@@ -69,7 +70,17 @@ export default function ProductDetail({ route, navigation }) {
     if (mandatoryItems && mandatoryItems.length > 0 && totalMandatory.length < mandatoryItems[0].ProductsItems.max) {
       setShowAlert(true);
     } else {
-      dispatch(CartActions.addToCartSuccess({ totalItems: cart.totalItems + countProducts, totalPrice: cart.totalPrice + totalPrice }));
+      const existedProduct = cart.products.find((x) => x.id === product.id);
+
+      const productAdded = {
+        id: product.id,
+        name: product.name,
+        subItems: selectedSubItems,
+        quantity: existedProduct ? Number(existedProduct.quantity) + Number(countProducts) : countProducts,
+        file: product.File,
+      };
+
+      dispatch(CartActions.addToCartSuccess({ totalItems: existedProduct ? 1 : cart.totalItems + 1, totalPrice: cart.totalPrice + totalPrice, product: productAdded }));
       navigation.navigate('Order');
     }
   };
