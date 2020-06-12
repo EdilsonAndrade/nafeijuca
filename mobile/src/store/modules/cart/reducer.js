@@ -13,7 +13,13 @@ export default function cart(state = INITIAL_DATA, action) {
         const { totalItems, totalPrice, product } = action.payload;
         draft.totalItems = totalItems;
         draft.totalPrice = totalPrice;
-        draft.products.push(product);
+        const existProduct = draft.products.findIndex((x) => x.id === product.id);
+        if (existProduct >= 0) {
+          draft.products[existProduct] = product;
+        } else {
+          draft.products.push(product);
+        }
+
         break;
       }
       case '@cart/REMOVE_SUCCESS': {

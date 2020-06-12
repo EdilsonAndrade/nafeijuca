@@ -71,10 +71,10 @@ export default function ProductDetail({ route, navigation }) {
       setShowAlert(true);
     } else {
       const existedProduct = cart.products.find((x) => x.id === product.id);
-
       const productAdded = {
         id: product.id,
         name: product.name,
+        subTotal: existedProduct ? Number(existedProduct.subtotal) * Number(existedProduct.quantity) : ((product.promotionPrice || product.price) * countProducts),
         subItems: selectedSubItems,
         quantity: existedProduct ? Number(existedProduct.quantity) + Number(countProducts) : countProducts,
         file: product.File,

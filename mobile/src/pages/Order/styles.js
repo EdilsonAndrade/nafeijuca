@@ -80,36 +80,58 @@ export const ItemMainView = styled.View`
 flex-direction:row;
 justify-content:space-between;
 align-items:center;
+margin:10px 0;
+
 `;
 
 export const BrokenImage = styled(Icon)`
-font-size:52px;
+font-size:35px;
+justify-content:center;
+text-align:center;
 color: #666;
-`;
-export const ImageContent = styled.Image`
-width:60px;
+background:#eee;
+width:50px;
 height:40px;
 border-radius:8px;
 
 `;
+export const ImageContent = styled.Image`
+width:50px;
+height:40px;
+border-radius:8px;
+`;
 
 export const QuantityAndProductDescriptionView = styled.View`
 flex-direction:row;
-align-items:center;
+align-items:flex-start;
+text-align:left;
 justify-content:space-between;
+
+
 `;
 
 export const QuantityContent = styled.Text`
 color:#444;
 font-size:14px;
+text-align:center;
+width:48px;
+
+
+
+
 `;
 
 export const ProductDescription = styled.Text.attrs({
   numberOfLines: 2,
 })`
-margin-left:5px;
+
 color:#444;
 font-size:14px;
+padding: 0 15px 0 0 ;
+
+width:130px;
+
+
 `;
 
 export const Subtotal = styled.Text`

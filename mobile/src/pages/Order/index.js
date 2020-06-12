@@ -37,23 +37,22 @@ const Order = () => {
   const cart = useSelector((state) => state.cart);
 
 
-  function renderItem() {
-    const oneCart = cart;
+  function renderItem(product) {
     return (
-      <ItemMainView>
-        {oneCart.products[0].file ? <ImageContent source={{ uri: oneCart.products[0].product.File.url.replace('localhost', BACKENDIP) }} /> : <BrokenImage name="broken-image" />}
+      <ItemMainView key={product.id}>
+        {product.file ? <ImageContent source={{ uri: product.file.url.replace('localhost', BACKENDIP) }} /> : <BrokenImage name="broken-image" />}
 
         <QuantityContent>
-          {oneCart.products[0].quantity}
+          {product.quantity}
           {' '}
           x
         </QuantityContent>
         <ProductDescription>
-          {oneCart.products[0].name}
+          {product.name}
         </ProductDescription>
         <Subtotal>
 
-          {currencyformatter.format(oneCart.totalPrice, { code: 'BRL' })}
+          {currencyformatter.format(product.subTotal, { code: 'BRL' })}
         </Subtotal>
 
       </ItemMainView>
@@ -96,7 +95,12 @@ const Order = () => {
         </OrderContainer>
       </Container>
       <ListContainer>
-        {renderItem()}
+        <ProductsList
+          data={cart.products}
+          renderItem={({ item }) => renderItem(item)}
+          keyExtractor={(item) => String(item.id)}
+        />
+
       </ListContainer>
     </MainContainer>
 
