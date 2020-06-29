@@ -1,5 +1,5 @@
 import styled from 'styled-components/native';
-import { TouchableOpacity, FlatList } from 'react-native';
+import { TouchableOpacity, FlatList, Animated } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 export const MainContainer = styled.SafeAreaView`
@@ -7,26 +7,25 @@ background: #fff;
 flex:1;
 
 `;
-export const Container = styled.View`
-  padding:10px;
-  background: #fff;
+export const Container = styled(Animated.View)`
+  padding:0px 10px 0;
   margin:10px;
   border-radius:10px;
   
 `;
 
-export const TitleText = styled.Text`
+export const TitleText = styled(Animated.Text)`
 font-weight:bold;
 font-size:26px;
 `;
 
-export const OrderContainer = styled.View`
-margin:30px 15px;
+export const OrderContainer = styled(Animated.View)`
+margin:10px 15px 0;
 background: #7159c1;
 border-radius:10px;
-padding:20px;
+padding:20px 20px 0;
 `;
-export const AddressAndTimeArea = styled.View`
+export const AddressAndTimeArea = styled(Animated.View)`
 
 `;
 export const AddressAndEditionArea = styled.View`
@@ -68,15 +67,16 @@ margin-left:10px;
 export const ToBeDeliveryAreaText = styled.Text`
 color: #fff;
 `;
-export const ListContainer = styled.View`
+export const ListContainer = styled(Animated.View)`
 margin:0 35px;
 border-radius:8px;
 padding:0 2px;
 height:275px;
 
 `;
+
 export const ProductsList = styled(FlatList)`
-padding:5px;
+padding:0px 5px;
 `;
 
 export const ItemMainView = styled.View`

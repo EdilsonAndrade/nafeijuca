@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { TouchableOpacity, Image } from 'react-native';
+import { TouchableOpacity, Image, Animated } from 'react-native';
 import { BACKENDIP } from 'react-native-dotenv';
 import currencyformatter from 'currency-formatter';
 import DeliveryMoto from '~/assets/deliverymotorcycle.png';
@@ -48,7 +48,7 @@ import HeaderBackImage from '~/assets/capa.png';
 const Order = () => {
   const cart = useSelector((state) => state.cart);
   const [countProducts, setCountProducts] = useState(0);
-
+  const scrollOffset = new Animated.Value(0);
   function renderItem(product) {
     return (
       <ItemMainView key={product.id}>
@@ -86,6 +86,7 @@ const Order = () => {
   return (
     <MainContainer>
       <HeaderTranslucent
+
         showBack
         showShare
         opacity=".6"
@@ -93,9 +94,44 @@ const Order = () => {
         backButtonColor="#ffc700"
       />
 
-      <Container>
-        <TitleText>Meu Pedido</TitleText>
-        <OrderContainer>
+      <Container
+        style={{
+          height: scrollOffset.interpolate({
+            inputRange: [0, 190],
+            outputRange: [190, 0],
+            extrapolate: 'clamp',
+          }),
+          top: scrollOffset.interpolate({
+            inputRange: [0, 190],
+            outputRange: [0, -200],
+            extrapolate: 'clamp',
+          }),
+        }}
+      >
+        <TitleText
+          style={{
+            fontSize: scrollOffset.interpolate({
+              inputRange: [30, 35],
+              outputRange: [26, 1],
+              extrapolate: 'clamp',
+            }),
+
+          }}
+        >
+          Meu Pedido
+
+        </TitleText>
+        <OrderContainer
+          style={{
+            height: scrollOffset.interpolate({
+              inputRange: [20, 190],
+              outputRange: [130, 1],
+              extrapolate: 'clamp',
+            }),
+
+
+          }}
+        >
           <AddressAndTimeArea>
             <AddressAndEditionArea>
               <AddressText>
@@ -118,8 +154,20 @@ const Order = () => {
           </AddressAndTimeArea>
         </OrderContainer>
       </Container>
+
       <ListContainer>
         <ProductsList
+          decelerationRate="fast"
+          scrollEventThrottle={16}
+          onScroll={Animated.event([
+            {
+              nativeEvent: {
+                contentOffset: { y: scrollOffset },
+              },
+            },
+          ], {
+            useNativeDriver: false,
+          })}
           data={cart.products}
           renderItem={({ item }) => renderItem(item)}
           keyExtractor={(item) => String(item.id)}
