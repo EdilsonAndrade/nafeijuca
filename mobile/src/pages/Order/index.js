@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { TouchableOpacity, Image, Animated } from 'react-native';
 import { BACKENDIP } from 'react-native-dotenv';
 import currencyformatter from 'currency-formatter';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 import DeliveryMoto from '~/assets/deliverymotorcycle.png';
 import {
   MainContainer, Container, TitleText,
@@ -20,6 +21,11 @@ import {
   ListContainer,
   ProductsList,
   ItemMainView,
+  SubItemView,
+  SubItemRowView,
+  SubItemQuantityContent,
+  SubItemDescription,
+  SubItemSubtotal,
   BrokenImage,
   ImageContent,
   QuantityContent,
@@ -43,50 +49,86 @@ import {
 import HeaderTranslucent from '~/components/HeaderTranslucent';
 
 import HeaderBackImage from '~/assets/capa.png';
+import { addRequestFromOrder, removeSuccessFromOrder, removeFromCartSuccess } from '~/store/modules/cart/action';
 
-
-const Order = () => {
+const Order = ({ navigation }) => {
+  const dispatch = useDispatch();
   const cart = useSelector((state) => state.cart);
-  const [countProducts, setCountProducts] = useState(0);
+  const [countProducts, setCountProducts] = useState(1);
   const scrollOffset = new Animated.Value(0);
-  function renderItem(product) {
-    return (
-      <ItemMainView key={product.id}>
-        {product.file ? <ImageContent source={{ uri: product.file.url.replace('localhost', BACKENDIP) }} /> : <BrokenImage name="broken-image" />}
 
-        <QuantityContent>
+  function handleDeleteProduct(productId) {
+    dispatch(removeFromCartSuccess(productId));
+    if (cart.products.length === 1) {
+      setCountProducts(1);
+      navigation.goBack();
+    }
+  }
+
+  function renderSubItem(product) {
+    return product.subItems.map((subItem) => (
+      <SubItemRowView key={subItem.id}>
+        <SubItemQuantityContent>
+          +
           {product.quantity}
-          {' '}
           x
-        </QuantityContent>
-        <ProductDescription>
-          {product.name}
-        </ProductDescription>
-        <Subtotal>
+        </SubItemQuantityContent>
+        <SubItemDescription>
+          {subItem.name}
+        </SubItemDescription>
+        <SubItemSubtotal>
+          {currencyformatter.format(subItem.price, { code: 'BRL' })}
+        </SubItemSubtotal>
+      </SubItemRowView>
 
-          {currencyformatter.format(product.subTotal, { code: 'BRL' })}
-        </Subtotal>
+    ));
+  }
+  function renderItem(product) {
+    const item = (
+      <>
+        <ItemMainView key={product.id} hasSubItem={product.subItems.length > 0}>
+          {product.file ? <ImageContent source={{ uri: product.file.url.replace('localhost', BACKENDIP) }} /> : <BrokenImage name="broken-image" />}
 
-      </ItemMainView>
+          <QuantityContent>
+            {product.quantity}
+            {' '}
+            x
+          </QuantityContent>
+          <ProductDescription>
+            {product.name}
+          </ProductDescription>
+          <Subtotal>
+
+            {currencyformatter.format(product.subTotal, { code: 'BRL' })}
+
+          </Subtotal>
+          <TouchableOpacity onPress={() => handleDeleteProduct(product.id)}>
+            <Icon name="delete" color="#f45" size={22} />
+          </TouchableOpacity>
+        </ItemMainView>
+        <SubItemView>
+          {renderSubItem(product)}
+        </SubItemView>
+      </>
     );
+
+
+    return item;
   }
   const handleAddMoreItem = () => {
-    const count = countProducts + 1;
-    setCountProducts(count);
-    // setTotalPrice((count * product.promotionPrice || product.price) + (count * totalSubItem));
+    setCountProducts(countProducts + 1);
+    dispatch(addRequestFromOrder(cart.products));
   };
 
   const handleRemoveItem = () => {
-    if (countProducts > 1) {
-      const count = countProducts - 1;
-      setCountProducts(count);
-      // setTotalPrice((count * product.promotionPrice || product.price) + (count * totalSubItem));
-    }
+    setCountProducts(countProducts - 1);
+    dispatch(removeSuccessFromOrder());
   };
+
   return (
     <MainContainer>
       <HeaderTranslucent
-
+        cartColor="#ffc700"
         showBack
         showShare
         opacity=".6"
@@ -96,42 +138,28 @@ const Order = () => {
 
       <Container
         style={{
-          height: scrollOffset.interpolate({
-            inputRange: [0, 190],
-            outputRange: [190, 0],
-            extrapolate: 'clamp',
-          }),
+
           top: scrollOffset.interpolate({
-            inputRange: [0, 190],
-            outputRange: [0, -200],
+            inputRange: [20, 350],
+            outputRange: [0, -100],
             extrapolate: 'clamp',
           }),
+
         }}
       >
         <TitleText
           style={{
             fontSize: scrollOffset.interpolate({
-              inputRange: [30, 35],
-              outputRange: [26, 1],
+              inputRange: [0, 48],
+              outputRange: [24, 0],
               extrapolate: 'clamp',
             }),
-
           }}
         >
           Meu Pedido
 
         </TitleText>
-        <OrderContainer
-          style={{
-            height: scrollOffset.interpolate({
-              inputRange: [20, 190],
-              outputRange: [130, 1],
-              extrapolate: 'clamp',
-            }),
-
-
-          }}
-        >
+        <OrderContainer>
           <AddressAndTimeArea>
             <AddressAndEditionArea>
               <AddressText>
@@ -196,28 +224,14 @@ const Order = () => {
         </TotalAreaView>
       </ListContainer>
       <ViewBottomButtons>
+        <TouchableOpacity>
+          <ButtonAdd>
+            <ButtonAddText>
+              Fazer pedido
+            </ButtonAddText>
 
-        <ViewMainBottom>
-
-          <ViewButtonsPlusMinus>
-            <TouchableOpacity onPress={handleRemoveItem}>
-              <Minus name="remove" count={countProducts} />
-            </TouchableOpacity>
-            <TotalText>{countProducts}</TotalText>
-            <TouchableOpacity onPress={handleAddMoreItem}>
-              <Plus name="add" />
-            </TouchableOpacity>
-          </ViewButtonsPlusMinus>
-          <TouchableOpacity>
-            <ButtonAdd>
-              <ButtonAddText>
-                Fazer pedido
-              </ButtonAddText>
-
-            </ButtonAdd>
-          </TouchableOpacity>
-        </ViewMainBottom>
-
+          </ButtonAdd>
+        </TouchableOpacity>
       </ViewBottomButtons>
     </MainContainer>
 

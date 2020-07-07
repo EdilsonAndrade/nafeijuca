@@ -61,7 +61,13 @@ export default function ProductDetail({ route, navigation }) {
   const handleOnCheckSubItem = (subItem) => {
     setTotalSubItem(Number(totalSubItem) + Number(subItem.price));
     setTotalPrice(Number(totalPrice) + (Number(subItem.price) * countProducts));
-    setSelectedSubItems([...selectedSubItems, subItem]);
+    let subItemName = '';
+    if (subItem.mandatory) {
+      subItemName = mandatoryItems.find((x) => x.id === subItem.id);
+    } else {
+      subItemName = nonMandatoryItems.find((x) => x.id === subItem.id);
+    }
+    setSelectedSubItems([...selectedSubItems, { ...subItem, name: subItemName.name }]);
   };
 
   const handleAddToCart = () => {
@@ -74,13 +80,13 @@ export default function ProductDetail({ route, navigation }) {
       const productAdded = {
         id: product.id,
         name: product.name,
-        subTotal: existedProduct ? Number(existedProduct.subtotal) * Number(existedProduct.quantity) : ((product.promotionPrice || product.price) * countProducts),
+        subTotal: existedProduct ? existedProduct.subTotal + Number(totalPrice) : Number(totalPrice),
         subItems: selectedSubItems,
         quantity: existedProduct ? Number(existedProduct.quantity) + Number(countProducts) : countProducts,
         file: product.File,
       };
 
-      dispatch(CartActions.addToCartSuccess({ totalItems: existedProduct ? 1 : cart.totalItems + 1, totalPrice: cart.totalPrice + totalPrice, product: productAdded }));
+      dispatch(CartActions.addToCartSuccess({ totalItems: existedProduct ? 1 : cart.totalItems + 1, totalPrice: +cart.totalPrice + (+totalPrice), product: productAdded }));
       navigation.navigate('Order');
     }
   };
@@ -131,8 +137,24 @@ export default function ProductDetail({ route, navigation }) {
                   )}
 
               </PriceContainer>
-              {nonMandatoryItems.length > 0 ? <SubItem items={nonMandatoryItems} onUnCheck={((subItem) => handleOnUncheckSubItem(subItem))} onCheck={(subItem) => handleOnCheckSubItem(subItem)} /> : null}
-              {mandatoryItems.length > 0 ? <SubItem items={mandatoryItems} onUnCheck={((subItem) => handleOnUncheckSubItem(subItem))} onCheck={(subItem) => handleOnCheckSubItem(subItem)} mandatory /> : null}
+              {nonMandatoryItems.length > 0
+                ? (
+                  <SubItem
+                    items={nonMandatoryItems}
+                    onUnCheck={((subItem) => handleOnUncheckSubItem(subItem))}
+                    onCheck={(subItem) => handleOnCheckSubItem(subItem)}
+                  />
+                )
+                : null}
+              {mandatoryItems.length > 0
+                ? (
+                  <SubItem
+                    items={mandatoryItems}
+                    onUnCheck={((subItem) => handleOnUncheckSubItem(subItem))}
+                    onCheck={(subItem) => handleOnCheckSubItem(subItem)}
+                    mandatory
+                  />
+                ) : null}
 
 
             </TitleAndPriceContainer>

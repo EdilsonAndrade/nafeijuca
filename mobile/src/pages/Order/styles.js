@@ -8,7 +8,7 @@ flex:1;
 
 `;
 export const Container = styled(Animated.View)`
-  padding:0px 10px 0;
+  
   margin:10px;
   border-radius:10px;
   
@@ -24,6 +24,7 @@ margin:10px 15px 0;
 background: #7159c1;
 border-radius:10px;
 padding:20px 20px 0;
+height: 130px;
 `;
 export const AddressAndTimeArea = styled(Animated.View)`
 
@@ -68,22 +69,23 @@ export const ToBeDeliveryAreaText = styled.Text`
 color: #fff;
 `;
 export const ListContainer = styled(Animated.View)`
-margin:0 35px;
+margin:0 15px;
 border-radius:8px;
 padding:0 2px;
-height:275px;
+height:355px;
 
 `;
 
-export const ProductsList = styled(FlatList)`
-padding:0px 5px;
+export const ProductsList = styled(Animated.FlatList)`
+
 `;
 
 export const ItemMainView = styled.View`
 flex-direction:row;
 justify-content:space-between;
 align-items:center;
-margin:10px 0;
+border-bottom-width:${(props) => (props.hasSubItem ? '0px' : '1px')}
+border-bottom-color:${(props) => (props.hasSubItem ? '#eee' : 'transparent')};
 
 `;
 
@@ -121,7 +123,7 @@ color:#444;
 font-size:14px;
 padding: 0 15px 0 0 ;
 
-width:130px;
+width:150px;
 
 
 `;
@@ -130,6 +132,42 @@ export const Subtotal = styled.Text`
 color:#666;
 font-size:12px;
 `;
+export const SubItemView = styled.View`
+border-bottom-width:1px;
+border-bottom-color:#eee;
+margin:0 0 12px;
+text-align:right;
+`;
+export const SubItemRowView = styled.View`
+flex-direction:row;
+justify-content:space-between;
+align-items:center;
+margin:1px 25px 0 0;
+
+`;
+export const SubItemQuantityContent = styled.Text`
+color:#444;
+font-size:14px;
+text-align:center;
+width:30%;
+text-align:right;
+padding-right:10px;
+
+`;
+export const SubItemDescription = styled.Text.attrs({
+
+})`
+align-content:flex-start;
+color:#444;
+font-size:12px;
+padding: 0 35px 0 0;
+width:53%;
+`;
+export const SubItemSubtotal = styled.Text`
+color:#666;
+font-size:12px;
+`;
+
 export const DeliveryMainView = styled.View`
 flex-direction:row;
 justify-content:space-between;
@@ -193,8 +231,7 @@ align-items:center;
 `;
 
 export const ButtonAdd = styled.View`
-margin-left:25px;
-width:75%;
+
 height:50px;
 border-radius:6px;
 display:flex;

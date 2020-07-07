@@ -10,11 +10,14 @@ import {
 import Cart from '~/components/Cart';
 
 export default function MiddleHeaderBar({
-  showBack, showShare, iconImage, backButtonColor, text,
+  showBack, showShare, iconImage, backButtonColor, text, cartColor,
 }) {
   const cart = useSelector((state) => state.cart);
 
   const returnShareOrCart = useMemo(() => {
+    if (cartColor) {
+      return <Cart color={cartColor} />;
+    }
     if (cart.totalItems > 0 && !iconImage) {
       return <Cart color="#fff" />;
     } if (showShare) {

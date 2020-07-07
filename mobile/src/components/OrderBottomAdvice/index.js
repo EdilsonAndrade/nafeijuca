@@ -35,6 +35,14 @@ const OrderBottomAdvice = ({ bottomPosition }) => {
         speed: 1,
 
       }).start();
+    } else {
+      Animated.spring(positionY, {
+        toValue: -110,
+        useNativeDriver: false,
+        bounciness: 5,
+        speed: 1,
+
+      }).start();
     }
   }, [cart]);
 

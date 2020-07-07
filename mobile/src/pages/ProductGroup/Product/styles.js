@@ -2,7 +2,8 @@ import styled from 'styled-components/native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 export const MainViewContainer = styled.View`
-  padding:10px 0;
+  padding:5px 0 38px;
+  margin-bottom:5px;
 `;
 
 export const SeeDetailButton = styled(TouchableOpacity)``;
