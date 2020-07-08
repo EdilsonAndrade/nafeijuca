@@ -11,9 +11,9 @@ export default function cart(state = INITIAL_DATA, action) {
   return produce(state, (draft) => {
     switch (action.type) {
       case '@cart/ADD_SUCCESS': {
-        const { totalItems, totalPrice, product } = action.payload;
+        const { totalPrice, product } = action.payload;
 
-        draft.totalItems = totalItems || 1;
+
         draft.totalPrice = totalPrice;
         const existProduct = draft.products.findIndex((x) => x.id === product.id);
         if (existProduct >= 0) {
@@ -21,25 +21,11 @@ export default function cart(state = INITIAL_DATA, action) {
         } else {
           draft.products.push(product);
         }
+        draft.totalItems = draft.products.length;
         draft.emptyCar = false;
         break;
       }
-      case '@cart/ADD_SUCCESS_ORDER': {
-        const products = draft.products.map((p) => ({
-          ...p,
-          subTotal: p.subTotal + (p.subTotal / p.quantity),
-          quantity: p.quantity + 1,
 
-        }));
-        draft.totalItems += 1;
-        const arrSubTotals = products.map((p) => p.subTotal);
-
-        const totalPrice = arrSubTotals.reduce((total, p) => total + p);
-        draft.totalPrice = totalPrice;
-        draft.products = products;
-        draft.emptyCar = false;
-        break;
-      }
       case '@cart/REMOVE_SUCCESS_ORDER': {
         const products = draft.products.map((p) => ({
           ...p,

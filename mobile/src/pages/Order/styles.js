@@ -133,16 +133,15 @@ color:#666;
 font-size:12px;
 `;
 export const SubItemView = styled.View`
-border-bottom-width:1px;
+border-bottom-width:2px;
 border-bottom-color:#eee;
 margin:0 0 12px;
 text-align:right;
 `;
 export const SubItemRowView = styled.View`
 flex-direction:row;
-justify-content:space-between;
-align-items:center;
-margin:1px 25px 0 0;
+margin:1px 0 0 10px;
+width:88%;
 
 `;
 export const SubItemQuantityContent = styled.Text`
@@ -151,17 +150,19 @@ font-size:14px;
 text-align:center;
 width:30%;
 text-align:right;
-padding-right:10px;
+padding-right:1px;
 
 `;
 export const SubItemDescription = styled.Text.attrs({
 
 })`
-align-content:flex-start;
+
 color:#444;
 font-size:12px;
-padding: 0 35px 0 0;
-width:53%;
+padding: 0 0 0 10px;
+text-align:left;
+width:57%;
+
 `;
 export const SubItemSubtotal = styled.Text`
 color:#666;

@@ -86,7 +86,7 @@ export default function ProductDetail({ route, navigation }) {
         file: product.File,
       };
 
-      dispatch(CartActions.addToCartSuccess({ totalItems: existedProduct ? 1 : cart.totalItems + 1, totalPrice: +cart.totalPrice + (+totalPrice), product: productAdded }));
+      dispatch(CartActions.addToCartSuccess({ totalPrice: +cart.totalPrice + (+totalPrice), product: productAdded }));
       navigation.navigate('Order');
     }
   };

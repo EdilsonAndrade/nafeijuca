@@ -38,29 +38,22 @@ import {
   TotalTextLabel,
   TotalText,
   ViewBottomButtons,
-  ViewMainBottom,
-  ViewButtonsPlusMinus,
   ButtonAdd,
   ButtonAddText,
-  Plus,
-  Minus,
 
 } from './styles';
 import HeaderTranslucent from '~/components/HeaderTranslucent';
 
-import HeaderBackImage from '~/assets/capa.png';
-import { addRequestFromOrder, removeSuccessFromOrder, removeFromCartSuccess } from '~/store/modules/cart/action';
+import { removeFromCartSuccess } from '~/store/modules/cart/action';
 
 const Order = ({ navigation }) => {
   const dispatch = useDispatch();
   const cart = useSelector((state) => state.cart);
-  const [countProducts, setCountProducts] = useState(1);
   const scrollOffset = new Animated.Value(0);
 
   function handleDeleteProduct(productId) {
     dispatch(removeFromCartSuccess(productId));
     if (cart.products.length === 1) {
-      setCountProducts(1);
       navigation.goBack();
     }
   }
@@ -115,15 +108,7 @@ const Order = ({ navigation }) => {
 
     return item;
   }
-  const handleAddMoreItem = () => {
-    setCountProducts(countProducts + 1);
-    dispatch(addRequestFromOrder(cart.products));
-  };
 
-  const handleRemoveItem = () => {
-    setCountProducts(countProducts - 1);
-    dispatch(removeSuccessFromOrder());
-  };
 
   return (
     <MainContainer>
