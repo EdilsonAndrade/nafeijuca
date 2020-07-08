@@ -51,8 +51,8 @@ const Order = ({ navigation }) => {
   const cart = useSelector((state) => state.cart);
   const scrollOffset = new Animated.Value(0);
 
-  function handleDeleteProduct(productId) {
-    dispatch(removeFromCartSuccess(productId));
+  function handleDeleteProduct(productKey) {
+    dispatch(removeFromCartSuccess(productKey));
     if (cart.products.length === 1) {
       navigation.goBack();
     }
@@ -60,7 +60,7 @@ const Order = ({ navigation }) => {
 
   function renderSubItem(product) {
     return product.subItems.map((subItem) => (
-      <SubItemRowView key={subItem.id}>
+      <SubItemRowView key={subItem.id * +product.key}>
         <SubItemQuantityContent>
           +
           {product.quantity}
@@ -79,7 +79,7 @@ const Order = ({ navigation }) => {
   function renderItem(product) {
     const item = (
       <>
-        <ItemMainView key={product.id} hasSubItem={product.subItems.length > 0}>
+        <ItemMainView key={Math.random(product.key, 1000)} hasSubItem={product.subItems.length > 0}>
           {product.file ? <ImageContent source={{ uri: product.file.url.replace('localhost', BACKENDIP) }} /> : <BrokenImage name="broken-image" />}
 
           <QuantityContent>
@@ -95,7 +95,7 @@ const Order = ({ navigation }) => {
             {currencyformatter.format(product.subTotal, { code: 'BRL' })}
 
           </Subtotal>
-          <TouchableOpacity onPress={() => handleDeleteProduct(product.id)}>
+          <TouchableOpacity onPress={() => handleDeleteProduct(product.key)}>
             <Icon name="delete" color="#f45" size={22} />
           </TouchableOpacity>
         </ItemMainView>
@@ -183,7 +183,7 @@ const Order = ({ navigation }) => {
           })}
           data={cart.products}
           renderItem={({ item }) => renderItem(item)}
-          keyExtractor={(item) => String(item.id)}
+          keyExtractor={(item) => String(item.key)}
         />
 
         <DeliveryMainView>

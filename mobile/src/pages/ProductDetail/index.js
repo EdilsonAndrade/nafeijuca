@@ -76,11 +76,16 @@ export default function ProductDetail({ route, navigation }) {
     if (mandatoryItems && mandatoryItems.length > 0 && totalMandatory.length < mandatoryItems[0].ProductsItems.max) {
       setShowAlert(true);
     } else {
-      const existedProduct = cart.products.find((x) => x.id === product.id);
+      let existedProduct = cart.products.find((x) => x.id === product.id);
+
+      if (existedProduct && existedProduct.subItems && selectedSubItems && JSON.stringify(existedProduct.subItems) !== JSON.stringify(selectedSubItems)) {
+        existedProduct = null;
+      }
       const productAdded = {
         id: product.id,
+        key: Math.random(product.id, 100),
         name: product.name,
-        subTotal: existedProduct ? existedProduct.subTotal + Number(totalPrice) : Number(totalPrice),
+        subTotal: product.promotionPrice || product.price,
         subItems: selectedSubItems,
         quantity: existedProduct ? Number(existedProduct.quantity) + Number(countProducts) : countProducts,
         file: product.File,

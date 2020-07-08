@@ -1,5 +1,5 @@
 export const addToCartSuccess = (data) => ({
-  type: '@cart/ADD_SUCCESS',
+  type: '@cart/ADD_TO_CART_SUCCESS',
   payload: data,
 });
 

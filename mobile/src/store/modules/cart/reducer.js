@@ -10,13 +10,19 @@ const INITIAL_DATA = {
 export default function cart(state = INITIAL_DATA, action) {
   return produce(state, (draft) => {
     switch (action.type) {
-      case '@cart/ADD_SUCCESS': {
+      case '@cart/ADD_TO_CART_SUCCESS': {
         const { totalPrice, product } = action.payload;
-
 
         draft.totalPrice = totalPrice;
         const existProduct = draft.products.findIndex((x) => x.id === product.id);
-        if (existProduct >= 0) {
+        const productExist = draft.products.find((x) => x.id === product.id);
+        let sameSubItems = true;
+
+        if (productExist && product.subItems && productExist.subItems && JSON.stringify(productExist.subItems) !== JSON.stringify(product.subItems)) {
+          sameSubItems = false;
+        }
+
+        if (existProduct >= 0 && sameSubItems) {
           draft.products[existProduct] = product;
         } else {
           draft.products.push(product);
@@ -41,14 +47,18 @@ export default function cart(state = INITIAL_DATA, action) {
         break;
       }
       case '@cart/REMOVE_CART_SUCCESS': {
-        const products = draft.products.filter((x) => x.id !== action.payload);
-
-
+        const products = draft.products.filter((x) => x.key !== action.payload);
         if (products.length > 0) {
           draft.totalItems -= 1;
-          const arrSubTotals = products.map((p) => p.subTotal);
-          const totalPrice = arrSubTotals.reduce((total, p) => total + p);
-          draft.totalPrice = totalPrice;
+          let total = 0;
+          for (let indiceProduct = 0; indiceProduct < products.length; indiceProduct += 1) {
+            total += +products[indiceProduct].subTotal * +products[indiceProduct].quantity;
+            for (let indiceSubItem = 0; indiceSubItem < products[indiceProduct].subItems.length; indiceSubItem += 1) {
+              total += +products[indiceProduct].subItems[indiceSubItem].price * +products[indiceProduct].quantity;
+            }
+          }
+
+          draft.totalPrice = total;
           draft.products = products;
           draft.emptyCar = false;
         } else {
