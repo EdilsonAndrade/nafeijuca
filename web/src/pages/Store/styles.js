@@ -4,7 +4,7 @@ import InputMask from '~/components/InputMask';
 
 export const Container = styled.div`
   width: 78%;
-  margin: 10px auto;
+  margin: 0 auto;
   padding: 20px;
   background: #ffff;
   border-radius: 6px;

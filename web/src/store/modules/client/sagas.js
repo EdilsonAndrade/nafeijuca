@@ -1,13 +1,15 @@
 import { all, takeLatest, put, call } from 'redux-saga/effects';
 
 import { toast } from 'react-toastify';
+import history from '~/services/history';
 import api from '~/services/api';
 import { loadRequest, loadSuccess } from './actions';
+import { signout } from '~/store/modules/auth/actions';
 
 export function* saveRequest({ payload }) {
   try {
     const { id, storeId, Address } = payload;
-    console.log(JSON.stringify(payload));
+
     if (storeId) {
       if (!id) {
         yield call(api.post, '/clients/', { ...payload, myAddress: Address });
@@ -40,8 +42,13 @@ export function* saveRequest({ payload }) {
 }
 
 export function* load({ payload }) {
-  const response = yield call(api.get, `/stores/${payload}/clients`);
-  yield put(loadSuccess(response.data));
+  try {
+    const response = yield call(api.get, `/stores/${payload}/clients`);
+    yield put(loadSuccess(response.data));
+  } catch (error) {
+    yield put(signout());
+    history.push('/');
+  }
 }
 
 export default all([

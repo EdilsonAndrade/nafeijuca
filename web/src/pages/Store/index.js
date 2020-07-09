@@ -1,12 +1,14 @@
-import React from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { Form } from '@unform/web';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
+import Switch from '@material-ui/core/Switch';
 import Input from '~/components/Input';
 import Button from '~/components/Button';
 import * as StoreActions from '~/store/modules/store/actions';
 import api from '~/services/api';
 import Avatar from '~/components/AvatarInput';
+import Grid from '~/components/Grid';
 import {
   Container,
   InputName,
@@ -18,15 +20,69 @@ import {
   ButtonDiv,
 } from './styles';
 
+const columns = [
+  {
+    name: 'id',
+    label: 'Id',
+  },
+  {
+    name: 'name',
+    label: 'Loja',
+  },
+  {
+    name: 'address',
+    label: 'Endereço',
+  },
+  {
+    name: 'zipcode',
+    label: 'Cep',
+  },
+  {
+    name: 'active',
+    label: 'Ativa',
+    options: {
+      customBodyRender: (value, tableMeta, updateValue) => (
+        <Switch checked={value} />
+      ),
+    },
+  },
+  {
+    name: 'latitude',
+    label: 'Latitude',
+  },
+  {
+    name: 'longitude',
+    label: 'Longitude',
+  },
+];
 export default function Store() {
-  const store = useSelector(state => state.store);
+  const [stores, setStores] = useState([]);
+  const formRef = useRef();
   const dispatch = useDispatch();
+  const [storeData, setStoreData] = useState();
+
+  const getAllStores = async () => {
+    const response = await api.get('/stores');
+    setStores(response.data);
+  };
+  useEffect(() => {
+    getAllStores();
+  }, []);
+
   const handleSubmit = async data => {
     try {
-      const dataToSend = { ...data, active: true };
-      const response = await api.post('/stores', dataToSend);
-      toast.success('Loja criada com sucesso');
-      dispatch(StoreActions.saveSuccess(response.data));
+      const { id } = data;
+      console.log(JSON.stringify(data));
+      // if (id) {
+      //   const response = await api.put(`/stores/${data.id}`, data);
+      //   dispatch(StoreActions.saveSuccess(response.data));
+      //   toast.warn('Loja alterada com sucesso');
+      // } else {
+      //   const response = await api.post('/stores', data);
+      //   dispatch(StoreActions.saveSuccess(response.data));
+      //   toast.success('Loja criada com sucesso');
+      // }
+      // getAllStores();
     } catch ({ response }) {
       const { error } = response.data;
       if (error) {
@@ -36,10 +92,36 @@ export default function Store() {
       }
     }
   };
+  const rowDelete = (rowsDeleted, data) => {
+    const { index } = rowsDeleted.data[0];
+    const selectedStore = stores[index];
+    // setUser(selectedStore);
+    // setOpen(true);
+    return false;
+  };
+  const handleConfirmDelete = () => {
+    //  dispatch(deleteRequest(userId));
+    // formRef.current.reset();
+    // setOpen(false);
+  };
+  const handleRowSelect = (currentRowsSelected, allRowsSelected) => {
+    const { index } = currentRowsSelected[0];
+    const selectedStore = stores[index];
+    if (allRowsSelected.length > 0) {
+      formRef.current.setData(selectedStore);
 
+      setStoreData({
+        value: selectedStore.id,
+        label: selectedStore.name,
+      });
+    } else {
+      formRef.current.reset();
+    }
+  };
   return (
     <Container>
-      <Form onSubmit={handleSubmit} initialData={store}>
+      <Form onSubmit={handleSubmit} ref={formRef}>
+        <Input name="id" type="number" hidden />
         <ContainerColumn>
           <Avatar name="avatar" />
           <div>
@@ -100,6 +182,9 @@ export default function Store() {
               <label htmlFor="city">Cidade</label>
               <Input name="city" placeholder="Preencha com a cidade" />
             </div>
+            <div>
+              <Switch name="active" label="Ativa" />
+            </div>
             <ButtonDiv>
               <Button type="submit" saveButton>
                 Salvar
@@ -108,6 +193,13 @@ export default function Store() {
           </div>
         </ContainerColumn>
       </Form>
+      <Grid
+        data={stores}
+        columns={columns}
+        handleRowSelect={handleRowSelect}
+        handleRowDelete={rowDelete}
+        rowsPerPage={2}
+      />
     </Container>
   );
 }

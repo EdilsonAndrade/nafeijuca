@@ -15,7 +15,11 @@ export default function InputMaskForm({ name, label, ...rest }) {
       ref: ref.current,
       path: 'value',
       clearValue: maskRef => {
-        maskRef.clear();
+        if (maskRef.clear) {
+          maskRef.clear();
+        } else if (maskRef.value) {
+          maskRef.value = '';
+        }
       },
     });
   }, [fieldName, registerField]);
