@@ -1,18 +1,14 @@
 import styled from 'styled-components/native';
 import { TouchableOpacity } from 'react-native';
 
-
-export const ScrollViewContainer = styled.ScrollView`
-    margin:0 10px;
-    border-radius:6px;
-    text-align:center;
-    ;
-
+export const StoreMainView = styled.View`
+border:1px solid #eee;
+margin: 3px 10px;
 `;
 
 export const StoreButton = styled(TouchableOpacity)`
-margin: 3px 10px;
-border:1px solid #eee;
+
+
 `;
 
 export const StoreContainer = styled.View`

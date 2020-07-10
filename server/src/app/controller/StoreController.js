@@ -1,5 +1,6 @@
 import * as Yup from 'yup';
 import Store from '../models/Store';
+import Geolocalization from '../../lib/Geolocalization';
 
 class StoreController {
   async store(req, res) {
@@ -36,6 +37,10 @@ class StoreController {
         .status(400)
         .json({ error: 'Store already exists', store: existStore });
     }
+    const geo = await Geolocalization.findLatAndLongByZipCode({
+      address: `${number}, ${address}, ${city}`,
+    });
+    const { latitude, longitude } = geo;
 
     const newStore = await Store.create({
       name,
@@ -47,6 +52,8 @@ class StoreController {
       cnpj,
       active,
       city,
+      latitude,
+      longitude,
     });
 
     return res.json(newStore);
@@ -72,11 +79,15 @@ class StoreController {
         .status(400)
         .json({ error: 'Store doesnt exists', store: existStore });
     }
+    const geo = await Geolocalization.findLatAndLongByZipCode({
+      address: `${number}, ${address}, ${city}`,
+    });
+    const { latitude, longitude } = geo;
 
     await Store.update(
       {
         name,
-        zipcode,
+        zipcode: geo.zipcode || zipcode,
         address,
         addresslinetwo,
         number,
@@ -84,6 +95,8 @@ class StoreController {
         cnpj,
         active,
         city,
+        latitude,
+        longitude,
       },
       { where: { id: storeId } }
     );

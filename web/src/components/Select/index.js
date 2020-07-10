@@ -11,9 +11,7 @@ const Select = ({ name, label, ...rest }) => {
       name: fieldName,
       ref: selectRef.current,
       path: 'props.value',
-      clearValue: ref => {
-        // console.log(ref);
-      },
+      clearValue: ref => {},
       getValue: (ref, value) => {
         if (rest.isMulti) {
           if (!ref.select.state.value) {

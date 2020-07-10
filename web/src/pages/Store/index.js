@@ -3,12 +3,14 @@ import { Form } from '@unform/web';
 import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 import Switch from '@material-ui/core/Switch';
+import SwitchButton from '~/components/Switch';
 import Input from '~/components/Input';
 import Button from '~/components/Button';
 import * as StoreActions from '~/store/modules/store/actions';
 import api from '~/services/api';
 import Avatar from '~/components/AvatarInput';
 import Grid from '~/components/Grid';
+import Modal from '~/components/Modal';
 import {
   Container,
   InputName,
@@ -60,7 +62,7 @@ export default function Store() {
   const formRef = useRef();
   const dispatch = useDispatch();
   const [storeData, setStoreData] = useState();
-
+  const [open, setOpen] = useState();
   const getAllStores = async () => {
     const response = await api.get('/stores');
     setStores(response.data);
@@ -72,17 +74,16 @@ export default function Store() {
   const handleSubmit = async data => {
     try {
       const { id } = data;
-      console.log(JSON.stringify(data));
-      // if (id) {
-      //   const response = await api.put(`/stores/${data.id}`, data);
-      //   dispatch(StoreActions.saveSuccess(response.data));
-      //   toast.warn('Loja alterada com sucesso');
-      // } else {
-      //   const response = await api.post('/stores', data);
-      //   dispatch(StoreActions.saveSuccess(response.data));
-      //   toast.success('Loja criada com sucesso');
-      // }
-      // getAllStores();
+      if (id) {
+        const response = await api.put(`/stores/${data.id}`, data);
+        dispatch(StoreActions.saveSuccess(response.data));
+        toast.warn('Loja alterada com sucesso');
+      } else {
+        const response = await api.post('/stores', data);
+        dispatch(StoreActions.saveSuccess(response.data));
+        toast.success('Loja criada com sucesso');
+      }
+      getAllStores();
     } catch ({ response }) {
       const { error } = response.data;
       if (error) {
@@ -93,20 +94,24 @@ export default function Store() {
     }
   };
   const rowDelete = (rowsDeleted, data) => {
-    const { index } = rowsDeleted.data[0];
-    const selectedStore = stores[index];
-    // setUser(selectedStore);
-    // setOpen(true);
+    const { dataIndex } = rowsDeleted.data[0];
+    const selectedStore = stores[dataIndex];
+    setStoreData(selectedStore);
+    setOpen(true);
     return false;
   };
-  const handleConfirmDelete = () => {
-    //  dispatch(deleteRequest(userId));
-    // formRef.current.reset();
-    // setOpen(false);
+  const handleConfirmDelete = async () => {
+    await api.delete(`/stores/${storeData.id}`);
+    toast.warn('Loja alterada com sucesso');
+    formRef.current.reset();
+    setOpen(false);
+    getAllStores();
   };
   const handleRowSelect = (currentRowsSelected, allRowsSelected) => {
-    const { index } = currentRowsSelected[0];
-    const selectedStore = stores[index];
+    const { dataIndex } = currentRowsSelected[0];
+
+    const selectedStore = stores[dataIndex];
+
     if (allRowsSelected.length > 0) {
       formRef.current.setData(selectedStore);
 
@@ -120,7 +125,7 @@ export default function Store() {
   };
   return (
     <Container>
-      <Form onSubmit={handleSubmit} ref={formRef}>
+      <Form onSubmit={handleSubmit} ref={formRef} initialData={storeData}>
         <Input name="id" type="number" hidden />
         <ContainerColumn>
           <Avatar name="avatar" />
@@ -183,7 +188,7 @@ export default function Store() {
               <Input name="city" placeholder="Preencha com a cidade" />
             </div>
             <div>
-              <Switch name="active" label="Ativa" />
+              <SwitchButton name="active" label="Ativa" />
             </div>
             <ButtonDiv>
               <Button type="submit" saveButton>
@@ -199,6 +204,13 @@ export default function Store() {
         handleRowSelect={handleRowSelect}
         handleRowDelete={rowDelete}
         rowsPerPage={2}
+      />
+      <Modal
+        message="Deseja desativar esta loja? Ela não será excluida"
+        open={open}
+        handleClose={() => setOpen(false)}
+        dialog
+        handleConfirm={handleConfirmDelete}
       />
     </Container>
   );
