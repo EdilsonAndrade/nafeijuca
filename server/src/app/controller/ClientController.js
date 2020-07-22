@@ -44,7 +44,7 @@ class ClientController {
 
     const updatedClient = await client.update(req.body);
 
-    if (!myAddress.id) {
+    if (!myAddress || !myAddress.id) {
       await Address.create({ ...myAddress, clientId });
     } else {
       await Address.update(myAddress, { where: { id: myAddress.id } });
@@ -111,7 +111,6 @@ class ClientController {
       order: [['name', 'asc']],
     });
 
-    console.log(clients);
     return res.json(clients);
   }
 

@@ -71,6 +71,7 @@ class ProductController {
     }
 
     const updatedProduct = await product.update(req.body);
+
     const productWithStore = await Product.findOne({
       where: { id: productId },
       include: [
@@ -79,33 +80,39 @@ class ProductController {
         },
       ],
     });
-    const storeIdSocket = req.connectedStores[productWithStore.Store.id];
-    if (storeIdSocket) {
-      const productsGoups = await ProductGroup.findAll({
-        where: { storeId: productWithStore.Store.id },
-        include: [
-          {
-            model: Store,
-          },
-          {
-            model: Product,
-            required: false,
-            include: [
-              {
-                model: Store,
-              },
-              {
-                model: SubItem,
-              },
-              {
-                model: File,
-              },
-            ],
-          },
-        ],
-        order: ['name'],
-      });
-      req.io.to(storeIdSocket).emit('product_change', productsGoups);
+    if (
+      productWithStore &&
+      productWithStore.Store &&
+      productWithStore.Store.id
+    ) {
+      const storeIdSocket = req.connectedStores[productWithStore.Store.id];
+      if (storeIdSocket) {
+        const productsGoups = await ProductGroup.findAll({
+          where: { storeId: productWithStore.Store.id },
+          include: [
+            {
+              model: Store,
+            },
+            {
+              model: Product,
+              required: false,
+              include: [
+                {
+                  model: Store,
+                },
+                {
+                  model: SubItem,
+                },
+                {
+                  model: File,
+                },
+              ],
+            },
+          ],
+          order: ['name'],
+        });
+        req.io.to(storeIdSocket).emit('product_change', productsGoups);
+      }
     }
 
     return res.json(updatedProduct);

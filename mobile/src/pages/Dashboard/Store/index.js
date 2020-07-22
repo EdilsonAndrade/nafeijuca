@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useMemo } from 'react';
+import { useIsFocused } from '@react-navigation/native';
 import { ActivityIndicator, Alert } from 'react-native';
-
+import { getPreciseDistance } from 'geolib';
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
-import { GMAPS_KEY } from 'react-native-dotenv';
+
 import {
   StoreMainView, StoreButton, StoreContainer, StoreColumnContainer, StoreName,
   StoreNeighborhood, StoreKm, StoreSwitch,
@@ -18,11 +19,11 @@ export default function Store({ navigation }) {
   const dispatch = useDispatch();
   const [stores, setStores] = useState([]);
   const [loading, setLoading] = useState(false);
+  const isFocused = useIsFocused();
 
-
-  useEffect(() => {
-    const userCoordetates = {
-      latitude: user.latitude, longitude: user.longitude,
+  useMemo(() => {
+    const userCoordenates = {
+      longitude: user.longitude, latitude: user.latitude,
     };
     const loadStores = async () => {
       try {
@@ -34,7 +35,7 @@ export default function Store({ navigation }) {
         if (response.data.filter((x) => x.active === true) !== null) {
           data = data.map((x) => ({
             ...x,
-            km: 2,
+            km: getPreciseDistance({ latitude: x.latitude, longitude: x.longitude }, userCoordenates, 10),
           }));
         }
         setStores(data);
@@ -58,7 +59,8 @@ export default function Store({ navigation }) {
       }
     };
     loadStores();
-  }, []);
+  }, [isFocused]);
+
 
   const selectStore = (store) => {
     setStoreSelected(store.id);
@@ -80,7 +82,7 @@ export default function Store({ navigation }) {
                   <StoreKm>
                     +-
                     {store.km}
-                    km
+                    /mts
                   </StoreKm>
                 </StoreColumnContainer>
                 <StoreSwitch trackColor={{ false: '#767577', true: '#eee' }} thumbColor={storeSelected === store.id ? '#ffc700' : '#eee'} onValueChange={() => selectStore(store)} value={storeSelected === store.id} />
