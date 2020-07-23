@@ -27,36 +27,49 @@ describe('Product Subitems', () => {
       price: 9,
       detail: 'Serve 1 Pessoa',
       mandatory: true,
+      ProductsItems: {
+        min: 0,
+        max: 1,
+      },
     });
     const fakeProductItemTwo = await factory.attrs('SubItem', {
       name: 'Farofa',
       price: 11,
       detail: 'Serve 1 Pessoa',
+      ProductsItems: {
+        min: 0,
+        max: 1,
+      },
     });
     const fakeProductItemThree = await factory.attrs('SubItem', {
       name: 'Torresmo',
       price: 10,
       detail: 'Serve 2 Pessoas',
+      ProductsItems: {
+        min: 0,
+        max: 1,
+      },
     });
-    await request(app)
-      .post(`/products/${fakeProduct.id}/subitems`)
-      .set('Authorization', `Bearer ${userStore.generateToken().token}`)
-      .send(fakeProductItem);
 
     await request(app)
       .post(`/products/${fakeProduct.id}/subitems`)
       .set('Authorization', `Bearer ${userStore.generateToken().token}`)
-      .send(fakeProductItemTwo);
+      .send({ SubItem: fakeProductItem });
 
     await request(app)
       .post(`/products/${fakeProduct.id}/subitems`)
       .set('Authorization', `Bearer ${userStore.generateToken().token}`)
-      .send(fakeProductItemThree);
+      .send({ SubItem: fakeProductItemTwo });
+
+    await request(app)
+      .post(`/products/${fakeProduct.id}/subitems`)
+      .set('Authorization', `Bearer ${userStore.generateToken().token}`)
+      .send({ SubItem: fakeProductItemThree });
 
     const response = await request(app)
       .get(`/stores/${fakeStore.id}/products`)
       .set('Authorization', `Bearer ${userStore.generateToken().token}`);
-
+    console.log(`envio = ${JSON.stringify(response.body[0])}`);
     expect(response.body[0].SubItems[2].ProductsItems.mandatory).toEqual(true);
     expect(response.body[0].SubItems[2].name).toEqual('Couve');
     expect(response.body[0].SubItems[0].name).toEqual('Farofa');

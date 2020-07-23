@@ -36,14 +36,16 @@ describe('CLIENTS', () => {
     const fakeStore = await factory.create('Store', {
       active: true,
     });
+
     const response = await request(app)
       .post(`/clients`)
       .set('Authorization', `Bearer ${userClient.generateToken().token}`)
       .send({
         name: 'Cliente 1',
-        email: 'edi@gmail.com',
+        email: 'edi2@gmail.com',
         storeId: fakeStore.id,
       });
+
     expect(response.body.name).toBe('Cliente 1');
   });
 

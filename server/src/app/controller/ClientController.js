@@ -30,7 +30,10 @@ class ClientController {
     }
 
     const newClient = await Client.create(req.body);
-    await Address.create({ ...myAddress, clientId: newClient.id });
+    if (myAddress) {
+      await Address.create({ ...myAddress, clientId: newClient.id });
+    }
+
     return res.json(newClient);
   }
 
@@ -43,9 +46,15 @@ class ClientController {
     }
 
     const updatedClient = await client.update(req.body);
+    let foundedAddress = '';
+    if (myAddress) {
+      foundedAddress = await Address.findByPk(myAddress.id);
+    }
 
-    if (!myAddress || !myAddress.id) {
-      await Address.create({ ...myAddress, clientId });
+    if (!foundedAddress) {
+      if (myAddress) {
+        await Address.create({ ...myAddress, clientId });
+      }
     } else {
       await Address.update(myAddress, { where: { id: myAddress.id } });
     }
