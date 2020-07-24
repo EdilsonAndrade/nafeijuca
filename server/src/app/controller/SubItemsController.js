@@ -5,18 +5,33 @@ import ProductsItems from '../models/ProductsItems';
 class SubItemsController {
   async store(req, res) {
     const { productId } = req.params;
+
     const product = await Product.findByPk(productId);
 
     if (!product) {
       return res.status(401).json('Product not found');
     }
+    if (!req.body.SubItem) {
+      return res.status(400).json({ error: 'Must have at least one subitem' });
+    }
+
     const subItemToSave = req.body.SubItem;
-    const { min, max, mandatory } = subItemToSave.ProductsItems;
+
+    console.log(`mas tem = ${JSON.stringify(subItemToSave.ProductsItems.max)}`);
     const subitem = await SubItem.create(subItemToSave);
 
-    await subitem.addProduct(product, {
-      through: { min, max, mandatory },
-    });
+    if (
+      subItemToSave.ProductsItems.min !== undefined &&
+      subItemToSave.ProductsItems.max !== undefined
+    ) {
+      await subitem.addProduct(product, {
+        through: {
+          min: subItemToSave.ProductsItems.min,
+          max: subItemToSave.ProductsItems.max,
+          mandatory: subItemToSave.ProductsItems.mandatory,
+        },
+      });
+    }
 
     return res.json(subitem);
   }
@@ -33,6 +48,7 @@ class SubItemsController {
     const productItems = await ProductsItems.findOne({
       where: { SubItemId: subItemId },
     });
+
     const { min, max, mandatory } = subItemToUpdate.ProductsItems;
     const updatedSubItem = await subItem.update(subItemToUpdate);
 

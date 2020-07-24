@@ -30,6 +30,7 @@ describe('Product Subitems', () => {
       ProductsItems: {
         min: 0,
         max: 1,
+        mandatory: true,
       },
     });
     const fakeProductItemTwo = await factory.attrs('SubItem', {
@@ -39,6 +40,7 @@ describe('Product Subitems', () => {
       ProductsItems: {
         min: 0,
         max: 1,
+        mandatory: true,
       },
     });
     const fakeProductItemThree = await factory.attrs('SubItem', {
@@ -48,6 +50,7 @@ describe('Product Subitems', () => {
       ProductsItems: {
         min: 0,
         max: 1,
+        mandatory: true,
       },
     });
 
@@ -71,9 +74,9 @@ describe('Product Subitems', () => {
       .set('Authorization', `Bearer ${userStore.generateToken().token}`);
     console.log(`envio = ${JSON.stringify(response.body[0])}`);
     expect(response.body[0].SubItems[2].ProductsItems.mandatory).toEqual(true);
-    expect(response.body[0].SubItems[2].name).toEqual('Couve');
-    expect(response.body[0].SubItems[0].name).toEqual('Farofa');
-    expect(response.body[0].SubItems[1].name).toEqual('Torresmo');
+    expect(response.body[0].SubItems[0].name).toEqual('Couve');
+    expect(response.body[0].SubItems[1].name).toEqual('Farofa');
+    expect(response.body[0].SubItems[2].name).toEqual('Torresmo');
     expect(response.body[0].SubItems.length).toBeGreaterThan(0);
   });
 });
