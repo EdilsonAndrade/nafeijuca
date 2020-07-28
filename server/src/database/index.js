@@ -12,7 +12,7 @@ import Order from '../app/models/Order';
 import OrderProduct from '../app/models/OrderProduct';
 import SubItem from '../app/models/SubItem';
 import ProductsItems from '../app/models/ProductsItems';
-import DeliveriyTax from '../app/models/DeliveriesTax';
+import DeliveryTax from '../app/models/DeliveryTax';
 
 const models = [
   User,
@@ -26,7 +26,7 @@ const models = [
   OrderProduct,
   SubItem,
   ProductsItems,
-  DeliveriyTax,
+  DeliveryTax,
 ];
 
 class Database {

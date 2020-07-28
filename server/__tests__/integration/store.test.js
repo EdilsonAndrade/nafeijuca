@@ -4,6 +4,9 @@ import app from '../../src/app';
 import truncate from '../utils/truncate';
 
 describe('Store', () => {
+  beforeEach(async () => {
+    await truncate();
+  });
   it('Store address field are all required', async () => {
     const userStore = await factory.create('User', {
       isAdmin: true,
@@ -55,7 +58,6 @@ describe('Store', () => {
   });
 
   it('Store created', async () => {
-    await truncate();
     const userStore = await factory.create('User', {
       isAdmin: true,
     });
@@ -74,6 +76,7 @@ describe('Store', () => {
       active,
       city,
     } = store;
+
     const response = await request(app)
       .post('/stores')
       .set('Authorization', `Bearer ${userStore.generateToken().token}`)
@@ -93,7 +96,6 @@ describe('Store', () => {
   });
 
   it('Update Store does not exist', async () => {
-    await truncate();
     const userStore = await factory.create('User', {
       isAdmin: true,
     });
@@ -196,7 +198,7 @@ describe('Store', () => {
     expect(response.body.active).toBe(false);
   });
 
-  it('Delete Store deactive', async () => {
+  it('Get Store deactive', async () => {
     await truncate();
     const userStore = await factory.create('User', {
       isAdmin: true,

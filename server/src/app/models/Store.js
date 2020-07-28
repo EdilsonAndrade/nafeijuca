@@ -26,6 +26,7 @@ class Store extends Model {
 
   static associate(models) {
     this.belongsTo(models.File, { foreignKey: 'avatarId', as: 'storeavatar' });
+    this.hasMany(models.DeliveryTax, { foreignKey: 'storeId' });
   }
 }
 

@@ -1,4 +1,4 @@
-import DeliveryTax from '../models/DeliveriesTax';
+import DeliveryTax from '../models/DeliveryTax';
 import Store from '../models/Store';
 
 class DeliveryTaxController {

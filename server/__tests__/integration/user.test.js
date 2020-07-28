@@ -69,7 +69,6 @@ describe('User', () => {
   });
 
   it('user already exists for a active store', async () => {
-    await truncate();
     const fakerStore = await factory.create('Store');
     const fakeUser = await factory.create('User', {
       storeId: fakerStore.id,

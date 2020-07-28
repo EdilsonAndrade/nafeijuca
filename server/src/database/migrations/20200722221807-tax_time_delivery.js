@@ -1,6 +1,6 @@
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('deliverie_taxes', {
+    return queryInterface.createTable('delivery_taxes', {
       id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
@@ -14,8 +14,8 @@ module.exports = {
           model: 'stores',
           key: 'id',
         },
-        onDelete: 'CASCADE',
-        onUpdate: 'CASCADE',
+        onDelete: 'SET NULL',
+        onUpdate: 'SET NULL',
       },
       km: {
         type: Sequelize.INTEGER,

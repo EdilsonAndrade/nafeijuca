@@ -1,7 +1,7 @@
 import * as Yup from 'yup';
 import Store from '../models/Store';
 import Geolocalization from '../../lib/Geolocalization';
-import DeliveryTax from '../models/DeliveriesTax';
+import DeliveryTax from '../models/DeliveryTax';
 
 class StoreController {
   async store(req, res) {
