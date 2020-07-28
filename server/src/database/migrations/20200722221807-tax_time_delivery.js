@@ -7,16 +7,6 @@ module.exports = {
         autoIncrement: true,
         allowNull: false,
       },
-      store_id: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-        references: {
-          model: 'stores',
-          key: 'id',
-        },
-        onDelete: 'SET NULL',
-        onUpdate: 'SET NULL',
-      },
       km: {
         type: Sequelize.INTEGER,
         allowNull: false,
@@ -35,10 +25,20 @@ module.exports = {
       updated_at: {
         type: Sequelize.DATE,
       },
+      store_id: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: 'stores',
+          key: 'id',
+        },
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE',
+      },
     });
   },
 
   down: queryInterface => {
-    return queryInterface.dropTable('deliverie_taxes');
+    return queryInterface.dropTable('delivery_taxes');
   },
 };
