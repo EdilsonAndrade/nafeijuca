@@ -17,7 +17,6 @@ class SubItemsController {
 
     const subItemToSave = req.body.SubItem;
 
-    console.log(`mas tem = ${JSON.stringify(subItemToSave.ProductsItems.max)}`);
     const subitem = await SubItem.create(subItemToSave);
 
     if (

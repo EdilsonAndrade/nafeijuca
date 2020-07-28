@@ -15,6 +15,7 @@ import ClientController from './app/controller/ClientController';
 import OrderController from './app/controller/OrderController';
 import SubItemsController from './app/controller/SubItemsController';
 import FileUploadController from './app/controller/FileUploadController';
+import DeliveryTaxController from './app/controller/DeliveryTaxController';
 
 const routes = new Router();
 const upload = multer(multerConfig);
@@ -87,4 +88,10 @@ routes.put('/subitems/:subItemId', SubItemsController.update);
 routes.delete('/subitems/:subItemId', SubItemsController.delete);
 
 routes.post('/files', upload.single('file'), FileUploadController.store);
+
+// tax delivery
+routes.post('/stores/:storeId/deliverytax', DeliveryTaxController.store);
+routes.get('/stores/:storeId/deliverytax', DeliveryTaxController.index);
+routes.put('/deliverytax/:deliveryTaxId', DeliveryTaxController.update);
+
 export default routes;

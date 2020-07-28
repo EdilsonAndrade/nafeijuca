@@ -1,6 +1,7 @@
 import * as Yup from 'yup';
 import Store from '../models/Store';
 import Geolocalization from '../../lib/Geolocalization';
+import DeliveryTax from '../models/DeliveriesTax';
 
 class StoreController {
   async store(req, res) {
@@ -126,7 +127,11 @@ class StoreController {
   }
 
   async index(req, res) {
-    const stores = await Store.findAll();
+    const stores = await Store.findAll({
+      include: {
+        model: DeliveryTax,
+      },
+    });
 
     return res.json(stores);
   }

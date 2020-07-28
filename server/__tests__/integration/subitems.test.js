@@ -1,7 +1,6 @@
 import request from 'supertest';
 import factory from '../factories';
 import app from '../../src/app';
-import truncate from '../utils/truncate';
 
 describe('Product Subitems', () => {
   it('create a product with 3 subitems and one comment', async () => {
@@ -72,7 +71,6 @@ describe('Product Subitems', () => {
     const response = await request(app)
       .get(`/stores/${fakeStore.id}/products`)
       .set('Authorization', `Bearer ${userStore.generateToken().token}`);
-    console.log(`envio = ${JSON.stringify(response.body[0])}`);
     expect(response.body[0].SubItems[2].ProductsItems.mandatory).toEqual(true);
     expect(response.body[0].SubItems[0].name).toEqual('Couve');
     expect(response.body[0].SubItems[1].name).toEqual('Farofa');
