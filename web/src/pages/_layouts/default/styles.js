@@ -12,8 +12,8 @@ export const Content = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  border-radius: 14px;
 
+  background: linear-gradient(180deg, #c89d00, #ffca05);
   form {
 
       label {

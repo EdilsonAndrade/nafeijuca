@@ -7,6 +7,7 @@ import Product from '~/pages/Product';
 import Store from '~/pages/Store';
 import User from '~/pages/User';
 import Dashboard from '~/pages/Dashboard';
+import Map from '~/pages/Map';
 
 export default function Routes() {
   return (
@@ -16,6 +17,7 @@ export default function Routes() {
       <Route path="/product" component={Product} isPrivate />
       <Route path="/store" component={Store} isPrivate />
       <Route path="/users" component={User} isPrivate />
+      <Route path="/maps" component={Map} isPrivate />
       <Route path="/" component={() => <h1>404 Page not found</h1>} />
     </Switch>
   );
