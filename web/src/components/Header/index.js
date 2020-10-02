@@ -76,11 +76,11 @@ export default function Header({ props }) {
                   Usuários
                 </SubMenu>
               </LiElement>
-              <LiElement active={activeMenu === '/maps'}>
+              <LiElement active={activeMenu === '/deliveryarea'}>
                 <SubMenu
                   activeStyle={{ color: '#251c1f' }}
-                  to="/maps"
-                  onClick={() => setActiveMenu('/maps')}
+                  to="/deliveryarea"
+                  onClick={() => setActiveMenu('/deliveryarea')}
                 >
                   Area de Entrega
                 </SubMenu>
