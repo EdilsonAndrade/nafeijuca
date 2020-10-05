@@ -1,15 +1,19 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import mapboxgl from 'mapbox-gl';
+import MapboxDraw from '@mapbox/mapbox-gl-draw';
 import { Container, MapContent } from './styles';
 import mapSource from '../../assets/bairrossaopaulo.geojson';
+import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
 
 const Map = () => {
   const user = useSelector(state => state.user);
 
   const { latitude, longitude } = user.store;
   const size = 150;
-
+  const updateArea = e => {
+    console.log(e);
+  };
   useEffect(() => {
     const returnedMap = new mapboxgl.Map({
       accessToken:
@@ -22,6 +26,21 @@ const Map = () => {
       zoom: 14,
       attributionControl: true,
     });
+
+    const draw = new MapboxDraw({
+      displayControlsDefault: false,
+      controls: {
+        polygon: true,
+        trash: true,
+      },
+    });
+
+    returnedMap.addControl(draw, 'top-left');
+
+    returnedMap.on('draw.create', updateArea);
+    returnedMap.on('draw.delete', updateArea);
+    returnedMap.on('draw.update', updateArea);
+
     const pulsingDot = {
       width: size,
       height: size,
@@ -89,6 +108,17 @@ const Map = () => {
         data: mapSource,
       });
 
+      // returnedMap.addLayer({
+      //   id: 'selectedAreas',
+      //   type: 'fill',
+      //   source: 'newlayers',
+      //   paint: {
+      //     'fill-outline-color': '#ffc700',
+      //     'fill-color': '#ffc700',
+      //     'fill-opacity': 0.75,
+      //   },
+      // });
+
       returnedMap.addImage('pulsing-dot', pulsingDot, { pixelRatio: 1 });
 
       returnedMap.addSource('points', {
@@ -130,9 +160,9 @@ const Map = () => {
         type: 'fill',
         source: 'states',
         paint: {
-          'fill-color': '#627BC1',
-          'fill-outline-color': '#627BC1',
-          'fill-opacity': 0.3,
+          'fill-outline-color': '#484896',
+          'fill-color': '#6e599f',
+          'fill-opacity': 0.5,
         },
       });
 
@@ -148,9 +178,20 @@ const Map = () => {
       });
 
       returnedMap.on('click', e => {
-        const features = returnedMap.queryRenderedFeatures(e.lngLat);
-        console.log(JSON.stringify(e.lngLat));
-        // returnedMap.setPaintProperty('state-borders', 'fill-color', '#ffc700');
+        // const features = returnedMap.queryRenderedFeatures([
+        //   e.lngLat.lng,
+        //   e.lngLat.lat,
+        // ]);
+        //        returnedMap.setPaintProperty('state-borders', 'line-color', '#ffc700');
+        // returnedMap.addLayer({
+        //   id: Math.random().toString(),
+        //   type: 'fill',
+        //   source: sourceId,
+        //   paint: {
+        //     'fill-color': '#FF0000',
+        //     'fill-outline-color': '#FF0000',
+        //   },
+        // });
       });
 
       //   returnedMap.on('mouseleave', 'stateFills', () => {
