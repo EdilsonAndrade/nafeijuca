@@ -36,6 +36,7 @@ margin-bottom:20px;
 `;
 export const AddressText = styled.Text`
 color: #eee;
+flex:1;
 
 `;
 export const EditionButton = styled(TouchableOpacity)``;

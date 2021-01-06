@@ -14,6 +14,7 @@ export default function user(state = INITIAL_DATA, action) {
         draft.latitude = latitude;
         draft.longitude = longitude;
         draft.address = address;
+        console.log(address);
         break;
       }
       default:

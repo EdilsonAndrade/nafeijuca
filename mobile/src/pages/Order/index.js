@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { TouchableOpacity, Image, Animated } from 'react-native';
 import { BACKENDIP } from 'react-native-dotenv';
@@ -43,12 +43,13 @@ import {
 
 } from './styles';
 import HeaderTranslucent from '~/components/HeaderTranslucent';
-
 import { removeFromCartSuccess } from '~/store/modules/cart/action';
 
 const Order = ({ navigation }) => {
   const dispatch = useDispatch();
   const cart = useSelector((state) => state.cart);
+  const user = useSelector((state) => state.user);
+
   const scrollOffset = new Animated.Value(0);
 
   function handleDeleteProduct(productKey) {
@@ -148,8 +149,17 @@ const Order = ({ navigation }) => {
           <AddressAndTimeArea>
             <AddressAndEditionArea>
               <AddressText>
-                Rua dos Buritis, 747
+                {`${user.address.street}, ${user.address.number} `}
+                <AddressText>
+                  {user.address.neighborhood}
+
+                  {' '}
+                  {user.address.city}
+                </AddressText>
+                <AddressText />
               </AddressText>
+
+
               <EditionButton>
                 <EditionText>
                   Editar
