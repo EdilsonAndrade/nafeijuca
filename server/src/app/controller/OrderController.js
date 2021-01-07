@@ -12,12 +12,18 @@ class OrderController {
     const schema = Yup.object().shape({
       storeId: Yup.number().required(),
     });
-    const { clientId, userId, storeId, costTax } = req.body;
-    const { products, productIds, ...data } = req.body;
+    const { clientId, userId, storeId, costTax, productIds } = req.body;
+
     if (!(await schema.isValid(req.body))) {
       return res.status(401).json({ error: 'Validation failed' });
     }
-
+    const products = [];
+    productIds.forEach(async id => {
+      const product = await Product.findOne({ where: { id } });
+      if (product) {
+        products.push(product);
+      }
+    });
     const store = await Store.findByPk(storeId);
     if (!store) {
       return res.status(401).json({ error: 'Store not found' });
@@ -47,24 +53,23 @@ class OrderController {
     if (products) {
       products.forEach(product => {
         total +=
-          product.price -
-          (product.promotionPrice > 0 ? product.promotionPrice : 0);
+          product.promotionPrice > 0 ? +product.promotionPrice : +product.price;
       });
     }
     const subTotal = total;
     total += costTax > 0 ? +costTax : 0;
+    const data = {};
+    data.clientId = clientId;
+    data.userId = userId;
     data.total = total;
     data.subTotal = subTotal;
-
     const order = await Order.create(data);
     await order.setProducts(productIds);
-
     return res.json(order);
   }
 
   async index(req, res) {
     const { id } = req.params;
-
     const orders = await Order.findAll({
       where: {
         [Op.or]: [

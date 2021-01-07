@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { TouchableOpacity, Image, Animated } from 'react-native';
 import { BACKENDIP } from 'react-native-dotenv';
 import currencyformatter from 'currency-formatter';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import DeliveryMoto from '~/assets/deliverymotorcycle.png';
+import api from '~/services/api';
 import {
   MainContainer, Container, TitleText,
   OrderContainer,
@@ -49,34 +50,59 @@ const Order = ({ navigation }) => {
   const dispatch = useDispatch();
   const cart = useSelector((state) => state.cart);
   const user = useSelector((state) => state.user);
+  const store = useSelector((state) => state.store);
 
   const scrollOffset = new Animated.Value(0);
 
-  function handleDeleteProduct(productKey) {
+  const handleSendOrder = useCallback(async () => {
+    const productsIds = [];
+
+    cart.products.forEach((product) => {
+      productsIds.push(product.id);
+    });
+    const order = {
+      userId: user.id,
+      storeId: store.id,
+      productsIds,
+    };
+    if (!user.id) {
+      console.tron.log('usuário não está logado');
+    } else {
+      const createdOrder = await api.post('/', order);
+      console.tron.log('order criada', createdOrder);
+    }
+    const createdOrder = await api.post('/', order);
+    console.tron.log('order criada', createdOrder);
+  }, []);
+  const handleDeleteProduct = useCallback((productKey) => {
     dispatch(removeFromCartSuccess(productKey));
     if (cart.products.length === 1) {
       navigation.goBack();
     }
-  }
+  }, []);
 
-  function renderSubItem(product) {
-    return product.subItems.map((subItem) => (
-      <SubItemRowView key={subItem.id * +product.key}>
-        <SubItemQuantityContent>
-          +
-          {product.quantity}
-          x
-        </SubItemQuantityContent>
-        <SubItemDescription>
-          {subItem.name}
-        </SubItemDescription>
-        <SubItemSubtotal>
-          {currencyformatter.format(subItem.price, { code: 'BRL' })}
-        </SubItemSubtotal>
-      </SubItemRowView>
+  const handleEditAddress = useCallback(() => {
+    navigation.navigate('AddressConfirmation', {
+      page: 'Order',
+    });
+  }, []);
+  const renderSubItem = useCallback((product) => product.subItems.map((subItem) => (
+    <SubItemRowView key={subItem.id * +product.key}>
+      <SubItemQuantityContent>
+        +
+        {product.quantity}
+        x
+      </SubItemQuantityContent>
+      <SubItemDescription>
+        {subItem.name}
+      </SubItemDescription>
+      <SubItemSubtotal>
+        {currencyformatter.format(subItem.price, { code: 'BRL' })}
+      </SubItemSubtotal>
+    </SubItemRowView>
 
-    ));
-  }
+  )), []);
+
   function renderItem(product) {
     const item = (
       <>
@@ -149,7 +175,7 @@ const Order = ({ navigation }) => {
           <AddressAndTimeArea>
             <AddressAndEditionArea>
               <AddressText>
-                {`${user.address.street}, ${user.address.number} `}
+                {`${user.address.street}, ${user.address.number}  - ${user.address.addressLineTwo} `}
                 <AddressText>
                   {user.address.neighborhood}
 
@@ -157,10 +183,13 @@ const Order = ({ navigation }) => {
                   {user.address.city}
                 </AddressText>
                 <AddressText />
+                <AddressText>
+                  {` ref: ${user.address.referency} `}
+                </AddressText>
               </AddressText>
 
 
-              <EditionButton>
+              <EditionButton onPress={handleEditAddress}>
                 <EditionText>
                   Editar
                 </EditionText>
@@ -219,7 +248,7 @@ const Order = ({ navigation }) => {
         </TotalAreaView>
       </ListContainer>
       <ViewBottomButtons>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={handleSendOrder}>
           <ButtonAdd>
             <ButtonAddText>
               Fazer pedido

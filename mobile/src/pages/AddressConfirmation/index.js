@@ -23,7 +23,7 @@ import {
 } from './styles';
 import * as UserActions from '~/store/modules/user/actions';
 
-export default function AddressConfirmation({ navigation }) {
+export default function AddressConfirmation({ route, navigation }) {
   const dispatch = useDispatch();
   const addressLineTwoRef = useRef();
   const referencyRef = useRef();
@@ -34,6 +34,8 @@ export default function AddressConfirmation({ navigation }) {
   const [addressLineTwo, setAddressLineTwo] = useState(user.address.addressLineTwo);
   const [favorite, setFavorite] = useState(user.address.favorite);
   const [referency, setReferency] = useState(user.address.referency);
+  const { page } = route.params;
+
   const handleSaveAddress = async () => {
     dispatch(UserActions.setLocationSuccess({
       ...user,
@@ -56,7 +58,11 @@ export default function AddressConfirmation({ navigation }) {
       },
     };
     await AsyncStorage.setItem('myAddress', JSON.stringify(myLocation));
-    navigation.navigate('Dashboard');
+    if (page) {
+      navigation.navigate(page);
+    } else {
+      navigation.navigate('Dashboard');
+    }
   };
   return (
     <>
@@ -73,6 +79,7 @@ export default function AddressConfirmation({ navigation }) {
           {user.address.street}
           {user.address.number >= 0 ? ', ' : ''}
           {user.address.number}
+
         </AddressTitle>
         <AddressInfo>
           {user.address.neighborhood}

@@ -23,11 +23,11 @@ export const OrderContainer = styled(Animated.View)`
 margin:10px 15px 0;
 background: #7159c1;
 border-radius:10px;
-padding:20px 20px 0;
-height: 130px;
+padding:5px 10px 0;
+
 `;
 export const AddressAndTimeArea = styled(Animated.View)`
-
+  margin:5px 0;
 `;
 export const AddressAndEditionArea = styled.View`
 flex-direction:row;
