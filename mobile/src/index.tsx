@@ -10,7 +10,7 @@ import { store, persistor } from './store';
 import Routes from './routes';
 
 
-const App = () => (
+const App:React.FC = () => (
   <NavigationContainer ref={navigationRef}>
     <Provider store={store}>
       <PersistGate persistor={persistor}>
