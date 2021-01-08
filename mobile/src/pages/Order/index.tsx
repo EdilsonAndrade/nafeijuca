@@ -6,6 +6,7 @@ import currencyformatter from 'currency-formatter';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import DeliveryMoto from '~/assets/deliverymotorcycle.png';
 import api from '~/services/api';
+import NotLogged from '../../components/NotLogged';
 import {
   MainContainer, Container, TitleText,
   OrderContainer,
@@ -41,6 +42,7 @@ import {
   ViewBottomButtons,
   ButtonAdd,
   ButtonAddText,
+  NotLoggedContainer
 
 } from './styles';
 import HeaderTranslucent from '~/components/HeaderTranslucent';
@@ -55,7 +57,7 @@ const Order = ({ navigation }) => {
   const scrollOffset = new Animated.Value(0);
 
   const handleSendOrder = useCallback(async () => {
-    const productsIds = [];
+    const productsIds: number[] = [];
 
     cart.products.forEach((product) => {
       productsIds.push(product.id);
@@ -207,7 +209,8 @@ const Order = ({ navigation }) => {
         </OrderContainer>
       </Container>
 
-      <ListContainer>
+      <ListContainer userSigned={user.id === null}>
+
         <ProductsList
           decelerationRate="fast"
           scrollEventThrottle={16}
@@ -246,17 +249,33 @@ const Order = ({ navigation }) => {
             }
           </TotalText>
         </TotalAreaView>
+      
       </ListContainer>
-      <ViewBottomButtons>
-        <TouchableOpacity onPress={handleSendOrder}>
-          <ButtonAdd>
-            <ButtonAddText>
-              Fazer pedido
+      {!user.id ?
+      <NotLoggedContainer>
+          <NotLogged />
+          </NotLoggedContainer>
+                    :
+          null
+        }
+      {!user.id ?
+        null
+        :
+        <ViewBottomButtons>
+
+
+          <TouchableOpacity onPress={handleSendOrder}>
+            <ButtonAdd>
+              <ButtonAddText>
+                Fazer pedido
             </ButtonAddText>
 
-          </ButtonAdd>
-        </TouchableOpacity>
-      </ViewBottomButtons>
+            </ButtonAdd>
+          </TouchableOpacity>
+
+
+        </ViewBottomButtons>
+      }
     </MainContainer>
 
   );

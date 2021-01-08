@@ -3,12 +3,14 @@ import { TouchableOpacity, FlatList, Animated } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 export const MainContainer = styled.SafeAreaView`
-background: #fff;
+background: #ddd;
 flex:1;
+position:relative;
+
+
 
 `;
 export const Container = styled(Animated.View)`
-  
   margin:10px;
   border-radius:10px;
   
@@ -69,13 +71,17 @@ margin-left:10px;
 export const ToBeDeliveryAreaText = styled.Text`
 color: #fff;
 `;
+interface ListContainerProps{
+  userSigned:boolean;
+}
 export const ListContainer = styled(Animated.View)`
 margin:0 15px;
 border-radius:8px;
 padding:0 2px;
-height:355px;
+max-height:${props=>props.userSigned ? '355px' : '300px' };
 
 `;
+
 
 export const ProductsList = styled(Animated.FlatList)`
 
@@ -257,3 +263,8 @@ export const Minus = styled(Icon)`
 font-size:25px;
 color:${(props) => (props.count && props.count === 1 ? '#ddd' : '#ffc700')};
 `;
+
+export const NotLoggedContainer = styled.View`
+  position:absolute;
+  bottom:2px;
+`
