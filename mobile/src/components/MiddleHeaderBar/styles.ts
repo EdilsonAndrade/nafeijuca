@@ -1,6 +1,8 @@
 import styled, { css } from 'styled-components/native';
-
-export const MiddleHeaderBarContent = styled.View`
+interface MiddleHeaderBarProps{
+  showButtons:boolean;
+}
+export const MiddleHeaderBarContent = styled.View<MiddleHeaderBarProps>`
   width: 100%;
   padding: 15px;
   display: flex;

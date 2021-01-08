@@ -1,7 +1,10 @@
 import styled from 'styled-components/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
-export const CartContainer = styled.View`
+interface CartProps {
+  show:boolean;
+}
+export const CartContainer = styled.View<CartProps>`
 display: ${(props) => (props.show ? 'flex' : 'none')};
 
 `;

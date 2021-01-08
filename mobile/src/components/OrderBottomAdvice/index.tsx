@@ -4,8 +4,8 @@ import { useSelector } from 'react-redux';
 import { Animated, StyleSheet } from 'react-native';
 import currencyformatter from 'currency-formatter';
 import PropTypes from 'prop-types';
+import { useNavigation } from '@react-navigation/native';
 
-import * as RootNavigation from '~/services/rootNavigation';
 
 import {
   AnimatedContainer, TouchableButtom, CloseOrderContent, TotalPriceContent,
@@ -21,11 +21,13 @@ const styles = StyleSheet.create({
   },
 
 });
-
-const OrderBottomAdvice = ({ bottomPosition }) => {
+interface OrderBottomAdvice{
+  bottomPosition:number;
+}
+const OrderBottomAdvice:React.FC<OrderBottomAdvice> = ({ bottomPosition }) => {
   const cart = useSelector((state) => state.cart);
   const positionY = new Animated.Value(-115);
-
+const navigation = useNavigation();
   useEffect(() => {
     if (cart.totalItems > 0) {
       Animated.spring(positionY, {
@@ -52,7 +54,7 @@ const OrderBottomAdvice = ({ bottomPosition }) => {
     <AnimatedContainer
       style={[styles.container, { bottom: positionY }]}
     >
-      <TouchableButtom onPress={() => RootNavigation.navigate('Order')}>
+      <TouchableButtom onPress={() => navigation.navigate('Order')}>
         <Cart color="#fff" />
         <CloseOrderContent>Fechar Pedido</CloseOrderContent>
         {cart.totalPrice > 0

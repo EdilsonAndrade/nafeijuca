@@ -4,11 +4,13 @@ import { TouchableOpacity } from 'react-native';
 import {
   CartContainer, CartContent, CartTotalItemsContainer, CartTotalItems,
 } from './styles';
-import * as navigation from '~/services/rootNavigation';
-
-const Cart = ({ color }) => {
+import { useNavigation } from '@react-navigation/native';
+interface CartProps{
+  color:string;
+}
+const Cart:React.FC<CartProps> = ({ color }) => {
   const cart = useSelector((state) => state.cart);
-
+  const navigation = useNavigation();
   return (
     <TouchableOpacity onPress={() => navigation.navigate('Order')}>
       <CartContainer show={cart.totalItems > 0}>
