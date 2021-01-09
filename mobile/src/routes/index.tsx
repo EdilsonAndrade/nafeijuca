@@ -4,6 +4,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import MainTabNavigation from './maintab';
 import ProductDetail from '~/pages/ProductDetail';
 import Cart from '~/components/Cart';
+import Signup from '../pages/Signup';
 
 const Stack = createStackNavigator();
 
@@ -34,7 +35,10 @@ export default function Route() {
             ),
           })}
         />
-
+        <Stack.Screen
+        name="Signup"
+        component={Signup}
+        />
 
       </Stack.Navigator>
     </>
