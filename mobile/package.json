@@ -22,7 +22,7 @@
     "@unform/core": "^2.1.3",
     "@unform/mobile": "^2.1.3",
     "D": "^1.0.0",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "currency-formatter": "^1.5.5",
     "geolib": "^3.3.1",
     "immer": "^6.0.3",
