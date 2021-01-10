@@ -1,6 +1,6 @@
-import { stripUnit } from 'polished';
 import styled from 'styled-components/native';
-import { ImageBackground } from 'react-native';
+import Input from '../../components/Input';
+
 export const Container = styled.KeyboardAvoidingView`
   flex:1;
   justify-content:center;
@@ -46,7 +46,7 @@ export const FieldContent = styled.View`
   border-radius:6px;
 `
 
-export const InputField = styled.TextInput`
+export const InputField = styled(Input)`
 background:#eee;
 padding: 5px;
 flex:1;
