@@ -1,37 +1,64 @@
-import React, { useRef } from 'react';
-
-import NaFeijucaTypography from '../../assets/nafeijucatext.png';
-import SignupBackground from '../../assets/signupbackground.png';
+import React, { useRef, useState } from 'react';
 import { Form } from '@unform/mobile';
-import {SubmitHandler, FormHandles} from '@unform/core';
+import { useSelector } from 'react-redux';
+import { SubmitHandler, FormHandles } from '@unform/core';
 import {
-  Container, Logo, Title, FieldsContainer, FieldsTitle, FieldContent, InputField,
-  SaveButton, SaveButtonText
+  Container, Logo, Title, FieldsContainer, SaveButton, SaveButtonText
 } from './styles';
-import { Platform, TextInput, TouchableOpacity } from 'react-native';
+import { Platform, TextInput, TouchableOpacity, ActivityIndicator } from 'react-native';
 import Input from '../../components/Input';
+import * as Yup from 'yup';
+import handleErrors from '../../utils/handleErrors';
+import api from '../../services/api';
 
 interface ISignup {
-  email:string;
-  name:string;
-  password:string;
-  confirmPassword:string;
-  phone:string;
+  email: string;
+  name: string;
+  password: string;
+  phone: string;
 
 }
 const Signup: React.FC = () => {
 
   const emailRef = useRef<TextInput>(null);
   const passwordRef = useRef<TextInput>(null);
-  const confirmPasswordRef = useRef<TextInput>(null);
   const phoneRef = useRef<TextInput>(null);
-const formRef = useRef<FormHandles>(null);
+  const formRef = useRef<FormHandles>(null);
+  const store = useSelector((state)=>state.store);
 
-  const handleSubmit:SubmitHandler<ISignup> = (data) => {
-    console.log('salva', data);
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit: SubmitHandler<ISignup> =async (data) => {
+    try {
+
+      formRef.current?.setErrors({})
+      const schema = Yup.object().shape({
+        email: Yup.string().required("E-mail é obrigatório").email("Informe um e-mail no formato correto"),
+        name: Yup.string().required("Nome é obrigatório"),
+        password: Yup.string().required("Senha deve ser informada")
+      });
+
+      await schema.validate(data, {
+        abortEarly: false
+      })
+
+      setLoading(true);
+      const response = await api.post('/users',{
+        ...data,
+        storeId: store.id
+      })
+      
+      console.log(response, 'respostassss');
+    } catch (error) {
+      if (error instanceof Yup.ValidationError) {
+        formRef.current?.setErrors(handleErrors(error));
+        return;
+      }
+    }
+    setLoading(false);
   }
   return (<Container
-    behavior="height"
+    behavior={Platform.OS === "ios" ? "padding" : "height"}
     keyboardVerticalOffset={Platform.select({ ios: 0, android: 500 })}
   >
     <Title>
@@ -41,49 +68,53 @@ const formRef = useRef<FormHandles>(null);
 
     >
       <Form ref={formRef} onSubmit={handleSubmit}>
-       <Input
-        icon="person"
-        iconColor="#ffc700"
-        title="Nome"
-        refInput={passwordRef}
-        name="name"
+        <Input
+          icon="person"
+          iconColor="#ffc700"
+          title="Nome"
+          name="name"
           keyType="next"
           onSubmit={() => emailRef.current?.focus()} />
         <Input
-         icon="email"
-         iconColor="#ffc700"
-         title="Seu email"
+          icon="email"
+          iconColor="#ffc700"
+          title="Seu email"
           keyType="next"
           name="email"
           refInput={emailRef}
           keyBoardStyle="email-address"
           onSubmit={() => passwordRef.current?.focus()} />
         <Input
-         icon="lock"
-         iconColor="#ffc700"
-         title="Sua senha" 
-        refInput={passwordRef}
+          icon="lock"
+          iconColor="#ffc700"
+          title="Sua senha"
+          refInput={passwordRef}
           isPassword={true}
           name="password"
-          
+
           onSubmit={() => phoneRef.current?.focus()}
         />
         <Input
-         icon="call"
-         iconColor="#ffc700"
-         title="Seu telefone" 
-        refInput={phoneRef}
-        keyBoardStyle="phone-pad"
+          icon="call"
+          iconColor="#ffc700"
+          title="Seu telefone"
+          refInput={phoneRef}
+          keyBoardStyle="phone-pad"
           keyType="send"
           name="phone"
           onSubmit={handleSubmit} />
-      
+
       </Form>
-      <TouchableOpacity onPress={()=>formRef.current.submitForm()}>
+      <TouchableOpacity onPress={() => formRef.current.submitForm()}>
         <SaveButton >
+          {loading ?
+          <ActivityIndicator size={20} color="#fff" />
+          :
           <SaveButtonText>
             CADASTRAR
           </SaveButtonText>
+          }
+          
         </SaveButton>
       </TouchableOpacity>
     </FieldsContainer>

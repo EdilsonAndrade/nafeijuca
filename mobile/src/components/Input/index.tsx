@@ -5,15 +5,15 @@ import React, {
   useState,
 } from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons'
-import { KeyboardType, NativeSyntheticEvent, ReturnKeyType, TextInput, TextInputProps, TextInputSubmitEditingEventData } from 'react-native';
-import { Container, FieldContent, FieldsTitle, InputField  } from './styles';
+import { KeyboardType, NativeSyntheticEvent, ReturnKeyType, TextInput } from 'react-native';
+import { Container, FieldContent, FieldsTitle, InputField , ErrorContent } from './styles';
 import { useField } from '@unform/core';
 interface IInputProps {
   name: string;
   isPassword?: boolean;
   keyType?: ReturnKeyType
   onSubmit: any;
-  refInput: RefObject<TextInput>;
+  refInput?: RefObject<TextInput>;
   keyBoardStyle?: KeyboardType;
   icon?: string
   iconColor?: string;
@@ -69,7 +69,7 @@ const Input: React.FC<IInputProps> = ({ name, title, keyType, keyBoardStyle, ico
             : null
         }
       </FieldContent>
-      {error ? error : null}
+      {error ? <ErrorContent>{error}</ErrorContent> : null}
     </Container>
   );
 };
