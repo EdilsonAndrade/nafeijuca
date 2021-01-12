@@ -39,7 +39,7 @@ export default function Route() {
         <Stack.Screen
         name="Signup"
         component={TabNavigator}
-        options={{headerShown:true}}
+        options={{headerShown:true, headerTitle:""}}
         />
 
       </Stack.Navigator>
