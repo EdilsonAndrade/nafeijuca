@@ -7,10 +7,19 @@ const Tab = createMaterialTopTabNavigator();
 
 export default function TabNavigator() {
   return (
-    <Tab.Navigator initialRouteName="Signup">
+    <Tab.Navigator initialRouteName="Signup"
+    tabBarOptions={{
+      labelStyle:{
+        textTransform:"none"
+      }
+    }}
+    >
       <Tab.Screen
-      options={{title:"Cadastre-se"}}
-      name="Signup" component={Signup} />
+      options={{title:"Cadastre-se",
+    }
+}
+      name="Signup" component={Signup} 
+      />
       <Tab.Screen 
       options={{title:"Ja sou cliente"}}
       name="Profile" component={Profile} />
