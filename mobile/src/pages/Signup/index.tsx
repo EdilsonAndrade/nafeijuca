@@ -1,7 +1,8 @@
 import React, { useRef, useState } from 'react';
 import { Form } from '@unform/mobile';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { SubmitHandler, FormHandles } from '@unform/core';
+import { useNavigation } from '@react-navigation/native';
 import {
   Container, Logo, Title, FieldsContainer, SaveButton, SaveButtonText
 } from './styles';
@@ -10,7 +11,7 @@ import Input from '../../components/Input';
 import * as Yup from 'yup';
 import handleErrors from '../../utils/handleErrors';
 import api from '../../services/api';
-
+import { setUser } from '../../store/modules/user/actions';
 interface ISignup {
   email: string;
   name: string;
@@ -25,8 +26,10 @@ const Signup: React.FC = () => {
   const phoneRef = useRef<TextInput>(null);
   const formRef = useRef<FormHandles>(null);
   const store = useSelector((state)=>state.store);
-
+  const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
+
+  const navigation = useNavigation();
 
   const handleSubmit: SubmitHandler<ISignup> =async (data) => {
     try {
@@ -47,12 +50,16 @@ const Signup: React.FC = () => {
         ...data,
         storeId: store.id
       })
-      
-      console.log(response, 'respostassss');
-    } catch (error) {
-      if (error instanceof Yup.ValidationError) {
-        formRef.current?.setErrors(handleErrors(error));
+      dispatch(setUser(response.data));
+      navigation.navigate('Profile')
+    } catch (err) {
+      if (err instanceof Yup.ValidationError) {
+        formRef.current?.setErrors(handleErrors(err));
         return;
+      }
+      const {error} = err.response.data;
+      if(error.includes("User already exists")){
+        formRef.current?.setErrors({email:"E-mail já cadastrado"})
       }
     }
     setLoading(false);
