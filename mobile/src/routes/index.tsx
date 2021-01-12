@@ -5,6 +5,7 @@ import MainTabNavigation from './maintab';
 import ProductDetail from '~/pages/ProductDetail';
 import Cart from '~/components/Cart';
 import Signup from '../pages/Signup';
+import TabNavigator from './signupRouter';
 
 const Stack = createStackNavigator();
 
@@ -37,7 +38,8 @@ export default function Route() {
         />
         <Stack.Screen
         name="Signup"
-        component={Signup}
+        component={TabNavigator}
+        options={{headerShown:true}}
         />
 
       </Stack.Navigator>
