@@ -27,14 +27,14 @@ export default function AddressConfirmation({ route, navigation }) {
   const dispatch = useDispatch();
   const addressLineTwoRef = useRef();
   const referencyRef = useRef();
-
+const page = route.params?.page;
 
   const user = useSelector((state) => state.user);
   const [addressNumber, setAddressNumber] = useState(user.address.number);
   const [addressLineTwo, setAddressLineTwo] = useState(user.address.addressLineTwo);
   const [favorite, setFavorite] = useState(user.address.favorite);
   const [referency, setReferency] = useState(user.address.referency);
-  const { page } = route.params;
+  
 
   const handleSaveAddress = async () => {
     dispatch(UserActions.setLocationSuccess({
