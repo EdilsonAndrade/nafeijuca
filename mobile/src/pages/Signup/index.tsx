@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import Icon from 'react-native-vector-icons/MaterialIcons'
+
 import NaFeijucaTypography from '../../assets/nafeijucatext.png';
 import SignupBackground from '../../assets/signupbackground.png';
 import { Form } from '@unform/mobile';
@@ -9,7 +9,7 @@ import {
   SaveButton, SaveButtonText
 } from './styles';
 import { Platform, TextInput, TouchableOpacity } from 'react-native';
-import { IsOptional } from 'prop-types';
+import Input from '../../components/Input';
 
 interface ISignup {
   email:string;
@@ -41,68 +41,43 @@ const formRef = useRef<FormHandles>(null);
 
     >
       <Form ref={formRef} onSubmit={handleSubmit}>
-      <FieldsTitle>
-        Nome
-      </FieldsTitle>
-      <FieldContent>
-        <Icon name="person" size={22} color="#ffc700" />
-        <InputField
+       <Input
+        icon="person"
+        iconColor="#ffc700"
+        title="Nome"
         refInput={passwordRef}
         name="name"
           keyType="next"
           onSubmit={() => emailRef.current?.focus()} />
-      </FieldContent>
-      <FieldsTitle>
-        Seu Email
-      </FieldsTitle>
-      <FieldContent>
-        <Icon name="email" size={22} color="#ffc700" />
-        <InputField
-        
+        <Input
+         icon="email"
+         iconColor="#ffc700"
+         title="Seu email"
           keyType="next"
           name="email"
           refInput={emailRef}
           keyBoardStyle="email-address"
           onSubmit={() => passwordRef.current?.focus()} />
-      </FieldContent>
-      <FieldsTitle>
-        Sua Senha
-      </FieldsTitle>
-      <FieldContent>
-        <Icon name="lock" size={22} color="#ffc700" />
-        <InputField 
+        <Input
+         icon="lock"
+         iconColor="#ffc700"
+         title="Sua senha" 
         refInput={passwordRef}
           isPassword={true}
           name="password"
           
-          onSubmit={() => confirmPasswordRef.current?.focus()}
-        />
-      </FieldContent>
-      <FieldsTitle>
-        Confirme sua Senha
-      </FieldsTitle>
-      <FieldContent>
-        <Icon name="lock" size={22} color="#ffc700" />
-        <InputField 
-        refInput={confirmPasswordRef}
-          keyType="next"
-          name="confirmPassword"
-          
           onSubmit={() => phoneRef.current?.focus()}
         />
-      </FieldContent>
-      <FieldsTitle>
-        Seu Telefone
-      </FieldsTitle>
-      <FieldContent>
-        <Icon name="call" size={22} color="#ffc700" />
-        <InputField 
+        <Input
+         icon="call"
+         iconColor="#ffc700"
+         title="Seu telefone" 
         refInput={phoneRef}
         keyBoardStyle="phone-pad"
           keyType="send"
           name="phone"
           onSubmit={handleSubmit} />
-      </FieldContent>
+      
       </Form>
       <TouchableOpacity onPress={()=>formRef.current.submitForm()}>
         <SaveButton >
