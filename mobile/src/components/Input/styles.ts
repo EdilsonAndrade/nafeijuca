@@ -6,36 +6,27 @@ export const Container = styled.KeyboardAvoidingView`
 `;
 
 
-export const FieldsContainer =styled.View`
-
-padding: 10px 20px;
-align-self:stretch;
-margin:20px 5px;
-border-radius:8px;
-
-
-`;
 export const FieldsTitle= styled.Text`
-font-weight:bold;
+font-weight:600;
 font-size:14px;
 color:#000;
 margin:5px 0;
 `
 
 export const FieldContent = styled.View`
-  padding:4px;
+  padding:2px 4px;
   display:flex;
   flex-direction:row;
   justify-content: space-between;
   align-items:center;
-  border-color:#666;
+  border-color:#ddd;
   border-width:1px;
   border-radius:6px;
 `
 
 export const InputField = styled.TextInput`
 background:transparent;
-padding: 5px;
+padding: 2px;
 flex:1;
 `;
 

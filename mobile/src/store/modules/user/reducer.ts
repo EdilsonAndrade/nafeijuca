@@ -7,6 +7,7 @@ const INITIAL_DATA = {
   name:null,
   id:null,
   email:null,
+  confirmed:null
 };
 
 export default function user(state = INITIAL_DATA, action) {
@@ -19,8 +20,8 @@ export default function user(state = INITIAL_DATA, action) {
         draft.address = address;
         break;
       }
-      case '@user/SET_LOCATION_SUCCESS': {
-        const { id, name, email, confirmed } = action.payload;
+      case '@user/SET_USER': {
+        const { id, name, email, confirmed } = action.payload.user;
         draft.id = id;
         draft.name = name;
         draft.email = email;

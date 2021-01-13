@@ -1,7 +1,7 @@
 import React from 'react';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import Signup from '../../pages/Signup';
-import Profile from '../../pages/Profile';
+import Login from '../../pages/Login';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -25,7 +25,7 @@ export default function TabNavigator() {
       />
       <Tab.Screen 
       options={{title:"Ja sou cliente"}}
-      name="Profile" component={Profile} />
+      name="Login" component={Login} />
     </Tab.Navigator>
   );
 }

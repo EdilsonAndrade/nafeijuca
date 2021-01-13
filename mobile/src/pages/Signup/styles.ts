@@ -29,19 +29,3 @@ border-radius:8px;
 
 
 `;
-
-export const SaveButton = styled.View`
-background: #ffc700;
-margin-top:10px;
-
-width:100%;
-justify-content:center;
-align-items:center;
-padding:10px;
-border-radius:8px;
-`;
-
-export const SaveButtonText = styled.Text`
-color:#eee;
-font-weight:bold;
-`

@@ -4,10 +4,10 @@ import { useSelector, useDispatch } from 'react-redux';
 import { SubmitHandler, FormHandles } from '@unform/core';
 import { useNavigation } from '@react-navigation/native';
 import {
-  Container, Logo, Title, FieldsContainer, SaveButton, SaveButtonText
-} from './styles';
-import { Platform, TextInput, TouchableOpacity, ActivityIndicator } from 'react-native';
+  Container, Logo, Title, FieldsContainer} from './styles';
+import { Platform, TextInput } from 'react-native';
 import Input from '../../components/Input';
+import Button from '../../components/Button';
 import * as Yup from 'yup';
 import handleErrors from '../../utils/handleErrors';
 import api from '../../services/api';
@@ -51,7 +51,7 @@ const Signup: React.FC = () => {
         storeId: store.id
       })
       dispatch(setUser(response.data));
-      navigation.navigate('Profile')
+      navigation.navigate('Order')
     } catch (err) {
       if (err instanceof Yup.ValidationError) {
         formRef.current?.setErrors(handleErrors(err));
@@ -112,18 +112,11 @@ const Signup: React.FC = () => {
           onSubmit={handleSubmit} />
 
       </Form>
-      <TouchableOpacity onPress={() => formRef.current.submitForm()}>
-        <SaveButton >
-          {loading ?
-          <ActivityIndicator size={20} color="#fff" />
-          :
-          <SaveButtonText>
-            CADASTRAR
-          </SaveButtonText>
-          }
-          
-        </SaveButton>
-      </TouchableOpacity>
+      <Button
+      text="CADASTRAR"
+      action={() => formRef.current.submitForm()}
+      loading={loading}
+      />
     </FieldsContainer>
   </Container>)
 }
