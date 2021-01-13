@@ -24,9 +24,7 @@ class ConfirmationMail {
       context: {
         username: user.name,
         url: decodeURI(
-          `http://${process.env.APP_ADDRESS}:${
-            process.env.APP_PORT
-          }/users/${cryptr.encrypt(user.id)}/confirmation`
+          `${process.env.APP_URL}/users/${cryptr.encrypt(user.id)}/confirmation`
         ),
         expiration: format(expirationDate, "dd'/'MM'/'yyyy hh:MM'h'", {
           locale: pt,

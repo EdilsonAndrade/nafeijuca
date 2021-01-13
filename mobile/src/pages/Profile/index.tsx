@@ -2,13 +2,14 @@ import React, { useRef, useState } from 'react';
 import { Container, AvatarContainer, CameraIcon, Avatar, FieldContents, PasswordContent } from './styles';
 import { useDispatch, useSelector } from 'react-redux';
 import Input from '../../components/Input';
+import Button from '../../components/Button';
 import { Form } from '@unform/mobile';
 import { FormHandles } from '@unform/core';
 import * as Yup from 'yup';
 import handleErrors from '../../utils/handleErrors';
 import { TextInput } from 'react-native';
 import api from '../../services/api';
-import { setUser } from '../../store/modules/user/actions';
+
 import { useNavigation } from '@react-navigation/native';
 import FakeAvatar from '../../assets/avatar.png';
 
@@ -33,9 +34,11 @@ export default function Profile() {
   const user = useSelector((state) => state.user);
 
   const dispatch = useDispatch();
+
   const handleChangeProfile = async (data: IProfile) => {
     formRef?.current?.setErrors({});
     const schema = Yup.object().shape({
+      name:Yup.string().required("Nome é obrigatório"),
       email: Yup.string().required("E-mail é obrigatório").email("Digite um e-mail válido"),
       oldPassword: Yup.string(),
       password: Yup.string().when('oldPassword', (oldPassword, field) =>
@@ -47,11 +50,12 @@ export default function Profile() {
         abortEarly: false
       })
       setLoading(true);
+      console.log('vou chamar')
       const response = await api.put(`/users/${user.id}`, {
         ...data
       });
-
-      dispatch(setUser(response.data));
+      console.log('resoistasss', response.data);
+      //dispatch(setUser(response.data));
       navigation.navigate('Profile')
       setLoading(false);
     } catch (err) {
@@ -64,6 +68,7 @@ export default function Profile() {
       if (error.includes("User does not exist")) {
         formRef?.current?.setErrors({ email: "Usuário ou senha invalido!" });
       }
+      
     }
   }
 
@@ -122,6 +127,11 @@ export default function Profile() {
               onSubmit={() => formRef?.current?.submitForm()}
             />
           </PasswordContent>
+          <Button
+          text="ATUALIZAR"
+          action={() => formRef?.current?.submitForm()}
+          loading={loading}
+          />
         </Form>
       </FieldContents>
 

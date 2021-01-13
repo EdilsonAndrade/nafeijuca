@@ -6,6 +6,7 @@ import LocationAddress from '~/pages/LocationAddress';
 import SearchAddress from '~/pages/SearchAddress';
 import MapAddress from '~/pages/MapAddress';
 import AddressConfirmation from '~/pages/AddressConfirmation';
+import ResendEmail from '~/pages/ResendEmail';
 
 
 const Stack = createStackNavigator();
@@ -43,7 +44,10 @@ export default function DashboardNavigation() {
         name="AddressConfirmation"
         component={AddressConfirmation}
       />
-
+      <Stack.Screen
+        name="ResendEmail"
+        component={ResendEmail}
+      />
     </Stack.Navigator>
 
   );

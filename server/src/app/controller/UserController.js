@@ -102,14 +102,9 @@ class UserController {
     });
 
     if (!(await schema.isValid(req.body))) {
-      return res.status(400).json({ error: 'Validation input failed' });
+      return res.status(400).send({ error: 'Validation input failed' });
     }
-    let user = '';
-    if (!isAdmin) {
-      user = await User.findOne({ where: { email, storeId } });
-    } else {
-      user = await User.findOne({ where: { email } });
-    }
+    let user = await User.findOne({ where: { email } });
 
     if (user) {
       return res.status(400).json({ error: 'User already exists' });
@@ -172,6 +167,7 @@ class UserController {
         'isAdmin',
         'systemAdmin',
         'expiration',
+        'confirmed',
       ],
     });
 

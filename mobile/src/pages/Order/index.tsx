@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { TouchableOpacity, Image, Animated } from 'react-native';
 import { BACKENDIP } from 'react-native-dotenv';
@@ -7,6 +7,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import DeliveryMoto from '~/assets/deliverymotorcycle.png';
 import api from '~/services/api';
 import NotLogged from '../../components/NotLogged';
+import Button from '../../components/Button';
 import {
   MainContainer, Container, TitleText,
   OrderContainer,
@@ -53,29 +54,47 @@ const Order = ({ navigation }) => {
   const cart = useSelector((state) => state.cart);
   const user = useSelector((state) => state.user);
   const store = useSelector((state) => state.store);
-
+const [loading,setLoading] = useState(false);
   const scrollOffset = new Animated.Value(0);
 
   const handleSendOrder = useCallback(async () => {
-    const productsIds: number[] = [];
+    try {
+      const productIds: number[] = [];
 
-    cart.products.forEach((product) => {
-      productsIds.push(product.id);
-    });
-    const order = {
-      userId: user.id,
-      storeId: store.id,
-      productsIds,
-    };
-    if (!user.id) {
-      console.tron.log('usuário não está logado');
-    } else {
-      const createdOrder = await api.post('/', order);
-      console.tron.log('order criada', createdOrder);
+      cart.products.forEach((product) => {
+        productIds.push(product.id);
+      });
+      const order = {
+        userId: user.id,
+        storeId: store.id,
+        productIds,
+        token: user.token
+      };
+      setLoading(true);
+        console.log('vou chamar')
+      if (user.id) {
+        console.log('vou chamar')
+        await api.post('/orders', order);
+        
+      }
+      setLoading(false);
+    } catch (err) {
+      const { error } = err.response.data;
+      if (error && error.includes('User not authorized')) {
+        navigation.navigate('Login', {
+          expired: true
+        })
+      } else {
+        console.log(err);
+      }
+
+      setLoading(false);
     }
-    const createdOrder = await api.post('/', order);
-    console.tron.log('order criada', createdOrder);
+
+
+
   }, []);
+
   const handleDeleteProduct = useCallback((productKey) => {
     dispatch(removeFromCartSuccess(productKey));
     if (cart.products.length === 1) {
@@ -84,9 +103,14 @@ const Order = ({ navigation }) => {
   }, []);
 
   const handleEditAddress = useCallback(() => {
-    navigation.navigate('AddressConfirmation', {
-      page: 'Order',
-    });
+    if (user.address === null) {
+      navigation.navigate('SearchAddress');
+    } else {
+      navigation.navigate('AddressConfirmation', {
+        page: 'Order',
+      });
+    }
+
   }, []);
   const renderSubItem = useCallback((product) => product.subItems.map((subItem) => (
     <SubItemRowView key={subItem.id * +product.key}>
@@ -176,19 +200,23 @@ const Order = ({ navigation }) => {
         <OrderContainer>
           <AddressAndTimeArea>
             <AddressAndEditionArea>
-              <AddressText>
-                {`${user.address.street}, ${user.address.number}  - ${user.address.addressLineTwo} `}
+              {user.address !== null ?
                 <AddressText>
-                  {user.address.neighborhood}
+                  {`${user.address.street}, ${user.address.number}  - ${user.address.addressLineTwo || ''} `}
+                  <AddressText>
+                    {user.address.neighborhood || ''}
 
-                  {' '}
-                  {user.address.city}
+                    {' '}
+                    {user.address.city || ''}
+                  </AddressText>
+                  <AddressText />
+                  <AddressText>
+                    {` ref: ${user.address.referency || ''} `}
+                  </AddressText>
                 </AddressText>
-                <AddressText />
-                <AddressText>
-                  {` ref: ${user.address.referency} `}
-                </AddressText>
-              </AddressText>
+
+                : <AddressText>Endereço ainda não informado</AddressText>}
+
 
 
               <EditionButton onPress={handleEditAddress}>
@@ -249,30 +277,27 @@ const Order = ({ navigation }) => {
             }
           </TotalText>
         </TotalAreaView>
-      
+
       </ListContainer>
       {!user.id ?
-      <NotLoggedContainer>
+        <NotLoggedContainer>
           <NotLogged />
-          </NotLoggedContainer>
-                    :
-          null
-        }
+        </NotLoggedContainer>
+        :
+        null
+      }
       {!user.id ?
         null
         :
         <ViewBottomButtons>
 
+          <Button
+            action={user.address !== null ? handleSendOrder : handleEditAddress}
+            text={user.address !== null ? 'Fazer pedido' : 'Completar Endereço'}
+            loading={loading}
 
-          <TouchableOpacity onPress={handleSendOrder}>
-            <ButtonAdd>
-              <ButtonAddText>
-                Fazer pedido
-            </ButtonAddText>
-
-            </ButtonAdd>
-          </TouchableOpacity>
-
+          />
+         
 
         </ViewBottomButtons>
       }

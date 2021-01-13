@@ -7,7 +7,8 @@ const INITIAL_DATA = {
   name:null,
   id:null,
   email:null,
-  confirmed:null
+  confirmed:null,
+  token:null,
 };
 
 export default function user(state = INITIAL_DATA, action) {
@@ -21,11 +22,15 @@ export default function user(state = INITIAL_DATA, action) {
         break;
       }
       case '@user/SET_USER': {
+        console.log(action.payload.user)
         const { id, name, email, confirmed } = action.payload.user;
+        const {token} = action.payload;
+      
         draft.id = id;
         draft.name = name;
         draft.email = email;
         draft.confirmed= confirmed;
+        draft.token = token;
       }
       default:
         break;

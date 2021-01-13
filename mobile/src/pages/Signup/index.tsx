@@ -11,7 +11,7 @@ import Button from '../../components/Button';
 import * as Yup from 'yup';
 import handleErrors from '../../utils/handleErrors';
 import api from '../../services/api';
-import { setUser } from '../../store/modules/user/actions';
+
 interface ISignup {
   email: string;
   name: string;
@@ -46,12 +46,14 @@ const Signup: React.FC = () => {
       })
 
       setLoading(true);
-      const response = await api.post('/users',{
+      await api.post('/users',{
         ...data,
         storeId: store.id
       })
-      dispatch(setUser(response.data));
-      navigation.navigate('Order')
+
+      navigation.navigate('Login',{
+        newUser:true
+      });
     } catch (err) {
       if (err instanceof Yup.ValidationError) {
         formRef.current?.setErrors(handleErrors(err));
@@ -76,14 +78,14 @@ const Signup: React.FC = () => {
     >
       <Form ref={formRef} onSubmit={handleSubmit}>
         <Input
-          icon="person"
+          icon="person-outline"
           iconColor="#ffc700"
           title="Nome"
           name="name"
           keyType="next"
           onSubmit={() => emailRef.current?.focus()} />
         <Input
-          icon="email"
+          icon="mail-outline"
           iconColor="#ffc700"
           title="Seu email"
           keyType="next"
@@ -92,7 +94,7 @@ const Signup: React.FC = () => {
           keyBoardStyle="email-address"
           onSubmit={() => passwordRef.current?.focus()} />
         <Input
-          icon="lock"
+          icon="lock-outline"
           iconColor="#ffc700"
           title="Sua senha"
           refInput={passwordRef}

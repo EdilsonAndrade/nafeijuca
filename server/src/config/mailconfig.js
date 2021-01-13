@@ -10,6 +10,6 @@ export default {
     rejectUnauthorized: false,
   },
   default: {
-    from: 'Equipe Na Feijuca <noreply@nafeijuca.com.br>',
+    from: 'nao-responda@nafeijuca.com.br',
   },
 };

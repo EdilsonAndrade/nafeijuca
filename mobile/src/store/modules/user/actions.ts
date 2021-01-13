@@ -8,7 +8,11 @@ export const setDefaultAddress = (data) => ({
   payload: data,
 });
 
-export const setUser = (data) =>({
+export const loginSuccess = (data) =>({
   type:'@user/SET_USER',
+  payload:data
+})
+export const loginRequest = (data) =>({
+  type:'@user/LOGIN_REQUEST',
   payload:data
 })

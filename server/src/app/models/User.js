@@ -1,5 +1,6 @@
 import Sequelize, { Model } from 'sequelize';
 import bcrypt from 'bcryptjs';
+import Cryptr from 'cryptr';
 import jwt from 'jsonwebtoken';
 import authConfig from '../../config/auth';
 
@@ -24,12 +25,6 @@ class User extends Model {
     );
 
     this.addHook('beforeCreate', async user => {
-      if (user.password) {
-        user.password = await bcrypt.hash(user.password, 8);
-      }
-    });
-
-    this.addHook('beforeUpdate', async user => {
       if (user.password) {
         user.password = await bcrypt.hash(user.password, 8);
       }

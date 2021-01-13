@@ -38,6 +38,7 @@ class SessionController {
         'birthDate',
         'isAdmin',
         'password',
+        'confirmed',
       ],
     });
     if (!user) {
@@ -66,6 +67,7 @@ class SessionController {
         'birthDate',
         'isAdmin',
         'systemAdmin',
+        'confirmed',
       ],
     });
     return res.json({

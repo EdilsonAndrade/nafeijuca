@@ -11,17 +11,18 @@ interface IButton {
 }
 const Button: React.FC<IButton> = ({ text, action, loading }) => {
   return (
-    loading
-      ?
-      <ActivityIndicator size={22} color="#ffc700" />
-      :
-      <TouchableOpacity onPress={action}>
-        <Container>
-          <ButtonText>
+
+    <TouchableOpacity onPress={action}>
+      <Container>
+        {loading
+          ?
+          <ActivityIndicator size={22} color="#ffff" />
+          : <ButtonText>
             {text}
-          </ButtonText>
-        </Container>
-      </TouchableOpacity>
+          </ButtonText>}
+
+      </Container>
+    </TouchableOpacity>
   )
 }
 

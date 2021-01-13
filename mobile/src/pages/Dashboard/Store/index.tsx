@@ -28,14 +28,16 @@ export default function Store({ navigation }) {
     const loadStores = async () => {
       try {
         setLoading(true);
+        
         const response = await api.get('/stores', {
           timeout: 5000,
         });
+        
         let data = response.data.filter((x) => x.active === true);
         if (response.data.filter((x) => x.active === true) !== null) {
           data = data.map((x) => ({
             ...x,
-            km: getPreciseDistance({ latitude: x.latitude, longitude: x.longitude }, userCoordenates, 10),
+            km: userCoordenates.latitude !== null ? getPreciseDistance({ latitude: x.latitude, longitude: x.longitude }, userCoordenates, 10) :0,
           }));
         }
         setStores(data);
@@ -46,6 +48,8 @@ export default function Store({ navigation }) {
         }
         setLoading(false);
       } catch (err) {
+        console.log('CAI NO ERRO')
+        console.log(err, 'errorrr')
         const { message } = err;
         if (message.includes('timeout')) {
           Alert.alert('Sem internet?', 'Me parece que você está sem conexão, verifique sua internet');

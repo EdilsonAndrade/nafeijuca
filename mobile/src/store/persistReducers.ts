@@ -7,7 +7,7 @@ export default (reducers) => {
     {
       key: 'nafeijuca',
       storage: AsyncStorage,
-      whitelist: ['product', 'user', 'cart'],
+      whitelist: ['product', 'cart'],
     },
     reducers,
   );

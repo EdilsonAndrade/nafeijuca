@@ -13,7 +13,12 @@ font-weight:bold;
 font-size:20px;
 color:#000;
 `
-
+export const NewUserTag = styled.Text`
+margin:10px 0;
+font-size:11px;
+font-weight:bold;
+color:#6666;
+`
 export const FieldContents= styled.View`
 width:100%;
 `;
@@ -36,4 +41,10 @@ font-weight:bold;
 font-size:10px;
 `;
 
+export const LineSendEmail = styled.View`
+border:1px solid rgba(255, 199, 0, .5);
+width:50%;
+border-radius:8px;
+
+`;
 
