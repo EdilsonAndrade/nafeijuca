@@ -26,7 +26,7 @@
     "axios": "^0.19.2",
     "currency-formatter": "^1.5.5",
     "geolib": "^3.3.1",
-    "immer": "^6.0.3",
+    "immer": "^9.0.6",
     "polished": "^4.0.5",
     "prop-types": "^15.7.2",
     "react": "16.11.0",
